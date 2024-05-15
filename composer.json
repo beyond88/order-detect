@@ -1,0 +1,19 @@
+{
+  "name": "beyond88/ordershield",
+  "description": "Secure your store with phone verification, multi-order tracking, and parcel trust scores for smarter order management and reduced fraud.",
+  "autoload": {
+    "psr-4": {
+      "OrderShield\\": "includes/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Mohiuddin Abdul Kader",
+      "email": "muhin.cse.diu@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "guzzlehttp/guzzle": "8.0.x-dev"
+  }
+}
