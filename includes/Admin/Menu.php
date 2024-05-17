@@ -48,9 +48,7 @@ class Menu {
 
         foreach( $settings as $slug => $setting ) {
             $cap  = isset( $setting['capability'] ) ? $setting['capability'] : 'delete_users';
-            // if( Helper::is_pro() ) {
-            //     add_submenu_page( $setting['parent_slug'], $setting['page_title'], $setting['menu_title'], $cap, $slug, $setting['callback'] );
-            // }
+            add_submenu_page( $setting['parent_slug'], $setting['page_title'], $setting['menu_title'], $cap, $slug, $setting['callback'] );
         }
     }
 
