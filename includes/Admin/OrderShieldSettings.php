@@ -259,10 +259,10 @@ class OrderShieldSettings
                                     'fields' => array(
                                         array(
                                             'name'          => 'maximum_qty_message',
-                                            'label'         => __('Maximum Quantity Message', 'order-shield'),
+                                            'label'         => __('Message', 'order-shield'),
                                             'type'          => 'text',
                                             'class'         => 'order-shield-settings-field',
-                                            'description'   => __('<strong>Note:</strong> {product} and {qty} for dynamic content.', 'order-shield'),
+                                            // 'description'   => __('<strong>Note:</strong> {product} and {qty} for dynamic content.', 'order-shield'),
                                             'placeholder'   => __('', 'order-shield'),
                                         ),
                                     )
@@ -273,6 +273,6 @@ class OrderShieldSettings
                 )
             )
         );
-        return apply_filters('samply_setting_fields', $setting_fields);
+        return apply_filters('order_shield_setting_fields', $setting_fields);
     }
 }

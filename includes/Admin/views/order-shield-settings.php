@@ -1,5 +1,3 @@
-
-
 <?php
 settings_errors();
 $setting_options = wp_parse_args(get_option($this->_optionName), $this->_defaultOptions);
@@ -91,7 +89,7 @@ if (!isset($setting_options['builder_id'])) {
                                 <img alt="OrderShield" src="<?php echo ORDERSHIELD_ASSETS; ?>/img/order-shield-logo.svg">
                             </div>
                             <div class="order-shield-admin-sidebar-cta">
-                                <a rel="nofollow" href="#" target="_blank"><?php echo __('Upgrade to Pro', 'order-shield'); ?></a>
+                                <!-- <a rel="nofollow" href="#" target="_blank"><?php echo __('Upgrade to Pro', 'order-shield'); ?></a> -->
                             </div>
                         </div>
                         <div class="order-shield-sidebar-block order-shield-license-block">

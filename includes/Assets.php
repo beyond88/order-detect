@@ -32,20 +32,10 @@ class Assets
     public function get_admin_scripts()
     {
         return array(
-            'ordershield-manifest' => array(
-                'src'     => ORDERSHIELD_ASSETS . '/js/manifest.js',
-                'version' => filemtime(ORDERSHIELD_PATH . '/assets/js/manifest.js'),
-                'deps'    => array(),
-            ),
-            'ordershield-vendor' => array(
-                'src'     => ORDERSHIELD_ASSETS . '/js/vendor.js',
-                'version' => filemtime(ORDERSHIELD_PATH . '/assets/js/vendor.js'),
-                'deps'    => array(),
-            ),
             'ordershield-admin' => array(
                 'src'     => ORDERSHIELD_ASSETS . '/js/admin.js',
                 'version' => filemtime(ORDERSHIELD_PATH . '/assets/js/admin.js'),
-                'deps'    => array('ordershield-vendor'),
+                'deps'    => array('jquery'),
             ),
         );
     }

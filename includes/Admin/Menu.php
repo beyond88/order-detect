@@ -41,26 +41,18 @@ class Menu
      */
     public function admin_menu()
     {
-        global $submenu;
-
         $parent_slug = 'order-shield';
         $capability = 'manage_options';
         $icon_url = '';
 
-        $hook = add_menu_page(
-            __('Order Shield', 'order-shield'),
-            __('Order Shield', 'order-shield'),
-            $capability,
-            $parent_slug,
-            [$this->main, 'plugin_page'],
-            $icon_url,
-            50
-        );
+        $settings   = apply_filters('ordershield_admin_menu', array());
+
+        $hook = add_menu_page(__('Order Shield', 'order-shield'), __('Order Shield', 'order-shield'), $capability, $parent_slug, [$this->main, 'plugin_page'], $icon_url, 50);
         add_action('admin_head-' . $hook, array($this, 'enqueue_assets'));
 
-        if (current_user_can($capability)) {
-            $submenu[$parent_slug][] = [__('Kickstart', 'order-shield'), $capability, 'admin.php?page=' . $parent_slug . '#/'];
-            $submenu[$parent_slug][] = [__('License', 'order-shield'), $capability, 'admin.php?page=' . $parent_slug . '#/license'];
+        foreach ($settings as $slug => $setting) {
+            $cap  = isset($setting['capability']) ? $setting['capability'] : 'delete_users';
+            add_submenu_page($setting['parent_slug'], $setting['page_title'], $setting['menu_title'], $cap, $slug, $setting['callback']);
         }
     }
 
