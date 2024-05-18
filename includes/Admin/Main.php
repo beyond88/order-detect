@@ -27,7 +27,11 @@ class Main
 	 * 
 	 * @var array
 	 */
-	public $_defaultOptions = array();
+	public $_defaultOptions = array(
+		'pathao_api' => '',
+		'steadfast_api' => '',
+		'enable_otp_checkout' => '',
+	);
 
 	/**
 	 * Initial the class and its all methods
@@ -55,12 +59,13 @@ class Main
 	 */
 	public function plugin_page()
 	{
-		$settings = OrderShieldSettings::setting_fields();
-		$template = __DIR__ . '/views/order-shield-settings.php';
+		// $settings = OrderShieldSettings::setting_fields();
+		// $template = __DIR__ . '/views/order-shield-settings.php';
 
-		if (file_exists($template)) {
-			include $template;
-		}
+		// if (file_exists($template)) {
+		// 	include $template;
+		// }
+		echo '<div class="wrap"><div id="order-shield-admin-app"></div></div>';
 	}
 
 	/**

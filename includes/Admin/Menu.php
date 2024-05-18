@@ -1,18 +1,20 @@
 <?php
 
 namespace OrderShield\Admin;
-use OrderShield\Helper; 
+
+use OrderShield\Helper;
 
 /**
  * The Menu handler class
  */
-class Menu {
+class Menu
+{
 
     /**
      * Plugin main file
      *
      * @var string
-    */
+     */
     public $main;
 
     /**
@@ -23,9 +25,10 @@ class Menu {
      * @param   object
      * @return  void
      */
-    function __construct( $main ) {
+    function __construct($main)
+    {
         $this->main = $main;
-        add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+        add_action('admin_menu', array($this, 'admin_menu'));
     }
 
     /**
@@ -36,19 +39,28 @@ class Menu {
      * @param   none   
      * @return  void
      */
-    public function admin_menu() {
+    public function admin_menu()
+    {
+        global $submenu;
+
         $parent_slug = 'order-shield';
         $capability = 'manage_options';
         $icon_url = '';
 
-        $settings   = apply_filters( 'ordershield_admin_menu', array() );        
+        $hook = add_menu_page(
+            __('Order Shield', 'order-shield'),
+            __('Order Shield', 'order-shield'),
+            $capability,
+            $parent_slug,
+            [$this->main, 'plugin_page'],
+            $icon_url,
+            50
+        );
+        add_action('admin_head-' . $hook, array($this, 'enqueue_assets'));
 
-        $hook = add_menu_page( __( 'Order Shield', 'order-shield' ), __( 'Order Shield', 'order-shield' ), $capability, $parent_slug, [ $this->main, 'plugin_page' ], $icon_url, 50 );
-        add_action( 'admin_head-' . $hook, array( $this, 'enqueue_assets' ) );
-
-        foreach( $settings as $slug => $setting ) {
-            $cap  = isset( $setting['capability'] ) ? $setting['capability'] : 'delete_users';
-            add_submenu_page( $setting['parent_slug'], $setting['page_title'], $setting['menu_title'], $cap, $slug, $setting['callback'] );
+        if (current_user_can($capability)) {
+            $submenu[$parent_slug][] = [__('Kickstart', 'order-shield'), $capability, 'admin.php?page=' . $parent_slug . '#/'];
+            $submenu[$parent_slug][] = [__('License', 'order-shield'), $capability, 'admin.php?page=' . $parent_slug . '#/license'];
         }
     }
 
@@ -60,10 +72,10 @@ class Menu {
      * @param   none   
      * @return  void
      */
-    public function enqueue_assets() {
-        wp_enqueue_style( 'ordershield-admin-boostrap' );
-        wp_enqueue_style( 'ordershield-admin-style' );
-        wp_enqueue_script( 'ordershield-admin-script' );
+    public function enqueue_assets()
+    {
+        wp_enqueue_style('ordershield-admin-boostrap');
+        wp_enqueue_style('ordershield-admin-style');
+        wp_enqueue_script('ordershield-admin-script');
     }
-
 }

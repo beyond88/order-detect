@@ -1,3 +1,5 @@
+
+
 <?php
 settings_errors();
 $setting_options = wp_parse_args(get_option($this->_optionName), $this->_defaultOptions);
@@ -19,7 +21,6 @@ if (!isset($setting_options['builder_id'])) {
                     $i = 1;
                     foreach ($settings['tabs'] as $key => $setting) {
                         $active = $current_tab == $key ? 'active' : '';
-
                         echo '<li class="' . esc_attr($active) . '" data-tab="' . esc_attr($key) . '"><a href="#' . esc_attr($key) . '">' . esc_attr($setting['title']) . '</a></li>';
                     }
                     ?>
