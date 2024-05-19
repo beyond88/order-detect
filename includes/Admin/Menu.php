@@ -47,7 +47,7 @@ class Menu
 
         $settings   = apply_filters('ordershield_admin_menu', array());
 
-        $hook = add_menu_page(__('Order Shield', 'order-shield'), __('Order Shield', 'order-shield'), $capability, $parent_slug, [$this->main, 'plugin_page'], $icon_url, 50);
+        $hook = add_menu_page(__('OrderShield', 'order-shield'), __('OrderShield', 'order-shield'), $capability, $parent_slug, [$this->main, 'plugin_page'], $icon_url, 50);
         add_action('admin_head-' . $hook, array($this, 'enqueue_assets'));
 
         foreach ($settings as $slug => $setting) {

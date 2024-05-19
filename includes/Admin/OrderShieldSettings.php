@@ -49,8 +49,8 @@ class OrderShieldSettings
 ?>
         <div class="order-shield-settings-header">
             <div class="order-shield-header-full">
-                <img src="<?php echo ORDERSHIELD_ASSETS ?>/img/order-shield-logo.svg" alt="Order Shield">
-                <h2 class="title"><?php _e('Order Shield Settings', 'order-shield'); ?></h2>
+                <img src="<?php echo ORDERSHIELD_ASSETS ?>/img/order-shield-logo.svg" alt="OrderShield">
+                <h2 class="title"><?php _e('OrderShield Settings', 'order-shield'); ?></h2>
             </div>
         </div>
     <?php
