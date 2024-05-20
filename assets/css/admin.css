@@ -25,7 +25,7 @@
   background-color: #f2f2f2;
   color: #2c3338;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 .order-shield-settings-wrap input[type="radio"],
@@ -786,7 +786,7 @@ label.order-shield-adv-checkbox-label:hover {
 .order-shield-settings-tab {
   background: #fff;
   margin-top: 5px;
-  padding: 15px 25px;
+  padding: 25px;
   border-top: none;
   position: relative;
   display: none;
@@ -806,11 +806,18 @@ label.order-shield-adv-checkbox-label:hover {
 
 .order-shield-settings-section table {
   width: 100%;
+  border: 2px solid #f8fafb;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.order-shield-settings-section table:last-child {
+  margin-bottom: 0px;
 }
 
 .order-shield-settings-section input.order-shield-settings-field[type="text"] {
   width: 82%;
-  max-width: 300px;
+  max-width: 600px;
   padding: 8px 10px;
 }
 .order-shield-settings-section.order-shield-instant_answer_tab
@@ -890,10 +897,7 @@ span.wp-picker-input-wrap {
   width: 280px;
 }
 
-.order-shield-settings-section tr td {
-  padding: 5px 15px;
-}
-
+.order-shield-settings-section tr td,
 .order-shield-settings-section .order-shield-section-inner-tab-content tr td {
   padding: 10px 15px;
 }
@@ -948,11 +952,10 @@ span.wp-picker-input-wrap {
 }
 
 .order-shield-field .order-shield-field-help {
-  padding: 8px 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #f2f2f2;
+  padding: 8px 10px 8px 0px;
   border-radius: 4px;
   width: 80%;
+  font-style: italic;
 }
 
 .order-shield-title h3 {
@@ -1474,6 +1477,14 @@ body.wp-admin.rtl .ui-datepicker {
 
 .order-shield-settings-form-wrapper {
   flex: 10;
+}
+
+.order-shield-settings-form-wrapper h2,
+.order-shield-settings-form-wrapper h3,
+.order-shield-settings-form-wrapper p,
+.order-shield-settings-form-wrapper strong,
+.order-shield-settings-form-wrapper label {
+  color: #3c434a;
 }
 
 .order-shield-settings-right {

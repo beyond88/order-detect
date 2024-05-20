@@ -9,7 +9,7 @@ if (!isset($setting_options['builder_id'])) {
 }
 ?>
 <div class="order-shield-settings-wrap">
-    <?php do_action('samply_settings_header'); ?>
+    <?php do_action('order_shield_settings_header'); ?>
 
     <div class="order-shield-left-right-settings">
         <div class="order-shield-settings">
@@ -42,6 +42,7 @@ if (!isset($setting_options['builder_id'])) {
                                     foreach ($child_sections as $sec_id => $grand_child_section) :
                                         $fields = $grand_child_section['fields'];
                                     ?>
+                                        <h2><?php echo esc_attr($grand_child_section['title']); ?></h2>
                                         <table>
                                             <tbody>
                                                 <?php foreach ($fields as  $key => $value) : ?>
@@ -78,7 +79,7 @@ if (!isset($setting_options['builder_id'])) {
                         <?php endforeach; ?>
                         <?php do_settings_fields($this->_optionGroup, 'default'); ?>
                         <?php do_settings_sections($this->_optionGroup, 'default'); ?>
-                        <?php submit_button('Save Settings', 'btn-settings order-shield-settings-button'); ?>
+                        <?php submit_button('Save', 'btn-settings order-shield-settings-button'); ?>
                     </form>
                 </div>
 

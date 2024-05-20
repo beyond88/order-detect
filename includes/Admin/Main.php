@@ -28,9 +28,18 @@ class Main
 	 * @var array
 	 */
 	public $_defaultOptions = array(
-		'pathao_api' => '',
-		'steadfast_api' => '',
-		'enable_otp_checkout' => '',
+		'pathao_api_endpoint' => '',
+		'pathao_api_key' => '',
+		'pathao_secret_key' => '',
+		'steadfast_api_endpoint' => '',
+		'steadfast_api_key' => '',
+		'steadfast_secret_key' => '',
+		'redx_api_endpoint' => '',
+		'redx_api_key' => '',
+		'redx_secret_key' => '',
+		'enable_otp' => '',
+		'sms_api_key' => '',
+		'license_key' => ''
 	);
 
 	/**

@@ -19,9 +19,9 @@ class Admin
     function __construct()
     {
         $main = new Admin\Main();
-        $this->dispatch_actions($main);
-
         new Admin\Menu($main);
+        new Admin\License($main);
+        $this->dispatch_actions($main);
         new Admin\PluginMeta();
     }
 
