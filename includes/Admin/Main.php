@@ -39,7 +39,8 @@ class Main
 		'redx_secret_key' => '',
 		'enable_otp' => '',
 		'sms_api_key' => '',
-		'license_key' => ''
+		'license_key' => '',
+		'license_expires' => ''
 	);
 
 	/**

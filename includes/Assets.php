@@ -104,7 +104,7 @@ class Assets
     public function get_admin_scripts()
     {
         return array(
-            'ordershield-admin' => array(
+            'order-shield-admin-script' => array(
                 'src'     => ORDERSHIELD_ASSETS . '/js/admin.js',
                 'version' => filemtime(ORDERSHIELD_PATH . '/assets/js/admin.js'),
                 'deps'    => array('jquery'),
@@ -160,6 +160,12 @@ class Assets
             wp_enqueue_style($handle, $style['src'], $deps, $style['version']);
         }
 
-        wp_localize_script('ordershield-admin', 'ordershieldLocalizer', array());
+        wp_localize_script('order-shield-admin-script', 'order_shield', array(
+            'ajax_url'  => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('order-shield-admin-nonce'),
+            'activate' => __('Activate', 'order-shield'),
+            'deactivate' => __('Deactivate', 'order-shield'),
+            'loader' => '<div class="order-shield-loader"></div>',
+        ));
     }
 }
