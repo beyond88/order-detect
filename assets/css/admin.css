@@ -40,18 +40,18 @@
 }
 
 .order-shield-settings-wrap button {
-  padding: 19px 39px 18px 39px;
-  color: #fff;
-  background-color: #4bc970;
-  font-size: 18px;
-  text-align: center;
-  font-style: normal;
-  border-radius: 5px;
-  width: 100%;
-  border: 1px solid #3ac162;
-  border-width: 1px 1px 3px;
-  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
-  margin-bottom: 10px;
+  /* padding: 19px 39px 18px 39px; */
+  /* color: #fff; */
+  /* background-color: #4bc970; */
+  /* font-size: 18px; */
+  /* text-align: center; */
+  /* font-style: normal; */
+  /* border-radius: 5px; */
+  /* width: 100%; */
+  /* border: 1px solid #3ac162; */
+  /* border-width: 1px 1px 3px; */
+  /* box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset; */
+  /* margin-bottom: 10px; */
 }
 
 .order-shield-settings-wrap fieldset {
@@ -2601,4 +2601,90 @@ body.order-shield-dark-mode
 
 .order-shield-enable-area {
   display: none;
+}
+
+.order-shield-license-activate {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.order-shield-license-activate h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #a36597;
+}
+
+.order-shield-license-activate h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.order-shield-license-activate p {
+  font-size: 14px;
+}
+
+.order-shield-license-activate ul {
+  list-style: none;
+}
+
+.order-shield-license-activate ul li {
+  background-image: url(../img/order-shield-tick-fill.svg);
+  background-repeat: no-repeat;
+  background-position: top left;
+  padding-left: 30px;
+  padding-bottom: 15px;
+  font-size: 14px;
+}
+
+.order-shield-license-activate ul li a {
+}
+
+.order-shield-license-status {
+  display: none;
+  margin: 0px 25px;
+  font-size: 14px;
+  font-style: italic;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.order-shield-license-status-success {
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+}
+
+.order-shield-license-status-error {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+}
+
+/* HTML: <div class="loader"></div> */
+.order-shield-loader {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  clip-path: inset(0 100% 0 0);
+  animation: l5 2s steps(11) infinite;
+}
+.order-shield-loader:before {
+  content: "Loading...";
+}
+@keyframes l5 {
+  to {
+    clip-path: inset(0 -1ch 0 0);
+  }
+}
+
+.order-shield-hidden-text {
+  color: transparent;
+  font-size: 0;
+}
+
+.order-shield-hidden-text::before {
+  content: "•••••••••••••••••••••••••";
+  font-size: 20px;
+  color: #40d469;
 }

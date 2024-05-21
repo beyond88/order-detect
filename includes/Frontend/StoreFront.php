@@ -85,7 +85,7 @@ class StoreFront
 
     public function init_otp_modal_checkout()
     {
-        if (is_checkout()) { ?>
+        if (is_checkout() && array_key_exists('enable_otp', $this->settings)) { ?>
             <div class="otp-verification-container" id="otp-verification-popup">
                 <div class="otp-verification-inner" id="otp-verification-frist-step">
                     <div class="otp-verification-header">
@@ -124,7 +124,7 @@ class StoreFront
                             </div>
                             <p class="otp-resend-section">
                                 <?php echo __('Didn\'t receive code?', 'order-shield'); ?>
-                                <a href="" class="otp-resend-btn" id="otp-resend-btn"><?php echo __('Resend', 'order-shield'); ?></a>
+                                <a href="javascript:void(0)" class="otp-resend-btn" id="otp-resend-btn"><?php echo __('Resend', 'order-shield'); ?></a>
                             </p>
                         </form>
                     </div>

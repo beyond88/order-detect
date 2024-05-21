@@ -21,31 +21,10 @@
 			}
 		}
 
-		if( $('#disable_limit_per_order').is( ':checked' ) ) {
-			$('.limit_per_order_area').hide();
-			$('.max_qty_per_order_area').hide();
-    	}
-
-		$(document).on('click', '#order-shield-manage-stock', function() {	
-			if($(this).is(':checked')){
-				$(".order-shield-enable-area").show();          
-			} else {
-				$(".order-shield-enable-area").hide();
-			}
-		});
-		
-		if( $('#order-shield-manage-stock').is(':checked') ) {
-			$(".order-shield-enable-area").show();          
-		} else {
-			$(".order-shield-enable-area").hide();
-		}
-
 	});
 
     $.orderShield.init = function () {
-		// $.orderShield.toggleFields();
 		$.orderShield.bindEvents();
-		// $.orderShield.initializeFields();
 	};
 
     $.orderShield.bindEvents = function () {
@@ -96,5 +75,101 @@
 		}
 		return vars;
 	};
+
+	$(document).on('click', '#license-submit', function(){
+		let license_key = $("#ordershield_license_key").val();
+		let $message = $('.order-shield-license-status');
+		let that = $(this); 
+		
+		if(license_key !=''){
+			that.html(order_shield.loader);
+			that.prop("disabled",true);
+
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: order_shield.ajax_url,
+				data: {
+					action: 'license_activate',
+					security: order_shield.nonce,
+					license_key: license_key
+				},
+				success: function(response, textStatus, jqXHR) {
+					console.log('response==>', response)
+					var statusCode = jqXHR.status;
+					$message.removeClass('order-shield-license-status-success order-shield-license-status-error');
+					if (statusCode === 200) {
+						$message.addClass(response.class).text(response.message).show();
+						that.html('');
+						that.html(order_shield.activate);
+						that.prop("disabled",false);
+						setTimeout(function() {
+							location.reload();
+						}, 2000);
+					} else {
+						$message.addClass(response.class).text(response.message).show();
+					}
+				},
+				error: function(jqXHR) {
+					var response = jqXHR.responseJSON;
+					$message.addClass(response.class).text(response.message).show();
+					that.html('');
+					that.html(order_shield.activate);
+					that.prop("disabled",false);
+				}
+			});
+		}
+
+	});
+
+	$(document).on('click', '#license-deactivate', function(){
+
+		var confirmDeactivation = confirm('Are you sure you want to deactivate the license key?');
+        if (!confirmDeactivation) {
+            return;
+        }
+
+
+		let $message = $('.order-shield-license-status');
+		let that = $(this); 
+		
+		that.html(order_shield.loader);
+		that.prop("disabled",true);
+
+		$.ajax({
+			type: 'POST',
+			dataType: 'json',
+			url: order_shield.ajax_url,
+			data: {
+				action: 'license_deactivate',
+				security: order_shield.nonce,
+			},
+			success: function(response, textStatus, jqXHR) {
+				console.log('response==>', response)
+				var statusCode = jqXHR.status;
+				$message.removeClass('order-shield-license-status-success order-shield-license-status-error');
+				if (statusCode === 200) {
+					$message.addClass(response.class).text(response.message).show();
+					that.html('');
+					that.html(order_shield.activate);
+					that.prop("disabled",false);
+					setTimeout(function() {
+					location.reload();
+					}, 2000);
+				} else {
+					$message.addClass(response.class).text(response.message).show();
+				}
+				
+			},
+			error: function(jqXHR) {
+				var response = jqXHR.responseJSON;
+				$message.addClass(response.class).text(response.message).show();
+				that.html('');
+				that.html(order_shield.activate);
+				that.prop("disabled",false);
+			}
+		});
+
+	});
 
 })(jQuery);

@@ -85,6 +85,11 @@ final class OrderShield
         define('ORDERSHIELD_MINIMUM_PHP_VERSION', '5.6.0');
         define('ORDERSHIELD_MINIMUM_WP_VERSION', '4.4');
         define('ORDERSHIELD_MINIMUM_WC_VERSION', '3.1');
+        // Licensing
+        define('ORDERSHIELD_STORE_URL', 'https://thebitcraft.com');
+        define('ORDERSHIELD_SL_ITEM_ID', 2357);
+        define('ORDERSHIELD_SL_ITEM_SLUG', 'order-shield');
+        define('ORDERSHIELD_SL_ITEM_NAME', 'OrderShield');
     }
 
     /**
@@ -98,6 +103,10 @@ final class OrderShield
         new OrderShield\Assets();
         new OrderShield\OrderShieldi18n();
         new OrderShield\API();
+
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+            new OrderShield\Ajax();
+        }
 
         if (is_admin()) {
             new OrderShield\Admin();
