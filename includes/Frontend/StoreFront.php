@@ -85,7 +85,7 @@ class StoreFront
 
     public function init_otp_modal_checkout()
     {
-        if (is_checkout()) { ?>
+        if (is_checkout() && array_key_exists('enable_otp', $this->settings)) { ?>
             <div class="otp-verification-container" id="otp-verification-popup">
                 <div class="otp-verification-inner" id="otp-verification-frist-step">
                     <div class="otp-verification-header">
