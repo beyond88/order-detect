@@ -1,9 +1,6 @@
 <?php
 settings_errors();
 $setting_options = wp_parse_args(get_option($this->main->_optionName), $this->main->_defaultOptions);
-echo "<pre>";
-print_r($setting_options);
-echo "</pre>";
 $license_key = $setting_options['license_key'];
 
 ?>
