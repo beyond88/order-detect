@@ -124,7 +124,7 @@ class StoreFront
                             </div>
                             <p class="otp-resend-section">
                                 <?php echo __('Didn\'t receive code?', 'order-shield'); ?>
-                                <a href="" class="otp-resend-btn" id="otp-resend-btn"><?php echo __('Resend', 'order-shield'); ?></a>
+                                <a href="javascript:void(0)" class="otp-resend-btn" id="otp-resend-btn"><?php echo __('Resend', 'order-shield'); ?></a>
                             </p>
                         </form>
                     </div>
