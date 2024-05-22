@@ -15,17 +15,27 @@ class License
      */
     public $main;
 
+    /**
+     * Constructor
+     *
+     * Initializes the class with the main plugin file and adds a filter for the admin menu.
+     *
+     * @param string $main The main plugin file.
+     */
     public function __construct($main)
     {
         $this->main = $main;
         add_filter('ordershield_admin_menu', array($this, 'ordershield_license'), PHP_INT_MAX);
-        //add_action('admin_init', array($this, 'ordershield_save_license'));
     }
 
     /**
      * Plugin page handler
      *
-     * @return void
+     * This method sets up the license settings page in the admin menu.
+     *
+     * @since   1.0.0
+     * @access  public
+     * @return  array $settings The settings array for the license page.
      */
     public function ordershield_license()
     {
@@ -45,26 +55,17 @@ class License
         return $settings;
     }
 
-    public function ordershield_save_license()
-    {
-
-        if (isset($_POST['order_shield_nonce_field']) && wp_verify_nonce($_POST['order_shield_nonce_field'], 'order_shield_nonce')) {
-            if (isset($_POST['ordershield_license_key'])) {
-                $ordershield_license_key = sanitize_text_field($_POST['ordershield_license_key']);
-                $option_name = $this->main->_optionName;
-                $default_options = $this->main->_defaultOptions;
-                $setting_options = wp_parse_args(get_option($option_name), $default_options);
-                $setting_options['license_key'] = $ordershield_license_key;
-
-                update_option($option_name, $setting_options);
-
-                add_action('admin_notices', function () {
-                    echo '<div class="notice notice-success is-dismissible"><p>License is updated!</p></div>';
-                });
-            }
-        }
-    }
-
+    /**
+     * Check license expiration on frontend
+     *
+     * This method checks if the license has expired based on the given date
+     * and displays an appropriate message on the frontend.
+     *
+     * @since   1.0.0
+     * @access  public
+     * @param   string $date The expiration date of the license.
+     * @return  void
+     */
     public function check_license_expiration_frontend($date)
     {
         if (!empty($date)) {
@@ -81,6 +82,16 @@ class License
         }
     }
 
+    /**
+     * Generate license button
+     *
+     * This method generates and returns the appropriate license button (Activate/Deactivate)
+     * based on the current license status.
+     *
+     * @since   1.0.0
+     * @access  public
+     * @return  string The HTML for the license button.
+     */
     public function license_button()
     {
         $option_name = $this->main->_optionName;
