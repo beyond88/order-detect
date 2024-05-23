@@ -24,25 +24,14 @@ class OrderShieldAPI
      *
      * @var string
      */
-    public $base_url = 'https://example.com';
+    public $base_url = '';
 
     /**
      * Initializes a new instance of the OrderShieldAPI class.
      */
     public function __construct()
     {
-        $this->base_url = get_option('wc_settings_tab_ordershield_base_url');
-        $this->is_enable = get_option('wc_settings_tab_ordershield_is_enable');
-    }
-
-    /**
-     * Checks if the OrderShield API is enabled.
-     *
-     * @return bool True if the API is enabled, otherwise false.
-     */
-    public function is_enabled()
-    {
-        return get_option('wc_settings_tab_ordershield_is_enable');
+        $this->base_url = site_url();
     }
 
     /**
@@ -72,14 +61,8 @@ class OrderShieldAPI
     public function get($url, array $params = [])
     {
 
-        if ($this->is_enabled() === 'no') {
-            error_log('OrderShield API is disabled.');
-            return;
-        }
-
         try {
             $response = $this->client()->get($url, [
-                // 'auth'      => [ 0, $this->is_enable ],
                 'query'     => $params,
                 'on_stats' => function (TransferStats $stats) use (&$url) {
                     $url = $stats->getEffectiveUri();
@@ -107,14 +90,8 @@ class OrderShieldAPI
     public function post($url, $formData)
     {
 
-        if ($this->is_enabled() === 'no') {
-            error_log('OrderShield API is disabled.');
-            return;
-        }
-
         try {
             $response = $this->client()->post($url, [
-                // 'auth'      => [ 0, $this->is_enable ],
                 'form_params'     => $formData,
                 'on_stats' => function (TransferStats $stats) use (&$url) {
                     $url = $stats->getEffectiveUri();
@@ -142,14 +119,8 @@ class OrderShieldAPI
     public function put($url, $formData)
     {
 
-        if ($this->is_enabled() === 'no') {
-            error_log('OrderShield API is disabled.');
-            return;
-        }
-
         try {
             $response = $this->client()->put($url, [
-                // 'auth'      => [ 0, $this->is_enable ],
                 'form_params' => $formData,
                 'on_stats' => function (TransferStats $stats) use (&$url) {
                     $url = $stats->getEffectiveUri();

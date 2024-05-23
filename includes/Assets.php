@@ -88,8 +88,14 @@ class Assets
             wp_enqueue_style($handle, $style['src'], $deps, $style['version']);
         }
 
-        wp_localize_script('order-shield-script', 'ajax', array(
-            'ajax_url'                     => admin_url('admin-ajax.php'),
+        wp_localize_script('order-shield-script', 'order_shield', array(
+            'ajax_url'  => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('order-shield-nonce'),
+            'loader' => '<div class="order-shield-loader"></div>',
+            'get_otp' => __('Get OTP', 'order-shield'),
+            'verify' => __('Verify', 'order-shield'),
+            'try_again' => __('Try again', 'order-shield'),
+            'something_wrong' => __('Something went wrong!', 'order-shield'),
         ));
     }
 

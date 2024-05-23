@@ -299,6 +299,14 @@ class OrderShieldSettings
                                             'placeholder'   => __('', 'order-shield'),
                                         ),
                                         array(
+                                            'name'          => 'sms_api_endpoint',
+                                            'label'         => __('API Endpoint', 'order-shield'),
+                                            'type'          => 'text',
+                                            'class'         => 'order-shield-settings-field',
+                                            'description'   => __('<strong>Note:</strong> Set SMS Provider API Endpoint', 'order-shield'),
+                                            'placeholder'   => __('API Endpoint', 'order-shield'),
+                                        ),
+                                        array(
                                             'name'          => 'sms_api_key',
                                             'label'         => __('SMS Provider API', 'order-shield'),
                                             'type'          => 'text',
@@ -306,33 +314,42 @@ class OrderShieldSettings
                                             'description'   => __('<strong>Note:</strong> Set SMS Provider API Key', 'order-shield'),
                                             'placeholder'   => __('SMS Provider API Key', 'order-shield'),
                                         ),
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    'message_tab'   => array(
-                        'title'     => __('Message', 'order-shield'),
-                        'icon'      => '',
-                        'sections'   => apply_filters(
-                            'samply_message_tab_sections',
-                            array(
-                                'message' => array(
-                                    'title'  => __('Message', 'order-shield'),
-                                    'fields' => array(
+
                                         array(
-                                            'name'          => 'maximum_qty_message',
-                                            'label'         => __('Message', 'order-shield'),
-                                            'type'          => 'text',
+                                            'name'          => 'sms_balance',
+                                            'label'         => __('SMS Balance', 'order-shield'),
+                                            'type'          => 'html',
                                             'class'         => 'order-shield-settings-field',
-                                            // 'description'   => __('<strong>Note:</strong> {product} and {qty} for dynamic content.', 'order-shield'),
+                                            'description'   => __('Your current sms balance', 'order-shield'),
                                             'placeholder'   => __('', 'order-shield'),
                                         ),
                                     )
                                 )
                             )
-                        ),
-                    )
+                        )
+                    ),
+                    // 'message_tab'   => array(
+                    //     'title'     => __('Message', 'order-shield'),
+                    //     'icon'      => '',
+                    //     'sections'   => apply_filters(
+                    //         'samply_message_tab_sections',
+                    //         array(
+                    //             'message' => array(
+                    //                 'title'  => __('Message', 'order-shield'),
+                    //                 'fields' => array(
+                    //                     array(
+                    //                         'name'          => 'maximum_qty_message',
+                    //                         'label'         => __('Message', 'order-shield'),
+                    //                         'type'          => 'text',
+                    //                         'class'         => 'order-shield-settings-field',
+                    //                         // 'description'   => __('<strong>Note:</strong> {product} and {qty} for dynamic content.', 'order-shield'),
+                    //                         'placeholder'   => __('', 'order-shield'),
+                    //                     ),
+                    //                 )
+                    //             )
+                    //         )
+                    //     ),
+                    // )
                 )
             )
         );

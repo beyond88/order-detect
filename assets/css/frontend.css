@@ -136,6 +136,66 @@
   display: none;
 }
 
-.license-expired-notice{
+.license-expired-notice {
   color: #f00;
+}
+
+/* HTML: <div class="loader"></div> */
+.order-shield-loader {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 14px;
+  /* text-transform: uppercase; */
+  clip-path: inset(0 100% 0 0);
+  animation: l5 1s steps(11) infinite;
+}
+.order-shield-loader:before {
+  content: "Sending...";
+}
+@keyframes l5 {
+  to {
+    clip-path: inset(0 -1ch 0 0);
+  }
+}
+
+.order-shield-hidden-text {
+  color: transparent;
+  font-size: 0;
+}
+
+.order-shield-hidden-text::before {
+  content: "•••••••••••••••••••••••••";
+  font-size: 20px;
+  color: #40d469;
+}
+
+#otp-sending-status,
+#otp-status-notice,
+#otp-verify-failed {
+  display: none;
+}
+
+.otp-status-error {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.otp-status-success {
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.order-shield-show {
+  display: block !important;
+}
+
+.order-shield-hide {
+  display: none !important;
 }
