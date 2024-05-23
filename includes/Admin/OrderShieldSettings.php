@@ -126,7 +126,7 @@ class OrderShieldSettings
                     </header>
                     <div class="order-shield-admin-block-content">
                         <p><?php echo __('Join the Facebook community and discuss with fellow developers and users. Best way to connect with people and get feedback on your projects.', 'order-shield'); ?></p>
-                        <a rel="nofollow" href="https://github.com/beyond88/samply/issues" class="order-shield-button" target="_blank"><?php echo __('Join Now', 'order-shield'); ?> </a>
+                        <a rel="nofollow" href="https://github.com/beyond88/order-shield/issues" class="order-shield-button" target="_blank"><?php echo __('Join Now', 'order-shield'); ?> </a>
                     </div>
                 </div>
                 <div class="order-shield-admin-block order-shield-admin-block-need-help">
@@ -144,7 +144,7 @@ class OrderShieldSettings
                     </header>
                     <div class="order-shield-admin-block-content">
                         <p><?php echo __('Stuck with something? Get help from live chat or support ticket.', 'order-shield'); ?></p>
-                        <a rel="nofollow" href="https://github.com/beyond88/samply/issues" class="order-shield-button" target="_blank"><?php echo __('Initiate a Chat', 'order-shield'); ?></a>
+                        <a rel="nofollow" href="https://github.com/beyond88/order-shield/issues" class="order-shield-button" target="_blank"><?php echo __('Initiate a Chat', 'order-shield'); ?></a>
                     </div>
                 </div>
                 <div class="order-shield-admin-block order-shield-admin-block-community">

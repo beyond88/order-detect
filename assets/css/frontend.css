@@ -38,6 +38,7 @@
   margin: 0;
   font-size: 1.5em;
   color: #333;
+  font-weight: 500;
 }
 
 .modal__close {
@@ -133,4 +134,8 @@
 
 #otp-verification-second-step {
   display: none;
+}
+
+.license-expired-notice{
+  color: #f00;
 }

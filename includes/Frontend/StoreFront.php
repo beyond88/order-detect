@@ -6,7 +6,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Stream;
 use GuzzleHttp\Psr7\Response;
 use OrderShield\API\OrderShieldAPI;
-use OrderShield\API\Resources\Order;
+use OrderShield\Helper;
 
 /**
  * Ajax handler class
@@ -16,6 +16,7 @@ class StoreFront
 
     private $api;
     private $settings;
+    private $form;
 
     /**
      * Class constructor
@@ -29,6 +30,17 @@ class StoreFront
         add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
     }
 
+    /**
+     * Check OTP status before form submission
+     *
+     * This method checks if OTP verification is enabled in the settings.
+     * If enabled, it adds a notice indicating OTP verification failed.
+     * 
+     * @since	1.0.0
+     * @access	public
+     * @param	none
+     * @return	void
+     */
     public function check_otp_status_before_submit()
     {
         if (array_key_exists('enable_otp', $this->settings)) {
@@ -83,55 +95,28 @@ class StoreFront
         return $template;
     }
 
+    /**
+     * Initialize OTP modal during checkout
+     *
+     * This method adds the OTP verification modal to the checkout page
+     * if OTP verification is enabled in the settings. It includes the
+     * HTML structure for the modal and its various elements.
+     *
+     * @since	1.0.0
+     * @access	public
+     * @param	none
+     * @return	void
+     */
     public function init_otp_modal_checkout()
     {
-        if (is_checkout() && array_key_exists('enable_otp', $this->settings)) { ?>
-            <div class="otp-verification-container" id="otp-verification-popup">
-                <div class="otp-verification-inner" id="otp-verification-frist-step">
-                    <div class="otp-verification-header">
-                        <h2><?php echo __('Mobile Verification', 'order-shield'); ?></h2>
-                        <label class="modal__close" for="modal-1"></label>
-                    </div>
-                    <div class="otp-verification-body">
-                        <form class="otp-verification-form">
-                            <div class="otp-form-group">
-                                <input type="tel" name="otp-mobile-number" class="otp-mobile-number" id="otp-mobile-number" maxlength="50" placeholder="<?php echo __('Enter your mobile number', 'order-shield'); ?>">
-                            </div>
-                            <div class="otp-form-group">
-                                <button type="button" class="otp-verification-btn" id="otp-verification-btn">
-                                    <?php echo __('Get OTP', 'order-shield'); ?>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="otp-verification-footer"></div>
-                </div>
+        if (is_checkout() && array_key_exists('enable_otp', $this->settings)) {
+            if (Helper::check_license($this->settings)) {
+                echo Form::otp_form();
+            }
 
-                <div class="otp-verification-inner" id="otp-verification-second-step">
-                    <div class="otp-verification-header">
-                        <h2><?php echo __('Verification Code', 'order-shield'); ?></h2>
-                        <label class="modal__close" for="modal-1"></label>
-                    </div>
-                    <div class="otp-verification-body">
-                        <form class="otp-verification-form">
-                            <div class="otp-form-group">
-                                <input type="text" name="otp-code" class="otp-code" id="otp-code" maxlength="200" placeholder="<?php echo __('Enter OTP code', 'order-shield'); ?>">
-                            </div>
-                            <div class="otp-form-group">
-                                <button type="button" class="otp-verification-btn" id="otp-verify-btn">
-                                    <?php echo __('Verify', 'order-shield'); ?>
-                                </button>
-                            </div>
-                            <p class="otp-resend-section">
-                                <?php echo __('Didn\'t receive code?', 'order-shield'); ?>
-                                <a href="javascript:void(0)" class="otp-resend-btn" id="otp-resend-btn"><?php echo __('Resend', 'order-shield'); ?></a>
-                            </p>
-                        </form>
-                    </div>
-                    <div class="otp-verification-footer"></div>
-                </div>
-
-            </div>
-<?php   }
+            if (!Helper::check_license($this->settings)) {
+                echo Form::license_form();
+            }
+        }
     }
 }
