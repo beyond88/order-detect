@@ -18,38 +18,12 @@ jQuery(document).ready(function($) {
         document.getElementById('otp-verification-second-step').style.display = 'none';
         document.getElementById('otp-verification-frist-step').style.display = 'block';
     });
-    
-    $('form.checkout').on('submit', function(e) {
-        e.preventDefault();     
-
-        // $('#verify-otp-button').on('click', function() {
-        //     var otpCode = $('#otp-code').val();
-
-        //     if (otpCode === "") {
-        //         alert("Please enter the OTP");
-        //         return;
-        //     }
-
-        //     // Simulate OTP verification
-        //     // You should replace this with an actual AJAX request to your server to verify the OTP
-        //     var isValidOtp = verifyOtp(otpCode);
-
-        //     if (isValidOtp) {
-        //         // Hide the OTP popup
-        //         $('#otp-verification-popup').hide();
-        //         $('.place_order').prop('disabled', false);
-
-        //         // Submit the form
-        //         $('form.checkout').unbind('submit').submit();
-        //     } else {
-        //         alert("Invalid OTP. Please try again.");
-        //     }
-        // });
+    $(document).on('click', '#otp-verify-btn', function() {
+        // document.getElementById('otp-verification-second-step').style.display = 'none';
+        // document.getElementById('otp-verification-frist-step').style.display = 'block';
+        $( 'form.checkout' ).submit();
     });
 
-    function verifyOtp(otpCode) {
-        // Replace this with an actual OTP verification logic
-        // Here we assume any OTP with '1234' is valid for demonstration purposes
-        return otpCode === "1234";
-    }
+    
+
 });

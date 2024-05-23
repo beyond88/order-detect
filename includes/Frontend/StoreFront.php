@@ -27,7 +27,7 @@ class StoreFront
         $this->settings = get_option('ordershield_settings');
         add_filter('woocommerce_locate_template', array($this, 'set_locate_template'), PHP_INT_MAX, 3);
         add_action('wp_footer', array($this, 'init_otp_modal_checkout'));
-        add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
+        //add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
     }
 
     /**
