@@ -2,12 +2,21 @@
 
 namespace OrderShield;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\TransferStats;
+use OrderShield\API\OrderShieldAPI;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Stream;
+use GuzzleHttp\Psr7\Response;
+
 /**
  * Ajax handler class
  */
 class Ajax
 {
 
+    private $api;
     private $settings;
 
     /**
@@ -17,6 +26,7 @@ class Ajax
      */
     function __construct()
     {
+        $this->api = new OrderShieldAPI();
         $this->settings = get_option('ordershield_settings');
 
         // License activate
@@ -158,7 +168,35 @@ class Ajax
             wp_send_json($response, 500);
         }
 
-        
+        $enable = array_key_exists('enable_otp', $this->settings) ? $this->settings['enable_otp'] : '';
+        $endpoint = array_key_exists('sms_api_endpoint', $this->settings) ? $this->settings['sms_api_endpoint'] : '';
+        $api_key = array_key_exists('sms_api_key', $this->settings) ? $this->settings['sms_api_key'] : '';
+
+        if (isset($enable) && isset($endpoint) && isset($api_key)) {
+            $message = 'Your OTP code: ' . $otp;
+            $params = [
+                'api_key' => $api_key,
+                'msg' => $message,
+                'to' => $phone_number,
+            ];
+
+            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+
+            $balance_response = Helper::getBalance($endpoint, $api_key);
+
+            if ($balance_response && $balance_response->error === 0) {
+                $balance = $balance_response->data->balance;
+                $this->settings['sms_balance'] = number_format($balance, 2);
+                update_option('ordershield_settings', $this->settings);
+            } elseif ($balance_response && $balance_response->error === 405) {
+                error_log('Please configure SMS API first.');
+            } else {
+                error_log('Unknown Error, failed to fetch balance');
+            }
+
+            // Log the response body
+            error_log('Response Body: ' . $balance);
+        }
 
         $response['success'] = true;
         $response['message'] = 'OTP has been sent to your phone number.';

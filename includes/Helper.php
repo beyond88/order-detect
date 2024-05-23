@@ -78,7 +78,6 @@ class Helper
                 $otp
             ));
         } while ($exists);
-        error_log('I got my otp:' . $otp);
         return $otp;
     }
 
@@ -176,5 +175,40 @@ class Helper
             }
         }
         return false; // User is not logged in
+    }
+
+    /**
+     * @param $url
+     * @param string $method
+     * @param array $postfields
+     * @return bool|string
+     */
+    private static function sendRequest($url, $method = 'GET', $postfields = [])
+    {
+
+        $args = [
+            'method'    => $method,
+            'timeout'   => 45,
+            'sslverify' => false,
+            'body'      => $postfields
+        ];
+
+        $request = wp_remote_post($url, $args);
+
+        if (is_wp_error($request) || wp_remote_retrieve_response_code($request) != 200) {
+            return false;
+        }
+
+        return wp_remote_retrieve_body($request);
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getBalance($url, $api_key)
+    {
+        $response = Helper::sendRequest($url . '/user/balance/?api_key=' . $api_key);
+
+        return json_decode($response);
     }
 }

@@ -148,7 +148,7 @@
   font-size: 14px;
   /* text-transform: uppercase; */
   clip-path: inset(0 100% 0 0);
-  animation: l5 2s steps(11) infinite;
+  animation: l5 1s steps(11) infinite;
 }
 .order-shield-loader:before {
   content: "Sending...";

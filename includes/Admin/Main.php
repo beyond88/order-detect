@@ -2,6 +2,8 @@
 
 namespace OrderShield\Admin;
 
+use OrderShield\API\OrderShieldAPI;
+
 /**
  * Settings Handler class
  */
@@ -44,6 +46,9 @@ class Main
 		'license_expires' => ''
 	);
 
+
+	private $api;
+
 	/**
 	 * Initial the class and its all methods
 	 *
@@ -58,6 +63,8 @@ class Main
 		add_action('admin_init', array($this, 'menu_register_settings'));
 
 		OrderShieldSettings::init();
+
+		$this->api = new OrderShieldAPI();
 	}
 
 	/**
@@ -104,4 +111,5 @@ class Main
 	{
 		return apply_filters('ordershield_default_options', $this->_defaultOptions);
 	}
+
 }

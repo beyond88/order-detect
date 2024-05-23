@@ -69,7 +69,6 @@ jQuery(document).ready(function($) {
                     that.prop("disabled", false);
                 }
             });
-    
         }
     });
     
