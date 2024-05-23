@@ -299,6 +299,14 @@ class OrderShieldSettings
                                             'placeholder'   => __('', 'order-shield'),
                                         ),
                                         array(
+                                            'name'          => 'sms_api_endpoint',
+                                            'label'         => __('API Endpoint', 'order-shield'),
+                                            'type'          => 'text',
+                                            'class'         => 'order-shield-settings-field',
+                                            'description'   => __('<strong>Note:</strong> Set SMS Provider API Endpoint', 'order-shield'),
+                                            'placeholder'   => __('API Endpoint', 'order-shield'),
+                                        ),
+                                        array(
                                             'name'          => 'sms_api_key',
                                             'label'         => __('SMS Provider API', 'order-shield'),
                                             'type'          => 'text',

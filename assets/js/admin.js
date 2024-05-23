@@ -36,16 +36,20 @@
 
       $(document).on( 'click', '#enable_otp', function(){
         if( $('#enable_otp').is( ':checked' ) ) {
+          $('#order-shield-meta-sms_api_endpoint').show();
           $('#order-shield-meta-sms_api_key').show();
         } else {
+          $('#order-shield-meta-sms_api_endpoint').hide();
           $('#order-shield-meta-sms_api_key').hide();
         }   
       });	
       
       if( $('#enable_otp').is( ':checked' ) ) {
+		$('#order-shield-meta-sms_api_endpoint').show();
         $('#order-shield-meta-sms_api_key').show();
       } else {
         $('#order-shield-meta-sms_api_key').hide();
+		$('#order-shield-meta-sms_api_endpoint').hide();
       }
     };
 

@@ -15,9 +15,10 @@ class Form
                     <label class="modal__close" for="modal-1"></label>
                 </div>
                 <div class="otp-verification-body">
+                    <p class="otp-status-error" id="otp-sending-status"></p>
                     <form class="otp-verification-form">
                         <div class="otp-form-group">
-                            <input type="tel" name="otp-mobile-number" class="otp-mobile-number" id="otp-mobile-number" maxlength="50" placeholder="<?php echo __('Enter your mobile number', 'order-shield'); ?>">
+                            <input type="tel" name="otp-mobile-number" class="otp-mobile-number" id="otp-mobile-number" maxlength="13" placeholder="<?php echo __('Enter your mobile number', 'order-shield'); ?>">
                         </div>
                         <div class="otp-form-group">
                             <button type="button" class="otp-verification-btn" id="otp-verification-btn">
@@ -35,9 +36,11 @@ class Form
                     <label class="modal__close" for="modal-1"></label>
                 </div>
                 <div class="otp-verification-body">
+                    <p class="otp-status-success" id="otp-status-notice"></p>
+                    <p class="otp-status-error" id="otp-verify-failed"></p>
                     <form class="otp-verification-form">
                         <div class="otp-form-group">
-                            <input type="text" name="otp-code" class="otp-code" id="otp-code" maxlength="200" placeholder="<?php echo __('Enter OTP code', 'order-shield'); ?>">
+                            <input type="text" name="otp-code" class="otp-code" id="otp-code" maxlength="4" placeholder="<?php echo __('Enter OTP code', 'order-shield'); ?>">
                         </div>
                         <div class="otp-form-group">
                             <button type="button" class="otp-verification-btn" id="otp-verify-btn">
