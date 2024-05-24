@@ -79,6 +79,7 @@ if (!isset($setting_options['builder_id'])) {
                         <?php endforeach; ?>
                         <?php do_settings_fields($this->_optionGroup, 'default'); ?>
                         <?php do_settings_sections($this->_optionGroup, 'default'); ?>
+                        <?php wp_nonce_field('ordershield_options_verify', 'ordershield_nonce'); ?>
                         <?php submit_button('Save', 'btn-settings order-shield-settings-button'); ?>
                     </form>
                 </div>

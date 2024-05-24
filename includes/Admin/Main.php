@@ -3,6 +3,7 @@
 namespace OrderShield\Admin;
 
 use OrderShield\API\OrderShieldAPI;
+use OrderShield\Helper;
 
 /**
  * Settings Handler class
@@ -59,6 +60,7 @@ class Main
 	{
 		add_action('plugins_loaded', array($this, 'set_default_options'));
 		add_action('admin_init', array($this, 'menu_register_settings'));
+		add_action('admin_init', array($this, 'check_and_save_sms_balance'));
 
 		OrderShieldSettings::init();
 
@@ -108,5 +110,28 @@ class Main
 	public function set_default_options()
 	{
 		return apply_filters('ordershield_default_options', $this->_defaultOptions);
+	}
+
+	public function check_and_save_sms_balance()
+	{
+
+		if (isset($_POST['ordershield_nonce']) && check_admin_referer('ordershield_options_verify', 'ordershield_nonce')) {
+			if (
+				!empty($_POST['ordershield_settings']['enable_otp']) &&
+				!empty($_POST['ordershield_settings']['sms_api_endpoint']) &&
+				!empty($_POST['ordershield_settings']['sms_api_key'])
+			) {
+
+				$balance_response = Helper::getBalance(esc_url($_POST['ordershield_settings']['sms_api_endpoint']), sanitize_text_field($_POST['ordershield_settings']['sms_api_key']));
+				if ($balance_response && $balance_response->error === 0) {
+					$balance = $balance_response->data->balance;
+					update_option('ordershield_sms_balance', $balance);
+				} elseif ($balance_response && $balance_response->error === 405) {
+					error_log('Please configure SMS API first.');
+				} else {
+					error_log('Unknown Error, failed to fetch balance');
+				}
+			}
+		}
 	}
 }
