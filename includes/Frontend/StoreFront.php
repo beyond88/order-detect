@@ -122,13 +122,13 @@ class StoreFront
     public function init_otp_modal_checkout()
     {
         if (is_checkout() && array_key_exists('enable_otp', $this->settings)) {
-            if (Helper::check_license($this->settings)) {
-                if (!Helper::allow_user_otp()) {
+            if (Helper::check_license(get_option('ordershield_license'))) {
+                if (!Helper::skip_otp_form()) {
                     echo Form::otp_form();
                 }
             }
 
-            if (!Helper::check_license($this->settings)) {
+            if (!Helper::check_license(get_option('ordershield_license'))) {
                 echo Form::license_form();
             }
         }

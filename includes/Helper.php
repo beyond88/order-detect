@@ -24,11 +24,11 @@ class Helper
             return false;
         }
 
-        $license_key = array_key_exists('license_key', $settings) ? $settings['license_key'] : '';
-        $license_expires = array_key_exists('license_expires', $settings) ? $settings['license_expires'] : '';
-        if (!empty($license_key) && !empty($license_expires)) {
+        $key = array_key_exists('key', $settings) ? $settings['key'] : '';
+        $expires = array_key_exists('expires', $settings) ? $settings['expires'] : '';
+        if (!empty($key) && !empty($expires)) {
             $current_date = current_time('mysql');
-            if (strtotime($current_date) > strtotime($license_expires)) {
+            if (strtotime($current_date) > strtotime($expires)) {
                 return false;
             }
         }
@@ -155,7 +155,7 @@ class Helper
      * @access  public
      * @return  bool True if the user is allowed to use OTP, false otherwise.
      */
-    public static function allow_user_otp()
+    public static function skip_otp_form()
     {
         if (is_user_logged_in()) {
             date_default_timezone_set('Asia/Dhaka'); // Set timezone to Dhaka
@@ -166,9 +166,9 @@ class Helper
             if ($next_otp_check) {
                 $current_time = time(); // Get the current Unix timestamp
                 if ($current_time > strtotime($next_otp_check)) {
-                    return false; // OTP has expired
+                    return false; // Allow OTP has expired
                 } else {
-                    return true; // OTP is still valid
+                    return true; // Allow OTP is still valid
                 }
             } else {
                 return false; // No next OTP check time found

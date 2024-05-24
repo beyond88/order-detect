@@ -42,8 +42,6 @@ class Main
 		'enable_otp' => '',
 		'sms_api_endpoint' => '',
 		'sms_api_key' => '',
-		'license_key' => '',
-		'license_expires' => ''
 	);
 
 
@@ -111,5 +109,4 @@ class Main
 	{
 		return apply_filters('ordershield_default_options', $this->_defaultOptions);
 	}
-
 }

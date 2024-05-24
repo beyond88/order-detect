@@ -1,7 +1,7 @@
 <?php
-$setting_options = wp_parse_args(get_option($this->main->_optionName), $this->main->_defaultOptions);
-$license_key = $setting_options['license_key'];
-$license_expires = $setting_options['license_expires'];
+$setting_options = wp_parse_args(get_option('ordershield_license'));
+$license_key = array_key_exists('key', $setting_options) ? $setting_options['key'] : '';
+$license_expires = array_key_exists('expires', $setting_options) ? $setting_options['expires'] : '';
 ?>
 <div class="order-shield-settings-wrap">
     <?php do_action('order_shield_settings_header'); ?>

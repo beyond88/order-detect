@@ -2,13 +2,7 @@
 
 namespace OrderShield;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\TransferStats;
 use OrderShield\API\OrderShieldAPI;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Stream;
-use GuzzleHttp\Psr7\Response;
 
 /**
  * Ajax handler class
@@ -73,8 +67,6 @@ class Ajax
 
             $response = wp_remote_post(esc_url(ORDERSHIELD_STORE_URL), array('body' => $api_params));
 
-            error_log('license response:' . print_r($response, true));
-
             if (is_wp_error($response)) {
                 wp_send_json(array('message' => 'HTTP request failed.', 'class' => 'order-shield-license-status-error'), 500);
             }
@@ -82,9 +74,10 @@ class Ajax
             $license_data = json_decode(wp_remote_retrieve_body($response));
 
             if ($license_data->success) {
-                $this->settings['license_key'] = $license_key;
-                $this->settings['license_expires'] = $license_data->expires;
-                update_option('ordershield_settings', $this->settings);
+                $settings = [];
+                $settings['key'] = $license_key;
+                $settings['expires'] = $license_data->expires;
+                update_option('ordershield_license', $settings);
                 wp_send_json(array('message' => 'License activated successfully.', 'class' => 'order-shield-license-status-success'), 200);
             } else {
                 wp_send_json(array('message' => 'License activation failed: ' . $license_data->error, 'class' => 'order-shield-license-status-error'), 400);
@@ -108,7 +101,8 @@ class Ajax
         // Check for nonce security
         check_ajax_referer('order-shield-admin-nonce', 'security');
 
-        $license_key = $this->settings['license_key'];
+        $ordershield_license = get_option('ordershield_license');
+        $license_key = $ordershield_license['key'];
         if ($license_key) {
             $api_params = array(
                 'edd_action' => 'deactivate_license',
@@ -126,9 +120,10 @@ class Ajax
             $license_data = json_decode(wp_remote_retrieve_body($response));
 
             if ($license_data->success) {
-                $this->settings['license_key'] = '';
-                $this->settings['license_expires'] = '';
-                update_option('ordershield_settings', $this->settings);
+                $settings = [];
+                $settings['key'] = '';
+                $settings['expires'] = '';
+                update_option('ordershield_license', $settings);
                 wp_send_json(array('message' => 'License deactivated successfully.', 'class' => 'order-shield-license-status-success'), 200);
             } else {
                 wp_send_json(array('message' => 'License deactivation failed: ' . $license_data->error, 'class' => 'order-shield-license-status-error'), 400);
@@ -186,16 +181,12 @@ class Ajax
 
             if ($balance_response && $balance_response->error === 0) {
                 $balance = $balance_response->data->balance;
-                $this->settings['sms_balance'] = number_format($balance, 2);
-                update_option('ordershield_settings', $this->settings);
+                update_option('ordershield_sms_balance', $balance);
             } elseif ($balance_response && $balance_response->error === 405) {
                 error_log('Please configure SMS API first.');
             } else {
                 error_log('Unknown Error, failed to fetch balance');
             }
-
-            // Log the response body
-            error_log('Response Body: ' . $balance);
         }
 
         $response['success'] = true;

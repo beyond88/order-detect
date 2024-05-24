@@ -1,9 +1,33 @@
 jQuery(document).ready(function($) {
 
+    function validateCheckoutFields() {
+        var isValid = true;
+    
+        $('.woocommerce-invalid').removeClass('woocommerce-invalid');
+        $('.woocommerce-error').remove();
+        
+        $('form.checkout .validate-required input, form.checkout .validate-required select').each(function() {
+            var $field = $(this);
+            var value = $field.val();
+            // Add a null check before calling .trim()
+            if (value === null || value.trim() === '') {
+                isValid = false;
+            }
+        });
+
+        return isValid;
+
+    }
+
     $(document).on('click', '.show-otp-popup', function() {
-        let billingPhone = $("#billing_phone").val();
-        $("#otp-mobile-number").val(billingPhone);
-        document.getElementById('otp-verification-popup').style.display = 'flex';
+        
+        // Check all required fields
+        if (validateCheckoutFields()) {
+            let billingPhone = $("#billing_phone").val();
+            $("#otp-mobile-number").val(billingPhone);
+            document.getElementById('otp-verification-popup').style.display = 'flex';
+        }
+
     });
 
     $(document).on('click', '.modal__close', function() {
@@ -16,14 +40,12 @@ jQuery(document).ready(function($) {
     }
 
     function normalizeBangladeshiPhoneNumber(phoneNumber) {
-        // Remove any leading +88 or 88
         phoneNumber = phoneNumber.replace(/^(\+88|88)/, '');
         
-        // Ensure the phone number starts with '0' and has 11 digits
         if (phoneNumber.length === 11 && phoneNumber.startsWith('0')) {
             return phoneNumber;
         } else {
-            return null; // Return null if the phone number is not valid
+            return null;
         }
     }
 

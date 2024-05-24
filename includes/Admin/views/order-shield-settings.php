@@ -27,7 +27,7 @@ if (!isset($setting_options['builder_id'])) {
             <div class="order-shield-settings-content">
                 <div class="order-shield-settings-form-wrapper">
                     <form method="post" id="order-shield-settings-form" action="options.php" novalidate="novalidate">
-                        <input id="samply_builder_id" type="hidden" name="samply_settings[builder_id]" value="<?php echo esc_attr($current_tab); ?>">
+                        <input id="order_shield_builder_id" type="hidden" name="ordershield_settings[builder_id]" value="<?php echo esc_attr($current_tab); ?>">
                         <?php settings_fields($this->_optionGroup); ?>
                         <?php
                         $i = 1;

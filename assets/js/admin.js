@@ -62,7 +62,7 @@
 			.addClass("active")
 			.siblings()
 			.removeClass("active");
-		$('#order-shield_builder_id').val(tabToGo);	
+		$('#order_shield_builder_id').val(tabToGo);	
 	};
 
   $.orderShield.get_query_vars = function (name) {

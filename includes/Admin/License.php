@@ -94,11 +94,10 @@ class License
      */
     public function license_button()
     {
-        $option_name = $this->main->_optionName;
-        $default_options = $this->main->_defaultOptions;
-        $setting_options = wp_parse_args(get_option($option_name), $default_options);
-        $license_key = $setting_options['license_key'];
-        $license_expires = $setting_options['license_expires'];
+
+        $setting_options = wp_parse_args(get_option('ordershield_license'));
+        $license_key = array_key_exists('key', $setting_options) ? $setting_options['key'] : '';
+        $license_expires = array_key_exists('expires', $setting_options) ? $setting_options['expires'] : '';
 
         if (!empty($license_key) && !empty($license_expires)) {
             $current_date = current_time('mysql');
