@@ -38,18 +38,22 @@
         if( $('#enable_otp').is( ':checked' ) ) {
           $('#order-shield-meta-sms_api_endpoint').show();
           $('#order-shield-meta-sms_api_key').show();
+		  $("#order-shield-meta-sms_balance").show();
         } else {
           $('#order-shield-meta-sms_api_endpoint').hide();
           $('#order-shield-meta-sms_api_key').hide();
+		  $("#order-shield-meta-sms_balance").hide();
         }   
       });	
       
       if( $('#enable_otp').is( ':checked' ) ) {
 		$('#order-shield-meta-sms_api_endpoint').show();
         $('#order-shield-meta-sms_api_key').show();
+		$("#order-shield-meta-sms_balance").show();
       } else {
         $('#order-shield-meta-sms_api_key').hide();
 		$('#order-shield-meta-sms_api_endpoint').hide();
+		$("#order-shield-meta-sms_balance").hide();
       }
     };
 
@@ -62,7 +66,7 @@
 			.addClass("active")
 			.siblings()
 			.removeClass("active");
-		$('#order-shield_builder_id').val(tabToGo);	
+		$('#order_shield_builder_id').val(tabToGo);	
 	};
 
   $.orderShield.get_query_vars = function (name) {
