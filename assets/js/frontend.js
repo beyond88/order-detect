@@ -1,35 +1,63 @@
 jQuery(document).ready(function($) {
 
-    function validateCheckoutFields() {
-        var isValid = true;
-    
-        $('.woocommerce-invalid').removeClass('woocommerce-invalid');
-        $('.woocommerce-error').remove();
-        
-        $('form.checkout .validate-required input, form.checkout .validate-required select').each(function() {
-            var $field = $(this);
-            var value = $field.val();
-            // Add a null check before calling .trim()
-            if (value === null || value.trim() === '') {
-                isValid = false;
-            }
-        });
-
-        return isValid;
-
-    }
-
-    $(document).on('click', '.show-otp-popup', function() {
-        
-        // Check all required fields
-        if (validateCheckoutFields()) {
+    $(document).ready(function() {
+        $(document).on('click', '.show-otp-popup', function(e) {
+      
+          if (validateCheckoutFields()) {
             let billingPhone = $("#billing_phone").val();
             $("#otp-mobile-number").val(billingPhone);
             document.getElementById('otp-verification-popup').style.display = 'flex';
+            console.log('status true')
+        } else {
+            console.log('status false')
+            $('form.checkout').submit();
+          }
+        });
+      
+        function validateCheckoutFields() {
+            var isValid = true;
+          
+            $('.woocommerce-invalid').removeClass('woocommerce-invalid');
+            $('.woocommerce-error').remove();
+          
+            $('form.checkout').find('.woocommerce-billing-fields .validate-required input, .woocommerce-billing-fields .validate-required select').each(function() {
+                var $field = $(this);
+                var value = $field.is('select') ? $field.val() : $field.val().trim();
+                if (value === '' || (value === null && $field.is('select'))) {
+                    isValid = false;
+                    $field.addClass('woocommerce-invalid');
+                } else {
+                    $(this).removeClass('woocommerce-invalid');
+                } 
+            });
+
+            if ($('#ship-to-different-address-checkbox').prop('checked') === true) {
+                $('form.checkout').find('.shipping_address .validate-required input, .shipping_address .validate-required select').each(function() {
+                  var $field = $(this);
+                  var value = $field.is('select') ? $field.val() : $field.val().trim();
+                  if (value === '' || (value === null && $field.is('select'))) {
+                    isValid = false;
+                    $(this).addClass('woocommerce-invalid');
+                  } else {
+                    $(this).removeClass('woocommerce-invalid');
+                  }
+                });
+            }
+          
+            return isValid;
         }
-
-    });
-
+      
+        // Handle Select2 changes
+        $(document).on('change', 'select.select2', function() {
+          var $field = $(this);
+          if ($field.hasClass('validate-required') && $field.val() === '') {
+            $field.addClass('woocommerce-invalid');
+          } else {
+            $field.removeClass('woocommerce-invalid');
+          }
+        });
+    });          
+    
     $(document).on('click', '.modal__close', function() {
         document.getElementById('otp-verification-popup').style.display = 'none';
     });

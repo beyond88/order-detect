@@ -175,7 +175,7 @@ class Ajax
                 'to' => $phone_number,
             ];
 
-            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            //$sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
 
             $balance_response = Helper::getBalance($endpoint, $api_key);
 
