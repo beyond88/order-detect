@@ -137,4 +137,3 @@ function order_shield()
 
 // kick-off the plugin
 order_shield();
-add_filter('woocommerce_ship_to_different_address_checked', '__return_false');

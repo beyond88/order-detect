@@ -20,7 +20,7 @@ class Helper
      */
     public static function check_license($settings)
     {
-        if (!isset($settings)) {
+        if (empty($settings)) {
             return false;
         }
 
