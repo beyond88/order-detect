@@ -55,9 +55,9 @@ class StoreFront
      */
     public function check_otp_status_before_submit()
     {
-        if (array_key_exists('enable_otp', $this->settings)) {
-            wc_add_notice(__('OTP verification failed. Please try again.', 'order-shield'), 'error');
-        }
+        //if (array_key_exists('enable_otp', $this->settings)) {
+        wc_add_notice(__('OTP verification failed. Please try again.', 'order-shield'), 'error');
+        //}
     }
 
     /**
