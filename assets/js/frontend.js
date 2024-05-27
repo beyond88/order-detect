@@ -1,62 +1,64 @@
 jQuery(document).ready(function($) {
 
-    $(document).ready(function() {
-        $(document).on('click', '.show-otp-popup', function(e) {
-      
-          if (validateCheckoutFields()) {
-            let billingPhone = $("#billing_phone").val();
+    $(document).on('click', '.show-otp-popup', function(e) {
+    
+        if (validateCheckoutFields()) {
+        let billingPhone = $("#billing_phone").val();
             $("#otp-mobile-number").val(billingPhone);
             document.getElementById('otp-verification-popup').style.display = 'flex';
-            console.log('status true')
         } else {
-            console.log('status false')
             $('form.checkout').submit();
-          }
+        }
+    });
+    
+    /*==========================
+    * 
+    * This function will check 
+    * WC legacy checkout template fields
+    * 
+     ===========================*/
+    function validateCheckoutFields() {
+        var isValid = true;
+        
+        $('.woocommerce-invalid').removeClass('woocommerce-invalid');
+        $('.woocommerce-error').remove();
+        
+        $('form.checkout').find('.woocommerce-billing-fields .validate-required input, .woocommerce-billing-fields .validate-required select').each(function() {
+            var $field = $(this);
+            var value = $field.is('select') ? $field.val() : $field.val().trim();
+            if (value === '' || (value === null && $field.is('select'))) {
+                isValid = false;
+                $field.addClass('woocommerce-invalid');
+            } else {
+                $(this).removeClass('woocommerce-invalid');
+            } 
         });
-      
-        function validateCheckoutFields() {
-            var isValid = true;
-          
-            $('.woocommerce-invalid').removeClass('woocommerce-invalid');
-            $('.woocommerce-error').remove();
-          
-            $('form.checkout').find('.woocommerce-billing-fields .validate-required input, .woocommerce-billing-fields .validate-required select').each(function() {
+
+        if ($('#ship-to-different-address-checkbox').prop('checked') === true) {
+            $('form.checkout').find('.shipping_address .validate-required input, .shipping_address .validate-required select').each(function() {
                 var $field = $(this);
                 var value = $field.is('select') ? $field.val() : $field.val().trim();
                 if (value === '' || (value === null && $field.is('select'))) {
                     isValid = false;
-                    $field.addClass('woocommerce-invalid');
+                    $(this).addClass('woocommerce-invalid');
                 } else {
                     $(this).removeClass('woocommerce-invalid');
-                } 
+                }
             });
-
-            if ($('#ship-to-different-address-checkbox').prop('checked') === true) {
-                $('form.checkout').find('.shipping_address .validate-required input, .shipping_address .validate-required select').each(function() {
-                  var $field = $(this);
-                  var value = $field.is('select') ? $field.val() : $field.val().trim();
-                  if (value === '' || (value === null && $field.is('select'))) {
-                    isValid = false;
-                    $(this).addClass('woocommerce-invalid');
-                  } else {
-                    $(this).removeClass('woocommerce-invalid');
-                  }
-                });
-            }
-          
-            return isValid;
         }
-      
-        // Handle Select2 changes
-        $(document).on('change', 'select.select2', function() {
-          var $field = $(this);
-          if ($field.hasClass('validate-required') && $field.val() === '') {
-            $field.addClass('woocommerce-invalid');
-          } else {
-            $field.removeClass('woocommerce-invalid');
-          }
-        });
-    });          
+        
+        return isValid;
+    }
+
+    $(document).on('change', 'select.select2', function() {
+        var $field = $(this);
+        if ($field.hasClass('validate-required') && $field.val() === '') {
+        $field.addClass('woocommerce-invalid');
+        } else {
+        $field.removeClass('woocommerce-invalid');
+        }
+    });
+            
     
     $(document).on('click', '.modal__close', function() {
         document.getElementById('otp-verification-popup').style.display = 'none';
@@ -96,7 +98,7 @@ jQuery(document).ready(function($) {
                     phone_number: phoneNumber
                 },
                 success: function(response, textStatus, jqXHR) {
-                    console.log('response==>', response);
+
                     var statusCode = jqXHR.status;
     
                     if (statusCode === 200 && response.success) {
@@ -145,7 +147,6 @@ jQuery(document).ready(function($) {
                     phone_number:phoneNumber
                 },
                 success: function(response, textStatus, jqXHR) {
-                    console.log('response==>', response);
                     var statusCode = jqXHR.status;
                     that.html('');
 
@@ -161,7 +162,6 @@ jQuery(document).ready(function($) {
                     }
                 },
                 error: function(jqXHR) {
-                    console.log('error==>', jqXHR);
                     $('#otp-verify-failed').addClass('order-shield-show').text(order_shield.something_wrong);
                     that.html('');
                     that.html(order_shield.try_again);
@@ -177,6 +177,26 @@ jQuery(document).ready(function($) {
         document.getElementById('otp-verification-second-step').style.display = 'none';
         document.getElementById('otp-verification-frist-step').style.display = 'block';
     });
-    
 
+    // function checkRequiredFields(sectionId) {
+    //     const section = document.getElementById(sectionId);
+    //     const requiredFields = section.querySelectorAll('input[required], select[required], textarea[required], input[type="checkbox"][required], input[type="radio"][required]');
+    
+    //     return Array.from(requiredFields).every(field => field.value);
+    // }
+    
+    //$(document).on('click', '.wc-block-components-checkout-place-order-button', function(event) {
+        // console.log("submitted")
+        // event.preventDefault();
+        // const sections = ['contact-fields', 'shipping-fields', 'payment-method'];
+        // const allFieldsFilled = sections.every(sectionId => checkRequiredFields(sectionId));
+    
+        // if (!allFieldsFilled) {
+        //     event.preventDefault();
+        //     alert('Please fill in all required fields before proceeding.');
+        // } else{
+        //     event.preventDefault();
+        // }
+    //});
+    
 });
