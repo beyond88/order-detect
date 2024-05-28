@@ -9,10 +9,9 @@ if (!class_exists('WP_List_Table')) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
+
 class MultipleOrderTrackingList extends \WP_List_Table
 {
-    private $phone_number;
-    private $per_page;
 
     public function __construct($phone_number)
     {
@@ -22,7 +21,6 @@ class MultipleOrderTrackingList extends \WP_List_Table
             'ajax' => false,
         ]);
         $this->phone_number = $phone_number;
-        $this->per_page = 5;
     }
 
     public function get_columns()
@@ -88,9 +86,30 @@ class MultipleOrderTrackingList extends \WP_List_Table
 
     public function prepare_items()
     {
-        $per_page = $this->get_items_per_page('multi_order_tracking_per_page', $this->per_page);
+        // $per_page = $this->get_items_per_page('multi_order_tracking_per_page', $this->per_page);
+        // $current_page = $this->get_pagenum();
+        // $total_items = $this->get_total_items();
+
+        // $this->set_pagination_args([
+        //     'total_items' => $total_items,
+        //     'per_page' => $per_page,
+        //     'total_pages' => ceil($total_items / $per_page),
+        // ]);
+
+        // $orders = $this->get_orders_by_phone_number($this->phone_number, $per_page, $current_page);
+        // $this->items = $orders;
+
+        // $columns = $this->get_columns();
+        // $hidden = [];
+        // $sortable = $this->get_sortable_columns();
+        // $this->_column_headers = [$columns, $hidden, $sortable];
+
+
+        $search = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';
+
+        $per_page = $this->get_items_per_page('multi_order_tracking_per_page', 20);
         $current_page = $this->get_pagenum();
-        $total_items = $this->get_total_items();
+        $total_items = $this->get_total_items($search);
 
         $this->set_pagination_args([
             'total_items' => $total_items,
@@ -98,7 +117,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
             'total_pages' => ceil($total_items / $per_page),
         ]);
 
-        $orders = $this->get_orders_by_phone_number($this->phone_number, $per_page, $current_page);
+        $orders = $this->get_orders_by_phone_number($search, $per_page, $current_page);
         $this->items = $orders;
 
         $columns = $this->get_columns();
@@ -107,15 +126,15 @@ class MultipleOrderTrackingList extends \WP_List_Table
         $this->_column_headers = [$columns, $hidden, $sortable];
     }
 
-    private function get_total_items()
+    private function get_total_items($search = '')
     {
         $args = [
             'status' => 'any',
         ];
 
-        if (!empty($this->phone_number)) {
+        if (!empty($search)) {
             $args['meta_key'] = '_billing_phone';
-            $args['meta_value'] = $this->phone_number;
+            $args['meta_value'] = $search;
             $args['meta_compare'] = 'LIKE';
         }
 
