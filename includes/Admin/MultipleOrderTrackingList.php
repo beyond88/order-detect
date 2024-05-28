@@ -2,6 +2,7 @@
 
 namespace OrderShield\Admin;
 
+// Check if the WP_List_Table class exists, and if not, include the necessary files
 if (!class_exists('WP_List_Table')) {
     require_once ABSPATH . 'wp-admin/includes/template.php';
     require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
@@ -9,11 +10,18 @@ if (!class_exists('WP_List_Table')) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
+/**
+ * MultipleOrderTrackingList class
+ * This class extends the WP_List_Table class and provides a custom list table
+ * to display multiple orders associated with a customer's phone number.
+ */
 class MultipleOrderTrackingList extends \WP_List_Table
 {
-    private $phone_number;
-    private $per_page;
 
+    /**
+     * Constructor
+     * @param string $phone_number The customer's phone number
+     */
     public function __construct($phone_number)
     {
         parent::__construct([
@@ -22,9 +30,12 @@ class MultipleOrderTrackingList extends \WP_List_Table
             'ajax' => false,
         ]);
         $this->phone_number = $phone_number;
-        $this->per_page = 5;
     }
 
+    /**
+     * Get the list of columns for the table
+     * @return array The list of columns
+     */
     public function get_columns()
     {
         $columns = [
@@ -39,6 +50,12 @@ class MultipleOrderTrackingList extends \WP_List_Table
         return $columns;
     }
 
+    /**
+     * Render the default column content
+     * @param WC_Order $item The order object
+     * @param string $column_name The column name
+     * @return string The column content
+     */
     protected function column_default($item, $column_name)
     {
         switch ($column_name) {
@@ -54,7 +71,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
                 return $item->get_billing_first_name() . ' ' . $item->get_billing_last_name();
             case 'ship_to':
                 return $item->get_shipping_first_name() . ' ' . $item->get_shipping_last_name();
-            case 'phone_number': // New case
+            case 'phone_number':
                 return $item->get_billing_phone();
             case 'total':
                 return $item->get_total();
@@ -63,6 +80,10 @@ class MultipleOrderTrackingList extends \WP_List_Table
         }
     }
 
+    /**
+     * Get the list of sortable columns
+     * @return array The list of sortable columns
+     */
     public function get_sortable_columns()
     {
         $sortable_columns = [
@@ -77,6 +98,12 @@ class MultipleOrderTrackingList extends \WP_List_Table
         return $sortable_columns;
     }
 
+    /**
+     * Get the number of items per page
+     * @param string $option The option name
+     * @param int $default The default number of items per page
+     * @return int The number of items per page
+     */
     public function get_items_per_page($option, $default = 20)
     {
         $user_per_page = (int) get_user_meta(get_current_user_id(), $option, true);
@@ -86,11 +113,17 @@ class MultipleOrderTrackingList extends \WP_List_Table
         return $user_per_page;
     }
 
+    /**
+     * Prepare the items for the list table
+     * @return void
+     */
     public function prepare_items()
     {
-        $per_page = $this->get_items_per_page('multi_order_tracking_per_page', $this->per_page);
+        $search = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';
+
+        $per_page = $this->get_items_per_page('multi_order_tracking_per_page', 20);
         $current_page = $this->get_pagenum();
-        $total_items = $this->get_total_items();
+        $total_items = $this->get_total_items($search);
 
         $this->set_pagination_args([
             'total_items' => $total_items,
@@ -98,7 +131,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
             'total_pages' => ceil($total_items / $per_page),
         ]);
 
-        $orders = $this->get_orders_by_phone_number($this->phone_number, $per_page, $current_page);
+        $orders = $this->get_orders_by_phone_number($search, $per_page, $current_page);
         $this->items = $orders;
 
         $columns = $this->get_columns();
@@ -107,15 +140,20 @@ class MultipleOrderTrackingList extends \WP_List_Table
         $this->_column_headers = [$columns, $hidden, $sortable];
     }
 
-    private function get_total_items()
+    /**
+     * Get the total number of items
+     * @param string $search The search query
+     * @return int The total number of items
+     */
+    private function get_total_items($search = '')
     {
         $args = [
             'status' => 'any',
         ];
 
-        if (!empty($this->phone_number)) {
+        if (!empty($search)) {
             $args['meta_key'] = '_billing_phone';
-            $args['meta_value'] = $this->phone_number;
+            $args['meta_value'] = $search;
             $args['meta_compare'] = 'LIKE';
         }
 
@@ -123,6 +161,13 @@ class MultipleOrderTrackingList extends \WP_List_Table
         return count($orders);
     }
 
+    /**
+     * Get the orders by phone number
+     * @param string $phone_number The customer's phone number
+     * @param int $per_page The number of items per page
+     * @param int $current_page The current page number
+     * @return array The list of orders
+     */
     private function get_orders_by_phone_number($phone_number, $per_page, $current_page)
     {
         $args = [

@@ -48,7 +48,7 @@ class MultipleOrderTracking
         $settings['multiple-order-tracking']['menu_title'] = __('Multiple Order Tracking', 'order-shield');
         $settings['multiple-order-tracking']['capability'] = 'manage_options';
         // Instantiate the class
-        $phone_number = isset($_POST['customer_phone']) ? sanitize_text_field($_POST['customer_phone']) : '';
+        $phone_number = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
         $orders_list_table = new MultipleOrderTrackingList($phone_number);
         $orders_list_table->prepare_items();
 
