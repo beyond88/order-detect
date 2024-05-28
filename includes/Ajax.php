@@ -175,9 +175,10 @@ class Ajax
                 'to' => $phone_number,
             ];
 
-            //$sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
 
             $balance_response = Helper::getBalance($endpoint, $api_key);
+            Helper::send_sms_balance_notification();
 
             if ($balance_response && $balance_response->error === 0) {
                 $balance = $balance_response->data->balance;

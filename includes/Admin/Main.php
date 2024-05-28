@@ -126,6 +126,7 @@ class Main
 				if ($balance_response && $balance_response->error === 0) {
 					$balance = $balance_response->data->balance;
 					update_option('ordershield_sms_balance', $balance);
+					Helper::send_sms_balance_notification();
 				} elseif ($balance_response && $balance_response->error === 405) {
 					error_log('Please configure SMS API first.');
 				} else {

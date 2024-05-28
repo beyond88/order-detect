@@ -211,4 +211,26 @@ class Helper
 
         return json_decode($response);
     }
+
+    /**
+     * Check SMS balance and send email notification to shop owner.
+     */
+    public static function send_sms_balance_notification( $sms_balance = null ) {
+
+        $sms_balance = get_option('ordershield_sms_balance', 0);
+
+        if ($sms_balance <= 50) {
+            $to = get_option('admin_email');
+            $subject = 'Low SMS Balance Notification';
+            $message = "Dear shop owner,\n\n";
+            $message .= "This is to inform you that your SMS balance has reached 50 taka.\n";
+            $message .= "Please refill your SMS balance to ensure uninterrupted service for your customers.\n\n";
+            $message .= "Current SMS balance: " . $sms_balance . " taka\n\n";
+            $message .= "Best regards,\n";
+            $message .= "OrderShield";
+
+            wp_mail($to, $subject, $message);
+        }
+    }
+
 }
