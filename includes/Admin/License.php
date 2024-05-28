@@ -37,9 +37,9 @@ class License
      * @access  public
      * @return  array $settings The settings array for the license page.
      */
-    public function ordershield_license()
+    public function ordershield_license($settings)
     {
-        $settings = array();
+
         $settings['license']['parent_slug'] = 'order-shield';
         $settings['license']['page_title'] = __('License', 'order-shield');
         $settings['license']['menu_title'] = __('License', 'order-shield');
