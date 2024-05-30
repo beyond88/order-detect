@@ -174,6 +174,7 @@ jQuery(document).ready(function($) {
 
     $(document).on('click', '#otp-resend-btn', function(e) {
         e.preventDefault();
+        $("#otp-code").val('');
         document.getElementById('otp-verification-second-step').style.display = 'none';
         document.getElementById('otp-verification-frist-step').style.display = 'block';
     });

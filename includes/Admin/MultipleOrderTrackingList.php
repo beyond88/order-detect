@@ -149,6 +149,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
     {
         $args = [
             'status' => 'any',
+            'limit' => -1,
         ];
 
         if (!empty($search)) {

@@ -110,6 +110,7 @@ class Ajax
                 'timeout'   => 60,
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERSHIELD_SL_ITEM_NAME),
+                'item_id'    => urlencode(ORDERSHIELD_SL_ITEM_ID),
                 'url'        => home_url()
             );
 
