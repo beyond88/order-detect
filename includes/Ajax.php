@@ -58,7 +58,7 @@ class Ajax
             $api_params = array(
                 'edd_action' => 'activate_license',
                 'sslverify' => false,
-                'timeout'   => 40,
+                'timeout'   => 60,
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERSHIELD_SL_ITEM_NAME),
                 'item_id'    => urlencode(ORDERSHIELD_SL_ITEM_ID),
@@ -68,7 +68,7 @@ class Ajax
             $response = wp_remote_post(esc_url(ORDERSHIELD_STORE_URL), array('body' => $api_params));
 
             if (is_wp_error($response)) {
-                wp_send_json(array('message' => 'HTTP request failed.', 'class' => 'order-shield-license-status-error'), 500);
+                wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-shield-license-status-error'), 500);
             }
 
             $license_data = json_decode(wp_remote_retrieve_body($response));
@@ -106,6 +106,8 @@ class Ajax
         if ($license_key) {
             $api_params = array(
                 'edd_action' => 'deactivate_license',
+                'sslverify' => false,
+                'timeout'   => 60,
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERSHIELD_SL_ITEM_NAME),
                 'url'        => home_url()
@@ -114,7 +116,7 @@ class Ajax
             $response = wp_remote_post(esc_url(ORDERSHIELD_STORE_URL), array('body' => $api_params));
 
             if (is_wp_error($response)) {
-                wp_send_json(array('message' => 'HTTP request failed.', 'class' => 'order-shield-license-status-error'), 500);
+                wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-shield-license-status-error'), 500);
             }
 
             $license_data = json_decode(wp_remote_retrieve_body($response));
