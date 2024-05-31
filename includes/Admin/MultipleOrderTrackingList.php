@@ -19,6 +19,12 @@ class MultipleOrderTrackingList extends \WP_List_Table
 {
 
     /**
+     * The customer's phone number.
+     * @var string
+     */
+    public $phone_number;
+
+    /**
      * Constructor
      * @param string $phone_number The customer's phone number
      */
