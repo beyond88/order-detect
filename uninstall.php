@@ -85,4 +85,4 @@ class OrderDetect_Uninstaller {
     }
 }
 
-new Dokan_Uninstaller();
+new OrderDetect_Uninstaller();
