@@ -49,7 +49,7 @@ class Installer
     public function create_tables()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_verification';
+        $table_name = $wpdb->prefix . 'otp_log';
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table_name (

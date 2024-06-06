@@ -88,7 +88,7 @@ if (!isset($setting_options['builder_id'])) {
                     <div class="order-detect-sidebar">
                         <div class="order-detect-sidebar-block">
                             <div class="order-detect-admin-sidebar-logo">
-                                <img alt="OrderDetect" src="<?php echo ORDERDETECT_ASSETS; ?>/img/order-detect-banner.jpeg">
+                                <!-- <img alt="OrderDetect" src="<?php echo ORDERDETECT_ASSETS; ?>/img/order-detect-banner.jpeg"> -->
                             </div>
                             <div class="order-detect-admin-sidebar-cta">
                                 <!-- <a rel="nofollow" href="#" target="_blank"><?php echo __('Upgrade to Pro', 'order-detect'); ?></a> -->

@@ -66,7 +66,7 @@ class Helper
     public static function generate_unique_otp_for_phone($phone_number, $length = 4)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_verification';
+        $table_name = $wpdb->prefix . 'otp_log';
 
         do {
             $random_number = rand(0, 9999);
@@ -95,7 +95,7 @@ class Helper
     public static function generate_otp($phone_number)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_verification';
+        $table_name = $wpdb->prefix . 'otp_log';
         date_default_timezone_set('Asia/Dhaka'); // Set timezone to Dhaka
 
         $otp = Helper::generate_unique_otp_for_phone($phone_number);
@@ -133,7 +133,7 @@ class Helper
     public static function verify_otp($phone_number, $otp)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_verification';
+        $table_name = $wpdb->prefix . 'otp_log';
 
         $result = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM $table_name WHERE phone_number = %s AND otp = %s AND expires_at > NOW()",

@@ -43,7 +43,7 @@ class Menu
     {
         $parent_slug = 'order-detect';
         $capability = 'manage_options';
-        $icon_url = ORDERDETECT_ASSETS.'/img/order-detect-icon.jpeg';
+        $icon_url = ORDERDETECT_ASSETS.'/img/order-detect-icon.png';
 
         $settings   = apply_filters('orderdetect_admin_menu', array());
 

@@ -49,7 +49,7 @@ class OrderDetectSettings
 ?>
         <div class="order-detect-settings-header">
             <div class="order-detect-header-full">
-                <img src="<?php echo ORDERDETECT_ASSETS ?>/img/order-detect-logo.jpeg" alt="Order Detect">
+                <img src="<?php echo ORDERDETECT_ASSETS ?>/img/order-detect-logo.png" alt="Order Detect">
                 <h2 class="title"><?php _e('Order Detect Settings', 'order-detect'); ?></h2>
             </div>
         </div>
