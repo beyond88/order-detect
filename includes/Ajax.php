@@ -171,7 +171,8 @@ class Ajax
         $api_key = array_key_exists('sms_api_key', $this->settings) ? $this->settings['sms_api_key'] : '';
 
         if (isset($enable) && isset($endpoint) && isset($api_key)) {
-            $message = 'Your OTP code: ' . $otp;
+            $domain = $_SERVER['HTTP_HOST'];
+            $message = 'Your '.$domain.' verification code is: ' . $otp;
             $params = [
                 'api_key' => $api_key,
                 'msg' => $message,
