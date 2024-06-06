@@ -1,8 +1,8 @@
 <?php
 
-namespace OrderShield;
+namespace OrderBarrier;
 
-use OrderShield\API\OrderShieldAPI;
+use OrderBarrier\API\OrderBarrierAPI;
 
 /**
  * Ajax handler class
@@ -20,8 +20,8 @@ class Ajax
      */
     function __construct()
     {
-        $this->api = new OrderShieldAPI();
-        $this->settings = get_option('ordershield_settings');
+        $this->api = new OrderBarrierAPI();
+        $this->settings = get_option('orderbarrier_settings');
 
         // License activate
         add_action('wp_ajax_license_activate', array($this, 'license_activate'));
@@ -50,7 +50,7 @@ class Ajax
     public function license_activate()
     {
         // Check for nonce security
-        check_ajax_referer('order-shield-admin-nonce', 'security');
+        check_ajax_referer('order-barrier-admin-nonce', 'security');
 
         $license_key = sanitize_text_field($_POST['license_key']);
         if (isset($license_key)) {
@@ -60,15 +60,15 @@ class Ajax
                 'sslverify' => false,
                 'timeout'   => 60,
                 'license'    => $license_key,
-                'item_name'  => urlencode(ORDERSHIELD_SL_ITEM_NAME),
-                'item_id'    => urlencode(ORDERSHIELD_SL_ITEM_ID),
+                'item_name'  => urlencode(ORDERBARRIER_SL_ITEM_NAME),
+                'item_id'    => urlencode(ORDERBARRIER_SL_ITEM_ID),
                 'url'        => home_url()
             );
 
-            $response = wp_remote_post(esc_url(ORDERSHIELD_STORE_URL), array('body' => $api_params));
+            $response = wp_remote_post(esc_url(ORDERBARRIER_STORE_URL), array('body' => $api_params));
 
             if (is_wp_error($response)) {
-                wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-shield-license-status-error'), 500);
+                wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-barrier-license-status-error'), 500);
             }
 
             $license_data = json_decode(wp_remote_retrieve_body($response));
@@ -77,13 +77,13 @@ class Ajax
                 $settings = [];
                 $settings['key'] = $license_key;
                 $settings['expires'] = $license_data->expires;
-                update_option('ordershield_license', $settings);
-                wp_send_json(array('message' => 'License activated successfully.', 'class' => 'order-shield-license-status-success'), 200);
+                update_option('orderbarrier_license', $settings);
+                wp_send_json(array('message' => 'License activated successfully.', 'class' => 'order-barrier-license-status-success'), 200);
             } else {
-                wp_send_json(array('message' => 'License activation failed: ' . $license_data->error, 'class' => 'order-shield-license-status-error'), 400);
+                wp_send_json(array('message' => 'License activation failed: ' . $license_data->error, 'class' => 'order-barrier-license-status-error'), 400);
             }
         } else {
-            wp_send_json(array('message' => 'License key invalid!', 'class' => 'order-shield-license-status-error'), 400);
+            wp_send_json(array('message' => 'License key invalid!', 'class' => 'order-barrier-license-status-error'), 400);
         }
 
         wp_die();
@@ -99,25 +99,25 @@ class Ajax
     public function license_deactivate()
     {
         // Check for nonce security
-        check_ajax_referer('order-shield-admin-nonce', 'security');
+        check_ajax_referer('order-barrier-admin-nonce', 'security');
 
-        $ordershield_license = get_option('ordershield_license');
-        $license_key = $ordershield_license['key'];
+        $orderbarrier_license = get_option('orderbarrier_license');
+        $license_key = $orderbarrier_license['key'];
         if ($license_key) {
             $api_params = array(
                 'edd_action' => 'deactivate_license',
                 'sslverify' => false,
                 'timeout'   => 60,
                 'license'    => $license_key,
-                'item_name'  => urlencode(ORDERSHIELD_SL_ITEM_NAME),
-                'item_id'    => urlencode(ORDERSHIELD_SL_ITEM_ID),
+                'item_name'  => urlencode(ORDERBARRIER_SL_ITEM_NAME),
+                'item_id'    => urlencode(ORDERBARRIER_SL_ITEM_ID),
                 'url'        => home_url()
             );
 
-            $response = wp_remote_post(esc_url(ORDERSHIELD_STORE_URL), array('body' => $api_params));
+            $response = wp_remote_post(esc_url(ORDERBARRIER_STORE_URL), array('body' => $api_params));
 
             if (is_wp_error($response)) {
-                wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-shield-license-status-error'), 500);
+                wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-barrier-license-status-error'), 500);
             }
 
             $license_data = json_decode(wp_remote_retrieve_body($response));
@@ -126,13 +126,13 @@ class Ajax
                 $settings = [];
                 $settings['key'] = '';
                 $settings['expires'] = '';
-                update_option('ordershield_license', $settings);
-                wp_send_json(array('message' => 'License deactivated successfully.', 'class' => 'order-shield-license-status-success'), 200);
+                update_option('orderbarrier_license', $settings);
+                wp_send_json(array('message' => 'License deactivated successfully.', 'class' => 'order-barrier-license-status-success'), 200);
             } else {
-                wp_send_json(array('message' => 'License deactivation failed: ' . $license_data->error, 'class' => 'order-shield-license-status-error'), 400);
+                wp_send_json(array('message' => 'License deactivation failed: ' . $license_data->error, 'class' => 'order-barrier-license-status-error'), 400);
             }
         } else {
-            wp_send_json(array('message' => 'License key not found.', 'class' => 'order-shield-license-status-error'), 400);
+            wp_send_json(array('message' => 'License key not found.', 'class' => 'order-barrier-license-status-error'), 400);
         }
 
         wp_die();
@@ -147,7 +147,7 @@ class Ajax
      */
     public function send_otp()
     {
-        check_ajax_referer('order-shield-nonce', 'security');
+        check_ajax_referer('order-barrier-nonce', 'security');
 
         $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
         $response = array();
@@ -185,7 +185,7 @@ class Ajax
 
             if ($balance_response && $balance_response->error === 0) {
                 $balance = $balance_response->data->balance;
-                update_option('ordershield_sms_balance', $balance);
+                update_option('orderbarrier_sms_balance', $balance);
             } elseif ($balance_response && $balance_response->error === 405) {
                 error_log('Please configure SMS API first.');
             } else {
@@ -208,7 +208,7 @@ class Ajax
      */
     public function verify_otp()
     {
-        check_ajax_referer('order-shield-nonce', 'security');
+        check_ajax_referer('order-barrier-nonce', 'security');
 
         $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
         $otp = isset($_POST['otp']) ? sanitize_text_field($_POST['otp']) : '';

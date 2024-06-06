@@ -141,7 +141,7 @@
 }
 
 /* HTML: <div class="loader"></div> */
-.order-shield-loader {
+.order-barrier-loader {
   width: fit-content;
   font-weight: bold;
   font-family: monospace;
@@ -150,7 +150,7 @@
   clip-path: inset(0 100% 0 0);
   animation: l5 1s steps(11) infinite;
 }
-.order-shield-loader:before {
+.order-barrier-loader:before {
   content: "Sending...";
 }
 @keyframes l5 {
@@ -159,12 +159,12 @@
   }
 }
 
-.order-shield-hidden-text {
+.order-barrier-hidden-text {
   color: transparent;
   font-size: 0;
 }
 
-.order-shield-hidden-text::before {
+.order-barrier-hidden-text::before {
   content: "•••••••••••••••••••••••••";
   font-size: 20px;
   color: #40d469;
@@ -192,10 +192,10 @@
   border-radius: 6px;
 }
 
-.order-shield-show {
+.order-barrier-show {
   display: block !important;
 }
 
-.order-shield-hide {
+.order-barrier-hide {
   display: none !important;
 }

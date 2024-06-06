@@ -1,5 +1,5 @@
 <select class="<?php echo esc_attr($value['class']); ?>" id="<?php echo esc_attr($value['name']); ?>" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[]" multiple="multiple">
-    <option value=""><?php esc_html_e('All', 'order-shield'); ?></option>
+    <option value=""><?php esc_html_e('All', 'order-barrier'); ?></option>
     <?php
 
     foreach ($value['default'] as $val) :

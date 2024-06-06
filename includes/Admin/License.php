@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderShield\Admin;
+namespace OrderBarrier\Admin;
 
 /**
  * Settings Handler class
@@ -25,7 +25,7 @@ class License
     public function __construct($main)
     {
         $this->main = $main;
-        add_filter('ordershield_admin_menu', array($this, 'ordershield_license'), PHP_INT_MAX);
+        add_filter('orderbarrier_admin_menu', array($this, 'orderbarrier_license'), PHP_INT_MAX);
     }
 
     /**
@@ -37,15 +37,15 @@ class License
      * @access  public
      * @return  array $settings The settings array for the license page.
      */
-    public function ordershield_license($settings)
+    public function orderbarrier_license($settings)
     {
 
-        $settings['license']['parent_slug'] = 'order-shield';
-        $settings['license']['page_title'] = __('License', 'order-shield');
-        $settings['license']['menu_title'] = __('License', 'order-shield');
+        $settings['license']['parent_slug'] = 'order-barrier';
+        $settings['license']['page_title'] = __('License', 'order-barrier');
+        $settings['license']['menu_title'] = __('License', 'order-barrier');
         $settings['license']['capability'] = 'manage_options';
         $settings['license']['callback'] = function ($arg) {
-            $template = __DIR__ . '/views/order-shield-license.php';
+            $template = __DIR__ . '/views/order-barrier-license.php';
 
             if (file_exists($template)) {
                 include $template;
@@ -71,13 +71,13 @@ class License
         if (!empty($date)) {
             $current_date = current_time('mysql');
             if (strtotime($current_date) > strtotime($date)) {
-                echo '<div class="license-expiration-message" style="color: red; text-align: left;font-size:20px;">' . sprintf(__('Your license has been expired.', 'order-shield')) . '</div>';
+                echo '<div class="license-expiration-message" style="color: red; text-align: left;font-size:20px;">' . sprintf(__('Your license has been expired.', 'order-barrier')) . '</div>';
             } else {
                 $valid_date_str = substr($date, 0, 19);
                 $date = new \DateTime($valid_date_str);
                 $timestamp = $date->getTimestamp();
                 $readable_date = date_i18n('F j, Y, g:i A', $timestamp);
-                echo '<h2>' . sprintf(__('<span style="color:#3c434a">License expire date:</span> %s', 'order-shield'), $readable_date) . '</h2>';
+                echo '<h2>' . sprintf(__('<span style="color:#3c434a">License expire date:</span> %s', 'order-barrier'), $readable_date) . '</h2>';
             }
         }
     }
@@ -95,7 +95,7 @@ class License
     public function license_button()
     {
 
-        $setting_options = wp_parse_args(get_option('ordershield_license'));
+        $setting_options = wp_parse_args(get_option('orderbarrier_license'));
         $license_key = array_key_exists('key', $setting_options) ? $setting_options['key'] : '';
         $license_expires = array_key_exists('expires', $setting_options) ? $setting_options['expires'] : '';
 
@@ -103,21 +103,21 @@ class License
             $current_date = current_time('mysql');
             if (strtotime($current_date) > strtotime($license_expires)) {
                 return sprintf(
-                    '<button type="button" name="license-submit" id="license-submit" class="btn-settings order-shield-settings-button">%s</button>',
-                    __('Activate', 'order-shield')
+                    '<button type="button" name="license-submit" id="license-submit" class="btn-settings order-barrier-settings-button">%s</button>',
+                    __('Activate', 'order-barrier')
                 );
             }
 
             return sprintf(
-                '<button type="button" name="license-deactivate" id="license-deactivate" class="btn-settings order-shield-settings-button">%s</button>',
-                __('Deactivate', 'order-shield')
+                '<button type="button" name="license-deactivate" id="license-deactivate" class="btn-settings order-barrier-settings-button">%s</button>',
+                __('Deactivate', 'order-barrier')
             );
         }
 
         if (empty($license_key) || empty($license_expires)) {
             return sprintf(
-                '<button type="button" name="license-submit" id="license-submit" class="btn-settings order-shield-settings-button">%s</button>',
-                __('Activate', 'order-shield')
+                '<button type="button" name="license-submit" id="license-submit" class="btn-settings order-barrier-settings-button">%s</button>',
+                __('Activate', 'order-barrier')
             );
         }
     }

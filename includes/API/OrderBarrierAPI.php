@@ -1,33 +1,33 @@
 <?php
 
-namespace OrderShield\API;
+namespace OrderBarrier\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\TransferStats;
 
 /**
- * Handles communication with the OrderShield API.
+ * Handles communication with the OrderBarrier API.
  */
-class OrderShieldAPI
+class OrderBarrierAPI
 {
 
     /**
-     * Indicates whether the OrderShield API is enabled.
+     * Indicates whether the OrderBarrier API is enabled.
      *
      * @var string
      */
     public $is_enable;
 
     /**
-     * The base URL of the OrderShield API.
+     * The base URL of the OrderBarrier API.
      *
      * @var string
      */
     public $base_url = '';
 
     /**
-     * Initializes a new instance of the OrderShieldAPI class.
+     * Initializes a new instance of the OrderBarrierAPI class.
      */
     public function __construct()
     {

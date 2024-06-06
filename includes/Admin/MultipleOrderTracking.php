@@ -1,8 +1,8 @@
 <?php
 
-namespace OrderShield\Admin;
+namespace OrderBarrier\Admin;
 
-use OrderShield\Admin\MultipleOrderTrackingList;
+use OrderBarrier\Admin\MultipleOrderTrackingList;
 
 /**
  * Settings Handler class
@@ -27,9 +27,9 @@ class MultipleOrderTracking
     public function __construct($main)
     {
         $this->main = $main;
-        add_filter('ordershield_admin_menu', array($this, 'ordershield_multiple_order_tracking'), PHP_INT_MAX);
+        add_filter('orderbarrier_admin_menu', array($this, 'orderbarrier_multiple_order_tracking'), PHP_INT_MAX);
         add_filter('set-screen-option', array($this, 'set_screen_option'), 10, 3);
-        add_action("load-ordershield_page_multiple-order-tracking", array($this, 'add_screen_options'));
+        add_action("load-orderbarrier_page_multiple-order-tracking", array($this, 'add_screen_options'));
     }
 
     /**
@@ -41,11 +41,11 @@ class MultipleOrderTracking
      * @access  public
      * @return  array $settings The settings array for the multiple-order-tracking page.
      */
-    public function ordershield_multiple_order_tracking($settings)
+    public function orderbarrier_multiple_order_tracking($settings)
     {
-        $settings['multiple-order-tracking']['parent_slug'] = 'order-shield';
-        $settings['multiple-order-tracking']['page_title'] = __('Multiple Order Tracking', 'order-shield');
-        $settings['multiple-order-tracking']['menu_title'] = __('Multiple Order Tracking', 'order-shield');
+        $settings['multiple-order-tracking']['parent_slug'] = 'order-barrier';
+        $settings['multiple-order-tracking']['page_title'] = __('Multiple Order Tracking', 'order-barrier');
+        $settings['multiple-order-tracking']['menu_title'] = __('Multiple Order Tracking', 'order-barrier');
         $settings['multiple-order-tracking']['capability'] = 'manage_options';
         // Instantiate the class
         $phone_number = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
@@ -90,7 +90,7 @@ class MultipleOrderTracking
          * Add per page option.
          */
         add_screen_option('per_page', array(
-            'label'   => esc_html__('Number of items per page', 'order-shield'),
+            'label'   => esc_html__('Number of items per page', 'order-barrier'),
             'default' => 20,
             'option'  => 'multi_order_tracking_per_page',
         ));

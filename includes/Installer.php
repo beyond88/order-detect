@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderShield;
+namespace OrderBarrier;
 
 /**
  * Installer class
@@ -32,13 +32,13 @@ class Installer
      */
     public function add_version()
     {
-        $installed = get_option('ordershield_installed');
+        $installed = get_option('orderbarrier_installed');
 
         if (!$installed) {
-            update_option('ordershield_installed', time());
+            update_option('orderbarrier_installed', time());
         }
 
-        update_option('ordershield_version', ORDERSHIELD_VERSION);
+        update_option('orderbarrier_version', ORDERBARRIER_VERSION);
     }
 
     /**

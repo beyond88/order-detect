@@ -7,8 +7,8 @@
             ?>
                 <tr valign="top">
                     <td class="middle-align">
-                        <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[qty][]" maxlength="30" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Quantity', 'order-shield'); ?>" value="<?php echo esc_attr($val); ?>">
-                        <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[price][]" maxlength="30" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Price', 'order-shield'); ?>" value="<?php echo esc_attr($setting_options[$value['name']]['price'][$i]); ?>">
+                        <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[qty][]" maxlength="30" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Quantity', 'order-barrier'); ?>" value="<?php echo esc_attr($val); ?>">
+                        <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[price][]" maxlength="30" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Price', 'order-barrier'); ?>" value="<?php echo esc_attr($setting_options[$value['name']]['price'][$i]); ?>">
                         <a href="javascript:void(0);" class="remove_button" title="Remove"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
                                 <g>
                                     <path class="st0" d="M19,35.3c1.4,20.8,2.7,37.6,4.1,58.4c0.2,3.6,3.2,6.2,6.9,6.2c13.2,0,26.5,0,39.7,0c3.9,0,6.7-2.7,7-6.7 C77.8,76,79,58.8,80.1,41.5c0.3-3.8,0.4-3.6,0.7-7.6c-20.7,0-41.2,0-61.7,0C19,34.4,19,34.9,19,35.3z M61.7,56 c0.2-2.4,0.4-4.7,0.6-7.1c0.2-2.4,1.5-3.7,3.4-3.5c1.9,0.2,3,1.6,2.8,4c-0.6,7.4-1.3,14.8-1.9,22.2c-0.4,4.1-0.7,8.3-1.1,12.4 c-0.2,2.2-1.5,3.5-3.3,3.4c-1.8-0.1-3-1.6-2.9-3.2C60.1,74.5,60.9,65.2,61.7,56z M46.7,49.3c0-2.6,1.2-4,3.2-3.9 c1.9,0.1,3,1.4,3,3.9c0,5.7,0,11.5,0,17.2c0,0,0,0,0,0c0,5.7,0,11.3,0,17c0,2.5-1.2,4.1-3.1,4.1c-1.9,0-3.1-1.5-3.1-4 C46.7,72,46.7,60.7,46.7,49.3z M32.8,45.7c2.1-1.1,4.3,0.3,4.6,2.9c0.6,6.7,1.2,13.5,1.8,20.2c0.4,5,0.9,9.9,1.3,15.6 c0,1.4-1.1,2.9-2.9,3.1c-1.8,0.2-3.2-1.2-3.4-3.3c-1-11.5-2-23.1-3.1-34.6C31,47.9,31.3,46.5,32.8,45.7z" />
@@ -37,8 +37,8 @@
         <?php } else { ?>
             <tr valign="top">
                 <td class="middle-align">
-                    <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[qty][]" maxlength="30" value="" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Quantity', 'order-shield'); ?>">
-                    <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[price][]" maxlength="30" value="" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Price', 'order-shield'); ?>">
+                    <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[qty][]" maxlength="30" value="" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Quantity', 'order-barrier'); ?>">
+                    <input type="text" name="<?php echo esc_html($this->_optionName . "[" . $value['name'] . "]"); ?>[price][]" maxlength="30" value="" class="timezone_string wfps-meta-field playfield" placeholder="<?php esc_html_e('Price', 'order-barrier'); ?>">
                 </td>
             </tr>
         <?php } ?>
@@ -52,7 +52,7 @@
                 <div class="wfps-click-overlay" id="wfps-click-overlay"></div>
                 <label for="add-field" class="wfps-group-field-add">
                     <span class="dashicons dashicons-plus-alt rx_add_field_icon"></span>
-                    <span class="rx_add_field_label"><?php esc_html_e('Add Sample Price', 'order-shield'); ?></span>
+                    <span class="rx_add_field_label"><?php esc_html_e('Add Sample Price', 'order-barrier'); ?></span>
                     <input type="button" name="add-field" id="add-field" class="timezone_string add-field" value="">
                 </label>
             </div>

@@ -1,8 +1,8 @@
 <?php
 
-namespace OrderShield\Admin;
+namespace OrderBarrier\Admin;
 
-use OrderShield\Helper;
+use OrderBarrier\Helper;
 
 /**
  * The Menu handler class
@@ -41,13 +41,13 @@ class Menu
      */
     public function admin_menu()
     {
-        $parent_slug = 'order-shield';
+        $parent_slug = 'order-barrier';
         $capability = 'manage_options';
-        $icon_url = '';
+        $icon_url = ORDERBARRIER_ASSETS.'/img/order-barrier-icon.jpeg';
 
-        $settings   = apply_filters('ordershield_admin_menu', array());
+        $settings   = apply_filters('orderbarrier_admin_menu', array());
 
-        $hook = add_menu_page(__('OrderShield', 'order-shield'), __('OrderShield', 'order-shield'), $capability, $parent_slug, [$this->main, 'plugin_page'], $icon_url, 50);
+        $hook = add_menu_page(__('Order Barrier', 'order-barrier'), __('Order Barrier', 'order-barrier'), $capability, $parent_slug, [$this->main, 'plugin_page'], $icon_url, 50);
         add_action('admin_head-' . $hook, array($this, 'enqueue_assets'));
 
         foreach ($settings as $slug => $setting) {
@@ -66,8 +66,8 @@ class Menu
      */
     public function enqueue_assets()
     {
-        wp_enqueue_style('ordershield-admin-boostrap');
-        wp_enqueue_style('ordershield-admin-style');
-        wp_enqueue_script('ordershield-admin-script');
+        wp_enqueue_style('orderbarrier-admin-boostrap');
+        wp_enqueue_style('orderbarrier-admin-style');
+        wp_enqueue_script('orderbarrier-admin-script');
     }
 }

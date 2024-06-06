@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderShield;
+namespace OrderBarrier;
 
 /**
  * Frontend handler class
