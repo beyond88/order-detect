@@ -80,7 +80,7 @@ class OrderDetect_Uninstaller {
         ];
 
         foreach ( $options as $option ) {
-            get_option($option); // phpcs:ignore
+            delete_option($option); // phpcs:ignore
         }
     }
 }
