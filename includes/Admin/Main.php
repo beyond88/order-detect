@@ -1,9 +1,9 @@
 <?php
 
-namespace OrderBarrier\Admin;
+namespace OrderDetect\Admin;
 
-use OrderBarrier\API\OrderBarrierAPI;
-use OrderBarrier\Helper;
+use OrderDetect\API\OrderDetectAPI;
+use OrderDetect\Helper;
 
 /**
  * Settings Handler class
@@ -16,14 +16,14 @@ class Main
 	 * 
 	 * @var string
 	 */
-	public $_optionName  = 'orderbarrier_settings';
+	public $_optionName  = 'orderdetect_settings';
 
 	/**
 	 * Settings otpions group field
 	 * 
 	 * @var string
 	 */
-	public $_optionGroup = 'orderbarrier_options_group';
+	public $_optionGroup = 'orderdetect_options_group';
 
 	/**
 	 * Settings otpions field default values
@@ -62,9 +62,9 @@ class Main
 		add_action('admin_init', array($this, 'menu_register_settings'));
 		add_action('admin_init', array($this, 'check_and_save_sms_balance'));
 
-		OrderBarrierSettings::init();
+		OrderDetectSettings::init();
 
-		$this->api = new OrderBarrierAPI();
+		$this->api = new OrderDetectAPI();
 	}
 
 	/**
@@ -77,8 +77,8 @@ class Main
 	 */
 	public function plugin_page()
 	{
-		$settings = OrderBarrierSettings::setting_fields();
-		$template = __DIR__ . '/views/order-barrier-settings.php';
+		$settings = OrderDetectSettings::setting_fields();
+		$template = __DIR__ . '/views/order-detect-settings.php';
 
 		if (file_exists($template)) {
 			include $template;
@@ -109,23 +109,23 @@ class Main
 	 */
 	public function set_default_options()
 	{
-		return apply_filters('orderbarrier_default_options', $this->_defaultOptions);
+		return apply_filters('orderdetect_default_options', $this->_defaultOptions);
 	}
 
 	public function check_and_save_sms_balance()
 	{
 
-		if (isset($_POST['orderbarrier_nonce']) && check_admin_referer('orderbarrier_options_verify', 'orderbarrier_nonce')) {
+		if (isset($_POST['orderdetect_nonce']) && check_admin_referer('orderdetect_options_verify', 'orderdetect_nonce')) {
 			if (
-				!empty($_POST['orderbarrier_settings']['enable_otp']) &&
-				!empty($_POST['orderbarrier_settings']['sms_api_endpoint']) &&
-				!empty($_POST['orderbarrier_settings']['sms_api_key'])
+				!empty($_POST['orderdetect_settings']['enable_otp']) &&
+				!empty($_POST['orderdetect_settings']['sms_api_endpoint']) &&
+				!empty($_POST['orderdetect_settings']['sms_api_key'])
 			) {
 
-				$balance_response = Helper::getBalance(esc_url($_POST['orderbarrier_settings']['sms_api_endpoint']), sanitize_text_field($_POST['orderbarrier_settings']['sms_api_key']));
+				$balance_response = Helper::getBalance(esc_url($_POST['orderdetect_settings']['sms_api_endpoint']), sanitize_text_field($_POST['orderdetect_settings']['sms_api_key']));
 				if ($balance_response && $balance_response->error === 0) {
 					$balance = $balance_response->data->balance;
-					update_option('orderbarrier_sms_balance', $balance);
+					update_option('orderdetect_sms_balance', $balance);
 					Helper::send_sms_balance_notification();
 				} elseif ($balance_response && $balance_response->error === 405) {
 					error_log('Please configure SMS API first.');

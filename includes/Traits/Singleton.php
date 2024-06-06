@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderBarrier\Traits;
+namespace OrderDetect\Traits;
 
 trait Singleton
 {

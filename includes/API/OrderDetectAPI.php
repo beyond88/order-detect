@@ -1,33 +1,33 @@
 <?php
 
-namespace OrderBarrier\API;
+namespace OrderDetect\API;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\TransferStats;
 
 /**
- * Handles communication with the OrderBarrier API.
+ * Handles communication with the OrderDetect API.
  */
-class OrderBarrierAPI
+class OrderDetectAPI
 {
 
     /**
-     * Indicates whether the OrderBarrier API is enabled.
+     * Indicates whether the OrderDetect API is enabled.
      *
      * @var string
      */
     public $is_enable;
 
     /**
-     * The base URL of the OrderBarrier API.
+     * The base URL of the OrderDetect API.
      *
      * @var string
      */
     public $base_url = '';
 
     /**
-     * Initializes a new instance of the OrderBarrierAPI class.
+     * Initializes a new instance of the OrderDetectAPI class.
      */
     public function __construct()
     {

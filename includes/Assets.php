@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderBarrier;
+namespace OrderDetect;
 
 /**
  * Assets handlers class
@@ -33,9 +33,9 @@ class Assets
     public function get_scripts()
     {
         return array(
-            'order-barrier-script' => array(
-                'src'     => ORDERBARRIER_ASSETS . '/js/frontend.js',
-                'version' => filemtime(ORDERBARRIER_PATH . '/assets/js/frontend.js'),
+            'order-detect-script' => array(
+                'src'     => ORDERDETECT_ASSETS . '/js/frontend.js',
+                'version' => filemtime(ORDERDETECT_PATH . '/assets/js/frontend.js'),
                 'deps'    => array('jquery'),
             ),
         );
@@ -52,9 +52,9 @@ class Assets
     public function get_styles()
     {
         return array(
-            'order-barrier-style' => array(
-                'src'     => ORDERBARRIER_ASSETS . '/css/frontend.css',
-                'version' => filemtime(ORDERBARRIER_PATH . '/assets/css/frontend.css'),
+            'order-detect-style' => array(
+                'src'     => ORDERDETECT_ASSETS . '/css/frontend.css',
+                'version' => filemtime(ORDERDETECT_PATH . '/assets/css/frontend.css'),
             ),
 
         );
@@ -88,14 +88,14 @@ class Assets
             wp_enqueue_style($handle, $style['src'], $deps, $style['version']);
         }
 
-        wp_localize_script('order-barrier-script', 'order_barrier', array(
+        wp_localize_script('order-detect-script', 'order_detect', array(
             'ajax_url'  => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('order-barrier-nonce'),
-            'loader' => '<div class="order-barrier-loader"></div>',
-            'get_otp' => __('Get OTP', 'order-barrier'),
-            'verify' => __('Verify', 'order-barrier'),
-            'try_again' => __('Try again', 'order-barrier'),
-            'something_wrong' => __('Something went wrong!', 'order-barrier'),
+            'nonce' => wp_create_nonce('order-detect-nonce'),
+            'loader' => '<div class="order-detect-loader"></div>',
+            'get_otp' => __('Get OTP', 'order-detect'),
+            'verify' => __('Verify', 'order-detect'),
+            'try_again' => __('Try again', 'order-detect'),
+            'something_wrong' => __('Something went wrong!', 'order-detect'),
         ));
     }
 
@@ -110,9 +110,9 @@ class Assets
     public function get_admin_scripts()
     {
         return array(
-            'order-barrier-admin-script' => array(
-                'src'     => ORDERBARRIER_ASSETS . '/js/admin.js',
-                'version' => filemtime(ORDERBARRIER_PATH . '/assets/js/admin.js'),
+            'order-detect-admin-script' => array(
+                'src'     => ORDERDETECT_ASSETS . '/js/admin.js',
+                'version' => filemtime(ORDERDETECT_PATH . '/assets/js/admin.js'),
                 'deps'    => array('jquery'),
             ),
         );
@@ -129,9 +129,9 @@ class Assets
     public function get_admin_styles()
     {
         return array(
-            'orderbarrier-admin-style' => array(
-                'src'     => ORDERBARRIER_ASSETS . '/css/admin.css',
-                'version' => filemtime(ORDERBARRIER_PATH . '/assets/css/admin.css'),
+            'orderdetect-admin-style' => array(
+                'src'     => ORDERDETECT_ASSETS . '/css/admin.css',
+                'version' => filemtime(ORDERDETECT_PATH . '/assets/css/admin.css'),
             ),
         );
     }
@@ -166,12 +166,12 @@ class Assets
             wp_enqueue_style($handle, $style['src'], $deps, $style['version']);
         }
 
-        wp_localize_script('order-barrier-admin-script', 'order_barrier', array(
+        wp_localize_script('order-detect-admin-script', 'order_detect', array(
             'ajax_url'  => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('order-barrier-admin-nonce'),
-            'activate' => __('Activate', 'order-barrier'),
-            'deactivate' => __('Deactivate', 'order-barrier'),
-            'loader' => '<div class="order-barrier-loader"></div>',
+            'nonce' => wp_create_nonce('order-detect-admin-nonce'),
+            'activate' => __('Activate', 'order-detect'),
+            'deactivate' => __('Deactivate', 'order-detect'),
+            'loader' => '<div class="order-detect-loader"></div>',
         ));
     }
 }

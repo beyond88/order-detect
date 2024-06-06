@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderBarrier;
+namespace OrderDetect;
 
 /**
  * The admin class

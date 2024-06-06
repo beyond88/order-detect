@@ -1,9 +1,9 @@
 {
-  "name": "beyond88/orderbarrier",
+  "name": "beyond88/orderdetect",
   "description": "Secure your store with phone verification, multi-order tracking, and parcel trust scores for smarter order management and reduced fraud.",
   "autoload": {
     "psr-4": {
-      "OrderBarrier\\": "includes/"
+      "OrderDetect\\": "includes/"
     }
   },
   "authors": [

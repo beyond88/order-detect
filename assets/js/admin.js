@@ -2,19 +2,19 @@
 	"use strict";
 
 	/**
-	 * OrderBarrier Admin JS
+	 * OrderDetect Admin JS
 	 */
-	$.orderBarrier = $.orderBarrier || {};
+	$.orderDetect = $.orderDetect || {};
 
     $(document).ready(function () {
-		$.orderBarrier.init();
+		$.orderDetect.init();
 
-        var qVars = $.orderBarrier.get_query_vars("page");
+        var qVars = $.orderDetect.get_query_vars("page");
 		if (qVars != undefined) {
-			if (qVars.indexOf("order-barrier") >= 0) {
+			if (qVars.indexOf("order-detect") >= 0) {
 				var cSettingsTab = qVars.split("#");
 				$(
-					'.order-barrier-settings-menu li[data-tab="' +
+					'.order-detect-settings-menu li[data-tab="' +
 						cSettingsTab[1] +
 						'"]'
 				).trigger("click");				
@@ -23,53 +23,53 @@
 
 	});
 
-    $.orderBarrier.init = function () {
-		$.orderBarrier.bindEvents();
+    $.orderDetect.init = function () {
+		$.orderDetect.bindEvents();
 	};
 
-    $.orderBarrier.bindEvents = function () {
-      $(".order-barrier-settings-menu li").on("click", function (e) {
-        $.orderBarrier.settingsTab(this);
+    $.orderDetect.bindEvents = function () {
+      $(".order-detect-settings-menu li").on("click", function (e) {
+        $.orderDetect.settingsTab(this);
       });
 
-      $('.order-barrier-settings-button').removeClass('button');
+      $('.order-detect-settings-button').removeClass('button');
 
       $(document).on( 'click', '#enable_otp', function(){
         if( $('#enable_otp').is( ':checked' ) ) {
-          $('#order-barrier-meta-sms_api_endpoint').show();
-          $('#order-barrier-meta-sms_api_key').show();
-		  $("#order-barrier-meta-sms_balance").show();
+          $('#order-detect-meta-sms_api_endpoint').show();
+          $('#order-detect-meta-sms_api_key').show();
+		  $("#order-detect-meta-sms_balance").show();
         } else {
-          $('#order-barrier-meta-sms_api_endpoint').hide();
-          $('#order-barrier-meta-sms_api_key').hide();
-		  $("#order-barrier-meta-sms_balance").hide();
+          $('#order-detect-meta-sms_api_endpoint').hide();
+          $('#order-detect-meta-sms_api_key').hide();
+		  $("#order-detect-meta-sms_balance").hide();
         }   
       });	
       
       if( $('#enable_otp').is( ':checked' ) ) {
-		$('#order-barrier-meta-sms_api_endpoint').show();
-        $('#order-barrier-meta-sms_api_key').show();
-		$("#order-barrier-meta-sms_balance").show();
+		$('#order-detect-meta-sms_api_endpoint').show();
+        $('#order-detect-meta-sms_api_key').show();
+		$("#order-detect-meta-sms_balance").show();
       } else {
-        $('#order-barrier-meta-sms_api_key').hide();
-		$('#order-barrier-meta-sms_api_endpoint').hide();
-		$("#order-barrier-meta-sms_balance").hide();
+        $('#order-detect-meta-sms_api_key').hide();
+		$('#order-detect-meta-sms_api_endpoint').hide();
+		$("#order-detect-meta-sms_balance").hide();
       }
     };
 
-    $.orderBarrier.settingsTab = function (button) {
+    $.orderDetect.settingsTab = function (button) {
 		var button = $(button),
 			tabToGo = button.data("tab");
 
 		button.addClass("active").siblings().removeClass("active");
-		$("#order-barrier-" + tabToGo)
+		$("#order-detect-" + tabToGo)
 			.addClass("active")
 			.siblings()
 			.removeClass("active");
-		$('#order_barrier_builder_id').val(tabToGo);	
+		$('#order_detect_builder_id').val(tabToGo);	
 	};
 
-  $.orderBarrier.get_query_vars = function (name) {
+  $.orderDetect.get_query_vars = function (name) {
 		var vars = {};
 		window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (
 			m,
@@ -85,31 +85,31 @@
 	};
 
 	$(document).on('click', '#license-submit', function(){
-		let license_key = $("#orderbarrier_license_key").val();
-		let $message = $('.order-barrier-license-status');
+		let license_key = $("#orderdetect_license_key").val();
+		let $message = $('.order-detect-license-status');
 		let that = $(this); 
 		
 		if(license_key !=''){
-			that.html(order_barrier.loader);
+			that.html(order_detect.loader);
 			that.prop("disabled",true);
 
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
-				url: order_barrier.ajax_url,
+				url: order_detect.ajax_url,
 				data: {
 					action: 'license_activate',
-					security: order_barrier.nonce,
+					security: order_detect.nonce,
 					license_key: license_key
 				},
 				success: function(response, textStatus, jqXHR) {
 					console.log('response==>', response)
 					var statusCode = jqXHR.status;
-					$message.removeClass('order-barrier-license-status-success order-barrier-license-status-error');
+					$message.removeClass('order-detect-license-status-success order-detect-license-status-error');
 					if (statusCode === 200) {
 						$message.addClass(response.class).text(response.message).show();
 						that.html('');
-						that.html(order_barrier.activate);
+						that.html(order_detect.activate);
 						that.prop("disabled",false);
 						setTimeout(function() {
 							location.reload();
@@ -122,7 +122,7 @@
 					var response = jqXHR.responseJSON;
 					$message.addClass(response.class).text(response.message).show();
 					that.html('');
-					that.html(order_barrier.activate);
+					that.html(order_detect.activate);
 					that.prop("disabled",false);
 				}
 			});
@@ -138,28 +138,28 @@
         }
 
 
-		let $message = $('.order-barrier-license-status');
+		let $message = $('.order-detect-license-status');
 		let that = $(this); 
 		
-		that.html(order_barrier.loader);
+		that.html(order_detect.loader);
 		that.prop("disabled",true);
 
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
-			url: order_barrier.ajax_url,
+			url: order_detect.ajax_url,
 			data: {
 				action: 'license_deactivate',
-				security: order_barrier.nonce,
+				security: order_detect.nonce,
 			},
 			success: function(response, textStatus, jqXHR) {
 				console.log('response==>', response)
 				var statusCode = jqXHR.status;
-				$message.removeClass('order-barrier-license-status-success order-barrier-license-status-error');
+				$message.removeClass('order-detect-license-status-success order-detect-license-status-error');
 				if (statusCode === 200) {
 					$message.addClass(response.class).text(response.message).show();
 					that.html('');
-					that.html(order_barrier.activate);
+					that.html(order_detect.activate);
 					that.prop("disabled",false);
 					setTimeout(function() {
 					location.reload();
@@ -173,7 +173,7 @@
 				var response = jqXHR.responseJSON;
 				$message.addClass(response.class).text(response.message).show();
 				that.html('');
-				that.html(order_barrier.activate);
+				that.html(order_detect.activate);
 				that.prop("disabled",false);
 			}
 		});

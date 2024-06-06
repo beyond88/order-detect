@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Plugin Name: Order Barrier
+ * Plugin Name: Order Detect
  * Description: Secure your store with phone verification, multi-order tracking, and parcel trust scores for smarter order management and reduced fraud.
- * Plugin URI: https://github.com/beyond88/order-barrier
+ * Plugin URI: https://github.com/beyond88/order-detect
  * Author: Mohiuddin Abdul Kader
  * Author URI: https://github.com/beyond88
  * Version: 1.0.0
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       order-barrier
+ * Text Domain:       order-detect
  * Domain Path:       /languages
  * Requires PHP:      5.6
  * Requires at least: 4.4
  * Tested up to:      6.5.2
- * @package Order Barrier
+ * @package Order Detect
  *
  * WC requires at least: 3.1
  * WC tested up to:   8.8.2
@@ -31,7 +31,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * The main plugin class
  */
-final class OrderBarrier
+final class OrderDetect
 {
 
     /**
@@ -55,7 +55,7 @@ final class OrderBarrier
     /**
      * Initializes a singleton instance
      *
-     * @return \OrderBarrier
+     * @return \OrderDetect
      */
     public static function init()
     {
@@ -75,21 +75,21 @@ final class OrderBarrier
      */
     public function define_constants()
     {
-        define('ORDERBARRIER_VERSION', self::version);
-        define('ORDERBARRIER_FILE', __FILE__);
-        define('ORDERBARRIER_PATH', __DIR__);
-        define('ORDERBARRIER_URL', plugins_url('', ORDERBARRIER_FILE));
-        define('ORDERBARRIER_ASSETS', ORDERBARRIER_URL . '/assets');
-        define('ORDERBARRIER_BASENAME', plugin_basename(__FILE__));
-        define('ORDERBARRIER_PLUGIN_NAME', 'Order Barrier');
-        define('ORDERBARRIER_MINIMUM_PHP_VERSION', '5.6.0');
-        define('ORDERBARRIER_MINIMUM_WP_VERSION', '4.4');
-        define('ORDERBARRIER_MINIMUM_WC_VERSION', '3.1');
+        define('ORDERDETECT_VERSION', self::version);
+        define('ORDERDETECT_FILE', __FILE__);
+        define('ORDERDETECT_PATH', __DIR__);
+        define('ORDERDETECT_URL', plugins_url('', ORDERDETECT_FILE));
+        define('ORDERDETECT_ASSETS', ORDERDETECT_URL . '/assets');
+        define('ORDERDETECT_BASENAME', plugin_basename(__FILE__));
+        define('ORDERDETECT_PLUGIN_NAME', 'Order Detect');
+        define('ORDERDETECT_MINIMUM_PHP_VERSION', '5.6.0');
+        define('ORDERDETECT_MINIMUM_WP_VERSION', '4.4');
+        define('ORDERDETECT_MINIMUM_WC_VERSION', '3.1');
         // Licensing
-        define('ORDERBARRIER_STORE_URL', 'https://thebitcraft.com');
-        define('ORDERBARRIER_SL_ITEM_ID', 2357);
-        define('ORDERBARRIER_SL_ITEM_SLUG', 'order-barrier');
-        define('ORDERBARRIER_SL_ITEM_NAME', 'Order Barrier');
+        define('ORDERDETECT_STORE_URL', 'https://thebitcraft.com');
+        define('ORDERDETECT_SL_ITEM_ID', 2357);
+        define('ORDERDETECT_SL_ITEM_SLUG', 'order-detect');
+        define('ORDERDETECT_SL_ITEM_NAME', 'Order Detect');
     }
 
     /**
@@ -100,18 +100,18 @@ final class OrderBarrier
     public function init_plugin()
     {
 
-        new OrderBarrier\Assets();
-        new OrderBarrier\OrderBarrieri18n();
-        new OrderBarrier\API();
+        new OrderDetect\Assets();
+        new OrderDetect\OrderDetecti18n();
+        new OrderDetect\API();
 
         if (defined('DOING_AJAX') && DOING_AJAX) {
-            new OrderBarrier\Ajax();
+            new OrderDetect\Ajax();
         }
 
         if (is_admin()) {
-            new OrderBarrier\Admin();
+            new OrderDetect\Admin();
         } else {
-            new OrderBarrier\Frontend();
+            new OrderDetect\Frontend();
         }
     }
 
@@ -122,7 +122,7 @@ final class OrderBarrier
      */
     public function activate()
     {
-        $installer = new OrderBarrier\Installer();
+        $installer = new OrderDetect\Installer();
         $installer->run();
     }
 }
@@ -130,10 +130,10 @@ final class OrderBarrier
 /**
  * Initializes the main plugin
  */
-function order_barrier()
+function order_detect()
 {
-    return OrderBarrier::init();
+    return OrderDetect::init();
 }
 
 // kick-off the plugin
-order_barrier();
+order_detect();

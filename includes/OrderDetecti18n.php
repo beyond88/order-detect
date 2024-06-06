@@ -1,13 +1,13 @@
 <?php
 
-namespace OrderBarrier;
+namespace OrderDetect;
 
 /**
  * Support language
  * 
  * @since    1.0.0
  */
-class OrderBarrieri18n
+class OrderDetecti18n
 {
 
 	/**
@@ -35,9 +35,9 @@ class OrderBarrieri18n
 	{
 
 		load_plugin_textdomain(
-			'order-barrier',
+			'order-detect',
 			false,
-			dirname(dirname(ORDERBARRIER_BASENAME)) . '/languages/'
+			dirname(dirname(ORDERDETECT_BASENAME)) . '/languages/'
 		);
 	}
 }

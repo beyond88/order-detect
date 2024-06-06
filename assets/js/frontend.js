@@ -85,16 +85,16 @@ jQuery(document).ready(function($) {
         
         if (phoneNumber != '' && isValidBangladeshiPhoneNumber(phoneNumber)) {
             let that = $(this);
-            that.html(order_barrier.loader);
+            that.html(order_detect.loader);
             that.prop("disabled", true);
     
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url: order_barrier.ajax_url,
+                url: order_detect.ajax_url,
                 data: {
                     action: 'send_otp',
-                    security: order_barrier.nonce,
+                    security: order_detect.nonce,
                     phone_number: phoneNumber
                 },
                 success: function(response, textStatus, jqXHR) {
@@ -103,21 +103,21 @@ jQuery(document).ready(function($) {
     
                     if (statusCode === 200 && response.success) {
                         // Successful OTP sending
-                        $('#otp-status-notice').addClass('order-barrier-show').text(response.message);
+                        $('#otp-status-notice').addClass('order-detect-show').text(response.message);
                         document.getElementById('otp-verification-frist-step').style.display = 'none';
                         document.getElementById('otp-verification-second-step').style.display = 'block';
                     } else {
                         // Error in OTP sending
-                        $('#otp-sending-status').addClass('order-barrier-show').text(response.message);
+                        $('#otp-sending-status').addClass('order-detect-show').text(response.message);
                     }
                 },
                 error: function(jqXHR) {
                     // AJAX request error
-                    $('#otp-sending-status').addClass('order-barrier-show').text('Failed to send OTP: ' + jqXHR.statusText);
+                    $('#otp-sending-status').addClass('order-detect-show').text('Failed to send OTP: ' + jqXHR.statusText);
                 },
                 complete: function() {
                     // Restore button state
-                    that.html(order_barrier.get_otp);
+                    that.html(order_detect.get_otp);
                     that.prop("disabled", false);
                 }
             });
@@ -133,16 +133,16 @@ jQuery(document).ready(function($) {
 
         if(otpCode !='' && otpCode.length == 4 && (phoneNumber !='' && isValidBangladeshiPhoneNumber(phoneNumber)) ){
 
-            that.html(order_barrier.loader);
+            that.html(order_detect.loader);
             that.prop("disabled",true);
             
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url: order_barrier.ajax_url,
+                url: order_detect.ajax_url,
                 data: {
                     action: 'verify_otp',
-                    security: order_barrier.nonce,
+                    security: order_detect.nonce,
                     otp: otpCode,
                     phone_number:phoneNumber
                 },
@@ -151,20 +151,20 @@ jQuery(document).ready(function($) {
                     that.html('');
 
                     if (statusCode === 200 && response.success) {
-                        $('#otp-verify-failed').addClass('order-barrier-hide')
-                        $('#otp-status-notice').addClass('order-barrier-show').text(response.message);
-                        that.html(order_barrier.verify);
+                        $('#otp-verify-failed').addClass('order-detect-hide')
+                        $('#otp-status-notice').addClass('order-detect-show').text(response.message);
+                        that.html(order_detect.verify);
                         $('form.checkout').submit();
                     } else {
-                        $('#otp-verify-failed').addClass('order-barrier-show').text(response.message);
-                        that.html(order_barrier.verify);
+                        $('#otp-verify-failed').addClass('order-detect-show').text(response.message);
+                        that.html(order_detect.verify);
                         that.prop("disabled", false);
                     }
                 },
                 error: function(jqXHR) {
-                    $('#otp-verify-failed').addClass('order-barrier-show').text(order_barrier.something_wrong);
+                    $('#otp-verify-failed').addClass('order-detect-show').text(order_detect.something_wrong);
                     that.html('');
-                    that.html(order_barrier.try_again);
+                    that.html(order_detect.try_again);
                     that.prop("disabled",false);
                 }
             });

@@ -1,8 +1,8 @@
 <?php
 
-namespace OrderBarrier\Admin;
+namespace OrderDetect\Admin;
 
-use OrderBarrier\Helper;
+use OrderDetect\Helper;
 
 /**
  * The Menu handler class
@@ -41,13 +41,13 @@ class Menu
      */
     public function admin_menu()
     {
-        $parent_slug = 'order-barrier';
+        $parent_slug = 'order-detect';
         $capability = 'manage_options';
-        $icon_url = ORDERBARRIER_ASSETS.'/img/order-barrier-icon.jpeg';
+        $icon_url = ORDERDETECT_ASSETS.'/img/order-detect-icon.jpeg';
 
-        $settings   = apply_filters('orderbarrier_admin_menu', array());
+        $settings   = apply_filters('orderdetect_admin_menu', array());
 
-        $hook = add_menu_page(__('Order Barrier', 'order-barrier'), __('Order Barrier', 'order-barrier'), $capability, $parent_slug, [$this->main, 'plugin_page'], $icon_url, 50);
+        $hook = add_menu_page(__('Order Detect', 'order-detect'), __('Order Detect', 'order-detect'), $capability, $parent_slug, [$this->main, 'plugin_page'], $icon_url, 50);
         add_action('admin_head-' . $hook, array($this, 'enqueue_assets'));
 
         foreach ($settings as $slug => $setting) {
@@ -66,8 +66,8 @@ class Menu
      */
     public function enqueue_assets()
     {
-        wp_enqueue_style('orderbarrier-admin-boostrap');
-        wp_enqueue_style('orderbarrier-admin-style');
-        wp_enqueue_script('orderbarrier-admin-script');
+        wp_enqueue_style('orderdetect-admin-boostrap');
+        wp_enqueue_style('orderdetect-admin-style');
+        wp_enqueue_script('orderdetect-admin-script');
     }
 }

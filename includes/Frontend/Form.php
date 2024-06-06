@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderBarrier\Frontend;
+namespace OrderDetect\Frontend;
 
 class Form
 {
@@ -11,18 +11,18 @@ class Form
         <div class="otp-verification-container" id="otp-verification-popup">
             <div class="otp-verification-inner" id="otp-verification-frist-step">
                 <div class="otp-verification-header">
-                    <h2><?php echo __('Mobile Verification', 'order-barrier'); ?></h2>
+                    <h2><?php echo __('Mobile Verification', 'order-detect'); ?></h2>
                     <label class="modal__close" for="modal-1"></label>
                 </div>
                 <div class="otp-verification-body">
                     <p class="otp-status-error" id="otp-sending-status"></p>
                     <form class="otp-verification-form">
                         <div class="otp-form-group">
-                            <input type="tel" name="otp-mobile-number" class="otp-mobile-number" id="otp-mobile-number" maxlength="13" placeholder="<?php echo __('Enter your mobile number', 'order-barrier'); ?>">
+                            <input type="tel" name="otp-mobile-number" class="otp-mobile-number" id="otp-mobile-number" maxlength="13" placeholder="<?php echo __('Enter your mobile number', 'order-detect'); ?>">
                         </div>
                         <div class="otp-form-group">
                             <button type="button" class="otp-verification-btn" id="otp-verification-btn">
-                                <?php echo __('Get OTP', 'order-barrier'); ?>
+                                <?php echo __('Get OTP', 'order-detect'); ?>
                             </button>
                         </div>
                     </form>
@@ -32,7 +32,7 @@ class Form
 
             <div class="otp-verification-inner" id="otp-verification-second-step">
                 <div class="otp-verification-header">
-                    <h2><?php echo __('Verification Code', 'order-barrier'); ?></h2>
+                    <h2><?php echo __('Verification Code', 'order-detect'); ?></h2>
                     <label class="modal__close" for="modal-1"></label>
                 </div>
                 <div class="otp-verification-body">
@@ -40,16 +40,16 @@ class Form
                     <p class="otp-status-error" id="otp-verify-failed"></p>
                     <form class="otp-verification-form">
                         <div class="otp-form-group">
-                            <input type="text" name="otp-code" class="otp-code" id="otp-code" maxlength="4" placeholder="<?php echo __('Enter OTP code', 'order-barrier'); ?>">
+                            <input type="text" name="otp-code" class="otp-code" id="otp-code" maxlength="4" placeholder="<?php echo __('Enter OTP code', 'order-detect'); ?>">
                         </div>
                         <div class="otp-form-group">
                             <button type="button" class="otp-verification-btn" id="otp-verify-btn">
-                                <?php echo __('Verify', 'order-barrier'); ?>
+                                <?php echo __('Verify', 'order-detect'); ?>
                             </button>
                         </div>
                         <p class="otp-resend-section">
-                            <?php echo __('Didn\'t receive code?', 'order-barrier'); ?>
-                            <a href="javascript:void(0)" class="otp-resend-btn" id="otp-resend-btn"><?php echo __('Resend', 'order-barrier'); ?></a>
+                            <?php echo __('Didn\'t receive code?', 'order-detect'); ?>
+                            <a href="javascript:void(0)" class="otp-resend-btn" id="otp-resend-btn"><?php echo __('Resend', 'order-detect'); ?></a>
                         </p>
                     </form>
                 </div>
@@ -64,7 +64,7 @@ class Form
         <div class="otp-verification-container" id="otp-verification-popup">
             <div class="otp-verification-inner">
                 <div class="otp-verification-header">
-                    <h2><?php echo __('Mobile Verification', 'order-barrier'); ?></h2>
+                    <h2><?php echo __('Mobile Verification', 'order-detect'); ?></h2>
                     <label class="modal__close" for="modal-1"></label>
                 </div>
                 <div class="otp-verification-body">

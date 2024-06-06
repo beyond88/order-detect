@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderBarrier\Admin;
+namespace OrderDetect\Admin;
 
 // Check if the WP_List_Table class exists, and if not, include the necessary files
 if (!class_exists('WP_List_Table')) {
@@ -45,13 +45,13 @@ class MultipleOrderTrackingList extends \WP_List_Table
     public function get_columns()
     {
         $columns = [
-            'order_id' => __('Order ID', 'order-barrier'),
-            'date' => __('Date', 'order-barrier'),
-            'status' => __('Status', 'order-barrier'),
-            'billing' => __('Billing', 'order-barrier'),
-            'ship_to' => __('Ship To', 'order-barrier'),
-            'phone_number' => __('Phone Number', 'order-barrier'),
-            'total' => __('Total', 'order-barrier'),
+            'order_id' => __('Order ID', 'order-detect'),
+            'date' => __('Date', 'order-detect'),
+            'status' => __('Status', 'order-detect'),
+            'billing' => __('Billing', 'order-detect'),
+            'ship_to' => __('Ship To', 'order-detect'),
+            'phone_number' => __('Phone Number', 'order-detect'),
+            'total' => __('Total', 'order-detect'),
         ];
         return $columns;
     }

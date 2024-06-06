@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderBarrier;
+namespace OrderDetect;
 
 /**
  * Helper class
@@ -217,7 +217,7 @@ class Helper
      */
     public static function send_sms_balance_notification( $sms_balance = null ) {
 
-        $sms_balance = get_option('orderbarrier_sms_balance', 0);
+        $sms_balance = get_option('orderdetect_sms_balance', 0);
 
         if ($sms_balance <= 50) {
             $to = get_option('admin_email');
@@ -227,7 +227,7 @@ class Helper
             $message .= "Please refill your SMS balance to ensure uninterrupted service for your customers.\n\n";
             $message .= "Current SMS balance: " . $sms_balance . " taka\n\n";
             $message .= "Best regards,\n";
-            $message .= "OrderBarrier";
+            $message .= "OrderDetect";
 
             wp_mail($to, $subject, $message);
         }

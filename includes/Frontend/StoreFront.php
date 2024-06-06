@@ -1,12 +1,12 @@
 <?php
 
-namespace OrderBarrier\Frontend;
+namespace OrderDetect\Frontend;
 
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Stream;
 use GuzzleHttp\Psr7\Response;
-use OrderBarrier\API\OrderBarrierAPI;
-use OrderBarrier\Helper;
+use OrderDetect\API\OrderDetectAPI;
+use OrderDetect\Helper;
 
 /**
  * Ajax handler class
@@ -23,8 +23,8 @@ class StoreFront
      */
     public function __construct()
     {
-        // $this->api = new OrderBarrierAPI();
-        $this->settings = get_option('orderbarrier_settings');
+        // $this->api = new OrderDetectAPI();
+        $this->settings = get_option('orderdetect_settings');
         add_filter('woocommerce_locate_template', array($this, 'set_locate_template'), PHP_INT_MAX, 3);
         add_action('wp_footer', array($this, 'init_otp_modal_checkout'));
         add_action('woocommerce_order_status_changed', array($this, 'set_user_verified_for_otp'), PHP_INT_MAX, 3);
@@ -56,7 +56,7 @@ class StoreFront
     public function check_otp_status_before_submit()
     {
         //if (array_key_exists('enable_otp', $this->settings)) {
-        wc_add_notice(__('OTP verification failed. Please try again.', 'order-barrier'), 'error');
+        wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
         //}
     }
 
@@ -122,13 +122,13 @@ class StoreFront
     public function init_otp_modal_checkout()
     {
         if (is_checkout() && array_key_exists('enable_otp', $this->settings)) {
-            if (Helper::check_license(get_option('orderbarrier_license'))) {
+            if (Helper::check_license(get_option('orderdetect_license'))) {
                 if (!Helper::skip_otp_form()) {
                     echo Form::otp_form();
                 }
             }
 
-            if (!Helper::check_license(get_option('orderbarrier_license'))) {
+            if (!Helper::check_license(get_option('orderdetect_license'))) {
                 echo Form::license_form();
             }
         }

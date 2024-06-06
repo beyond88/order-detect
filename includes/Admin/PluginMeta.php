@@ -1,6 +1,6 @@
 <?php
 
-namespace OrderBarrier\Admin;
+namespace OrderDetect\Admin;
 
 /**
 * Initiate plugin action links
@@ -18,7 +18,7 @@ class PluginMeta {
      * @return void
      */
     public function __construct() {
-        add_filter( 'plugin_action_links_' . ORDERBARRIER_BASENAME, [ $this, 'plugin_action_links' ] );
+        add_filter( 'plugin_action_links_' . ORDERDETECT_BASENAME, [ $this, 'plugin_action_links' ] );
         add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
     }
 
@@ -32,7 +32,7 @@ class PluginMeta {
      */
     public function plugin_action_links( $links ) {
 
-        $links[] = '<a href="' . admin_url( 'admin.php?page=order-barrier#general_settings' ) . '">' . __( 'Settings', 'order-barrier' ) . '</a>';
+        $links[] = '<a href="' . admin_url( 'admin.php?page=order-detect#general_settings' ) . '">' . __( 'Settings', 'order-detect' ) . '</a>';
         return $links;
 
     }
@@ -47,12 +47,12 @@ class PluginMeta {
      */
     public function plugin_meta_links( $links, $file ) {
         
-        if ($file !== plugin_basename( ORDERBARRIER_FILE )) {
+        if ($file !== plugin_basename( ORDERDETECT_FILE )) {
 			return $links;
 		}
 
-		$support_link = '<a target="_blank" href="https://github.com/beyond88/order-barrier/issues" title="' . __('Get help', 'order-barrier') . '">' . __('Support', 'order-barrier') . '</a>';
-		$home_link = '<a target="_blank" href="https://github.com/beyond88/order-barrier" title="' . __('Plugin Homepage', 'order-barrier') . '">' . __('Plugin Homepage', 'order-barrier') . '</a>';
+		$support_link = '<a target="_blank" href="https://github.com/beyond88/order-detect/issues" title="' . __('Get help', 'order-detect') . '">' . __('Support', 'order-detect') . '</a>';
+		$home_link = '<a target="_blank" href="https://github.com/beyond88/order-detect" title="' . __('Plugin Homepage', 'order-detect') . '">' . __('Plugin Homepage', 'order-detect') . '</a>';
 
 		$links[] = $support_link;
 		$links[] = $home_link;
