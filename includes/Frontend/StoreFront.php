@@ -26,20 +26,7 @@ class StoreFront
         // $this->api = new OrderDetectAPI();
         $this->settings = get_option('orderdetect_settings');
         add_filter('woocommerce_locate_template', array($this, 'set_locate_template'), PHP_INT_MAX, 3);
-        add_action('wp_footer', array($this, 'init_otp_modal_checkout'));
-        add_action('woocommerce_order_status_changed', array($this, 'set_user_verified_for_otp'), PHP_INT_MAX, 3);
-        //add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
-    }
-
-    public function set_user_verified_for_otp($order_id, $old_status, $new_status)
-    {
-        if (is_user_logged_in()) {
-            date_default_timezone_set('Asia/Dhaka');
-            $current_user = wp_get_current_user();
-            $user_id = $current_user->ID;
-            $next_otp_check = date('Y-m-d H:i:s', strtotime('+1 week'));
-            update_user_meta($user_id, 'next_otp_check', $next_otp_check);
-        }
+        add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
     }
 
     /**
@@ -55,9 +42,36 @@ class StoreFront
      */
     public function check_otp_status_before_submit()
     {
-        //if (array_key_exists('enable_otp', $this->settings)) {
-        wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
-        //}
+
+        if (array_key_exists('enable_otp', $this->settings)) {
+
+            $billing_phone = $_POST['billing_phone'];
+
+            $is_verified = Helper::is_phone_number_verified($billing_phone);
+
+            if ( ! isset( $_POST['billing_otp'] ) && ! $is_verified ) {
+                wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
+            }
+
+            if ( isset( $_POST['billing_otp'] ) && empty( $_POST['billing_otp'] ) ) {
+                wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
+            }
+    
+            if ( isset( $_POST['billing_otp'] ) && ! empty( $_POST['billing_otp'] ) ) {
+                
+                $otp = sanitize_text_field($_POST['billing_otp']);
+                $otp_verified = Helper::verify_otp($billing_phone, $otp);
+                if ( ! $otp_verified ) {
+                    wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
+                }
+    
+                if ( $otp_verified ) {
+                    Helper::set_phone_number_verified($billing_phone);
+                }
+            }
+
+        }
+        
     }
 
     /**
@@ -105,32 +119,5 @@ class StoreFront
             $template = $_template;
 
         return $template;
-    }
-
-    /**
-     * Initialize OTP modal during checkout
-     *
-     * This method adds the OTP verification modal to the checkout page
-     * if OTP verification is enabled in the settings. It includes the
-     * HTML structure for the modal and its various elements.
-     *
-     * @since	1.0.0
-     * @access	public
-     * @param	none
-     * @return	void
-     */
-    public function init_otp_modal_checkout()
-    {
-        if (is_checkout() && array_key_exists('enable_otp', $this->settings)) {
-            if (Helper::check_license(get_option('orderdetect_license'))) {
-                if (!Helper::skip_otp_form()) {
-                    echo Form::otp_form();
-                }
-            }
-
-            if (!Helper::check_license(get_option('orderdetect_license'))) {
-                echo Form::license_form();
-            }
-        }
     }
 }

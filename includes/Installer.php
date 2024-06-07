@@ -49,14 +49,16 @@ class Installer
     public function create_tables()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_log';
+        $table_name = $wpdb->prefix . 'od_otp_log';
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table_name (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             phone_number varchar(15) NOT NULL,
-            otp varchar(6) NOT NULL,
+            code varchar(6) NOT NULL,
             expires_at datetime NOT NULL,
+            is_verified BOOLEAN DEFAULT FALSE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
             UNIQUE KEY phone_number (phone_number)
         ) $charset_collate;";

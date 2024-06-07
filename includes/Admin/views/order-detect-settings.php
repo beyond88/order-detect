@@ -83,21 +83,6 @@ if (!isset($setting_options['builder_id'])) {
                         <?php submit_button('Save', 'btn-settings order-detect-settings-button'); ?>
                     </form>
                 </div>
-
-                <div class="order-detect-settings-right">
-                    <div class="order-detect-sidebar">
-                        <div class="order-detect-sidebar-block">
-                            <div class="order-detect-admin-sidebar-logo">
-                                <!-- <img alt="OrderDetect" src="<?php echo ORDERDETECT_ASSETS; ?>/img/order-detect-banner.jpeg"> -->
-                            </div>
-                            <div class="order-detect-admin-sidebar-cta">
-                                <!-- <a rel="nofollow" href="#" target="_blank"><?php echo __('Upgrade to Pro', 'order-detect'); ?></a> -->
-                            </div>
-                        </div>
-                        <div class="order-detect-sidebar-block order-detect-license-block">
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <?php do_action('orderdetect_settings_footer'); ?>

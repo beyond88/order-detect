@@ -66,14 +66,14 @@ class Helper
     public static function generate_unique_otp_for_phone($phone_number, $length = 4)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_log';
+        $table_name = $wpdb->prefix . 'od_otp_log';
 
         do {
             $random_number = rand(0, 9999);
             $otp = str_pad($random_number, $length, '0', STR_PAD_LEFT);
 
             $exists = $wpdb->get_var($wpdb->prepare(
-                "SELECT COUNT(*) FROM $table_name WHERE phone_number = %s AND otp = %s",
+                "SELECT COUNT(*) FROM $table_name WHERE phone_number = %s AND code = %s",
                 $phone_number,
                 $otp
             ));
@@ -95,7 +95,7 @@ class Helper
     public static function generate_otp($phone_number)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_log';
+        $table_name = $wpdb->prefix . 'od_otp_log';
         date_default_timezone_set('Asia/Dhaka'); // Set timezone to Dhaka
 
         $otp = Helper::generate_unique_otp_for_phone($phone_number);
@@ -105,7 +105,7 @@ class Helper
             $table_name,
             array(
                 'phone_number' => $phone_number,
-                'otp' => $otp,
+                'code' => $otp,
                 'expires_at' => $expires_at,
             ),
             array(
@@ -133,10 +133,10 @@ class Helper
     public static function verify_otp($phone_number, $otp)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'otp_log';
+        $table_name = $wpdb->prefix . 'od_otp_log';
 
         $result = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE phone_number = %s AND otp = %s AND expires_at > NOW()",
+            "SELECT * FROM $table_name WHERE phone_number = %s AND code = %s AND expires_at > NOW()",
             $phone_number,
             $otp
         ));
@@ -144,37 +144,32 @@ class Helper
         return (bool) $result;
     }
 
-    /**
-     * Allow user to use OTP
-     *
-     * This method checks if the logged-in user is allowed to use OTP based on
-     * the stored `next_otp_check` time. It returns true if the OTP is still valid,
-     * false otherwise.
-     *
-     * @since   1.0.0
-     * @access  public
-     * @return  bool True if the user is allowed to use OTP, false otherwise.
-     */
-    public static function skip_otp_form()
-    {
-        if (is_user_logged_in()) {
-            date_default_timezone_set('Asia/Dhaka'); // Set timezone to Dhaka
-            $current_user = wp_get_current_user();
-            $user_id = $current_user->ID;
-            $next_otp_check = get_user_meta($user_id, 'next_otp_check', true); // Retrieve the next OTP check time
+    public static function set_phone_number_verified($phone_number) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'od_otp_log'; // Assuming $table_name is the correct name of your table
+        $wpdb->update(
+            $table_name,
+            array('is_verified' => true),
+            array('phone_number' => $phone_number)
+        );
+    }
 
-            if ($next_otp_check) {
-                $current_time = time(); // Get the current Unix timestamp
-                if ($current_time > strtotime($next_otp_check)) {
-                    return false; // Allow OTP has expired
-                } else {
-                    return true; // Allow OTP is still valid
-                }
-            } else {
-                return false; // No next OTP check time found
-            }
-        }
-        return false; // User is not logged in
+    public static function is_phone_number_verified($phone_number) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'od_otp_log'; // Assuming $table_name is the correct name of your table
+    
+        // Prepare the SQL query
+        $sql = $wpdb->prepare(
+            "SELECT COUNT(*) FROM $table_name WHERE phone_number = %s AND is_verified = %d",
+            $phone_number,
+            1 // Assuming 'is_verified' is stored as boolean or integer value where 1 means true
+        );
+    
+        // Execute the query
+        $count = $wpdb->get_var($sql);
+    
+        // Return true if count is greater than 0, indicating the phone number is verified
+        return $count > 0;
     }
 
     /**
@@ -219,11 +214,11 @@ class Helper
 
         $sms_balance = get_option('orderdetect_sms_balance', 0);
 
-        if ($sms_balance <= 50) {
+        if ($sms_balance <= 50 && ( $sms_balance == 50 || $sms_balance == 40 || $sms_balance == 30 || $sms_balance == 20 || $sms_balance == 10 || $sms_balance == 2 ) ) {
             $to = get_option('admin_email');
             $subject = 'Low SMS Balance Notification';
             $message = "Dear shop owner,\n\n";
-            $message .= "This is to inform you that your SMS balance has reached 50 taka.\n";
+            $message .= "This is to inform you that your SMS balance has reached ".$sms_balance." taka.\n";
             $message .= "Please refill your SMS balance to ensure uninterrupted service for your customers.\n\n";
             $message .= "Current SMS balance: " . $sms_balance . " taka\n\n";
             $message .= "Best regards,\n";

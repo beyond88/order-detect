@@ -151,7 +151,7 @@
   animation: l5 1s steps(11) infinite;
 }
 .order-detect-loader:before {
-  content: "Sending...";
+  content: "Please wait...";
 }
 @keyframes l5 {
   to {
@@ -170,9 +170,7 @@
   color: #40d469;
 }
 
-#otp-sending-status,
-#otp-status-notice,
-#otp-verify-failed {
+#order-detect-otp-status{
   display: none;
 }
 

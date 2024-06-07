@@ -38,6 +38,10 @@ class Ajax
         // Verify OTP
         add_action('wp_ajax_verify_otp', array($this, 'verify_otp'));
         add_action('wp_ajax_nopriv_verify_otp', array($this, 'verify_otp'));
+
+
+        add_action('wp_ajax_check_phone_verification', array($this, 'check_phone_verification'));
+        add_action('wp_ajax_nopriv_check_phone_verification', array($this, 'check_phone_verification'));
     }
 
     /**
@@ -172,7 +176,7 @@ class Ajax
 
         if (isset($enable) && isset($endpoint) && isset($api_key)) {
             $domain = $_SERVER['HTTP_HOST'];
-            $message = 'Your '.$domain.' verification code is: ' . $otp;
+            $message = sprintf( __( 'Your %s verification code is: %s', 'woocommerce' ), $domain, $otp );
             $params = [
                 'api_key' => $api_key,
                 'msg' => $message,
@@ -194,8 +198,10 @@ class Ajax
             }
         }
 
+        $masked_number = substr_replace($phone_number, '******', 3, 6);
+
         $response['success'] = true;
-        $response['message'] = 'OTP has been sent to your phone number.';
+        $response['message'] = 'Your OTP has been to '.$masked_number;
         wp_send_json($response, 200);
         wp_die();
     }
@@ -228,5 +234,29 @@ class Ajax
 
         wp_send_json($response, 200);
         wp_die();
+    }
+
+    public function check_phone_verification() {
+
+        check_ajax_referer('order-detect-nonce', 'security');
+
+        $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
+        $is_verified = Helper::is_phone_number_verified($phone_number);
+
+        if (! $is_verified ) {
+            echo '
+            <p class="form-row form-row-wide validate-required" id="billing_otp_field" data-priority="">
+                <label for="billing_otp" class="">'.__('OTP','order-detect').'&nbsp;<abbr class="required" title="required">*</abbr></label>
+                <span class="woocommerce-input-wrapper">
+                    <input type="text" class="input-text" name="billing_otp" id="billing_otp" maxlength="4" placeholder="'.__('Enter your OTP code','order-detect').'">
+                </span>
+            </p>
+            <span class="order-detect-otp-status" id="order-detect-otp-status"></span>
+            <br />
+            <span class="order-detect-otp-resend-msg" id="order-detect-otp-resend-msg"></span>
+            <button type="button" class="button alt" id="od_get_otp">'.__('Get OTP','order-detect').'</button>';
+        }
+        wp_die();
+
     }
 }

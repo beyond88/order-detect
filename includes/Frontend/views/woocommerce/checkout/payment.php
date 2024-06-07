@@ -33,7 +33,7 @@ $settings = get_option('orderdetect_settings');
 				}
 			} else {
 				echo '<li>';
-				wc_print_notice(apply_filters('woocommerce_no_available_payment_methods_message', WC()->customer->get_billing_country() ? esc_html__('Sorry, it seems that there are no available payment methods. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce') : esc_html__('Please fill in your details above to see available payment methods.', 'woocommerce')), 'notice'); // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+					wc_print_notice(apply_filters('woocommerce_no_available_payment_methods_message', WC()->customer->get_billing_country() ? esc_html__('Sorry, it seems that there are no available payment methods. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce') : esc_html__('Please fill in your details above to see available payment methods.', 'woocommerce')), 'notice'); // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 				echo '</li>';
 			}
 			?>
@@ -54,28 +54,28 @@ $settings = get_option('orderdetect_settings');
 
 		<?php
 
-		if (array_key_exists('enable_otp', $settings)) {
-			if (is_user_logged_in()) {
-				date_default_timezone_set('Asia/Dhaka');
-				$current_user = wp_get_current_user();
-				$user_id = $current_user->ID;
-				$next_otp_check = get_user_meta($user_id, 'next_otp_check', true);
-				if ($next_otp_check) {
-					$current_time = time();
-					if ($current_time < strtotime($next_otp_check)) {
-						echo apply_filters('woocommerce_order_button_html', '<button type="submit" class="button alt' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>'); // @codingStandardsIgnoreLine
-					} else {
-						echo apply_filters('woocommerce_order_button_html', '<button type="button" class="button alt show-otp-popup' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>');
-					}
-				} else {
-					echo apply_filters('woocommerce_order_button_html', '<button type="button" class="button alt show-otp-popup' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>');
-				}
-			} else {
-				echo apply_filters('woocommerce_order_button_html', '<button type="button" class="button alt show-otp-popup' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>');
-			}
-		} else {
+		//if (array_key_exists('enable_otp', $settings)) {
+			// if (is_user_logged_in()) {
+			// 	date_default_timezone_set('Asia/Dhaka');
+			// 	$current_user = wp_get_current_user();
+			// 	$user_id = $current_user->ID;
+			// 	$next_otp_check = get_user_meta($user_id, 'next_otp_check', true);
+			// 	if ($next_otp_check) {
+			// 		$current_time = time();
+			// 		if ($current_time < strtotime($next_otp_check)) {
+			// 			echo apply_filters('woocommerce_order_button_html', '<button type="submit" class="button alt' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>'); // @codingStandardsIgnoreLine
+			// 		} else {
+			// 			echo apply_filters('woocommerce_order_button_html', '<button type="button" class="button alt show-otp-popup' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>');
+			// 		}
+			// 	} else {
+			// 		echo apply_filters('woocommerce_order_button_html', '<button type="button" class="button alt show-otp-popup' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>');
+			// 	}
+			// } else {
+				//echo apply_filters('woocommerce_order_button_html', '<button type="button" class="button alt otp-send-btn' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>');
+			//}
+		//} else {
 			echo apply_filters('woocommerce_order_button_html', '<button type="submit" class="button alt' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') . '" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr($order_button_text) . '" data-value="' . esc_attr($order_button_text) . '">' . esc_html($order_button_text) . '</button>'); // @codingStandardsIgnoreLine
-		}
+		//}
 
 		?>
 

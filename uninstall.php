@@ -41,7 +41,7 @@ class OrderDetect_Uninstaller {
      */
     private function get_tables() {
         return [
-            'otp_log'
+            'od_otp_log'
         ];
     }
 

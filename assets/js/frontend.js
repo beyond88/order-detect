@@ -1,15 +1,151 @@
 jQuery(document).ready(function($) {
 
-    $(document).on('click', '.show-otp-popup', function(e) {
-    
-        if (validateCheckoutFields()) {
-        let billingPhone = $("#billing_phone").val();
-            $("#otp-mobile-number").val(billingPhone);
-            document.getElementById('otp-verification-popup').style.display = 'flex';
-        } else {
-            $('form.checkout').submit();
+    function checkPhoneVerification(billingPhone) {
+        billingPhone = normalizeBangladeshiPhoneNumber(billingPhone);
+        if (billingPhone != '' && isValidBangladeshiPhoneNumber(billingPhone)) {
+
+            let that = $('.otp-send-btn');
+            that.html(order_detect.loader);
+            that.prop("disabled", true);
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: order_detect.ajax_url,
+                data: {
+                    action: 'check_phone_verification',
+                    security: order_detect.nonce,
+                    phone_number: billingPhone
+                },
+                success: function(response) {
+                    $('#phone-verification-wrapper').html(response);
+                    that.html(order_detect.place_order);
+                    that.prop("disabled", false);
+                },
+                complete: function(response) {
+                    that.html(order_detect.place_order);
+                    that.prop("disabled", false);
+                },
+                error: function(){
+                    console.log('error');
+                }
+            });
+
         }
+    }
+
+    $('form.checkout').on('keyup', '#billing_phone', function() {
+        var billingPhone = $(this).val();
+        checkPhoneVerification(billingPhone);
     });
+
+    var initialPhoneNumber = $('#billing_phone').val();
+    if (initialPhoneNumber) {
+        checkPhoneVerification(initialPhoneNumber);
+    }
+    
+
+    // jQuery(document).ready(function($) {
+    //     $('form.checkout').on('keyup', '#billing_phone', function() {
+    //         var billingPhone = $(this).val();
+    //         billingPhone = normalizeBangladeshiPhoneNumber(billingPhone);
+    //         if (billingPhone != '' && isValidBangladeshiPhoneNumber(billingPhone)) {
+
+    //             let that = $('.otp-send-btn');
+    //             that.html(order_detect.loader);
+    //             that.prop("disabled", true);
+
+    //             $.ajax({
+    //                 type: 'POST',
+    //                 dataType: 'html',
+    //                 url: order_detect.ajax_url,
+    //                 data: {
+    //                     action: 'check_phone_verification',
+    //                     security: order_detect.nonce,
+    //                     phone_number: billingPhone
+    //                 },
+    //                 success: function(response) {
+    //                     $('#phone-verification-wrapper').html(response);
+    //                     that.html(order_detect.place_order);
+    //                     that.prop("disabled", false);
+    //                 },
+    //                 complete: function(response) {
+    //                     that.html(order_detect.place_order);
+    //                     that.prop("disabled", false);
+    //                 },
+    //                 error: function(){
+    //                     console.log('error');
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
+
+    $(document).on('click', '#od_get_otp', function(e) {
+
+        //if (validateCheckoutFields()) {
+        let billingPhone = $.trim($("#billing_phone").val());
+        billingPhone = normalizeBangladeshiPhoneNumber(billingPhone);
+        if (billingPhone != '' && isValidBangladeshiPhoneNumber(billingPhone)) {
+            let that = $(this);
+            that.html(order_detect.loader);
+            that.prop("disabled", true);
+    
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: order_detect.ajax_url,
+                data: {
+                    action: 'send_otp',
+                    security: order_detect.nonce,
+                    phone_number: billingPhone
+                },
+                success: function(response, textStatus, jqXHR) {
+
+                    var statusCode = jqXHR.status;
+    
+                    if (statusCode === 200 && response.success) {
+                        // Successful OTP sending
+                        $('#order-detect-otp-status').show().text(response.message);
+                        startCountdown(10, '#order-detect-otp-resend-msg'); // Start countdown for 30 seconds
+                        that.remove();
+
+                    } else {
+                        // Error in OTP sending
+                        $('#order-detect-otp-status').show().text(response.message);
+                    }
+                },
+                error: function(jqXHR) {
+                    // AJAX request error
+                    $('#otp-sending-status').show().text('Failed to send OTP: ' + jqXHR.statusText);
+                },
+                complete: function() {
+                    // Restore button state
+                    that.remove();
+                }
+            });
+        }
+        
+    });
+
+    function startCountdown(duration, elementId) {
+        var timer = duration, minutes, seconds;
+        var $element = $(elementId);
+        var countdownInterval = setInterval(function() {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            $element.html("Didn't receive code? Resend in " + minutes + ":" + seconds);
+
+            if (--timer < 0) {
+                clearInterval(countdownInterval);
+                $element.html('');
+                $element.prepend(`<button type="button" class="button alt" id="od_get_otp">${order_detect.resend_otp}</button>`);
+            }
+        }, 1000);
+    }
     
     /*==========================
     * 
@@ -59,11 +195,6 @@ jQuery(document).ready(function($) {
         }
     });
             
-    
-    $(document).on('click', '.modal__close', function() {
-        document.getElementById('otp-verification-popup').style.display = 'none';
-    });
-
     function isValidBangladeshiPhoneNumber(phoneNumber) {
         const regex = /^(?:\+?88)?01[1-9]\d{8}$/;
         return regex.test(phoneNumber);
@@ -104,8 +235,7 @@ jQuery(document).ready(function($) {
                     if (statusCode === 200 && response.success) {
                         // Successful OTP sending
                         $('#otp-status-notice').addClass('order-detect-show').text(response.message);
-                        document.getElementById('otp-verification-frist-step').style.display = 'none';
-                        document.getElementById('otp-verification-second-step').style.display = 'block';
+
                     } else {
                         // Error in OTP sending
                         $('#otp-sending-status').addClass('order-detect-show').text(response.message);
