@@ -29,7 +29,7 @@ class MultipleOrderTracking
         $this->main = $main;
         add_filter('orderdetect_admin_menu', array($this, 'orderdetect_multiple_order_tracking'), PHP_INT_MAX);
         add_filter('set-screen-option', array($this, 'set_screen_option'), 10, 3);
-        add_action("load-orderdetect_page_multiple-order-tracking", array($this, 'add_screen_options'));
+        add_action("load-order-detect_page_multiple-order-tracking", array($this, 'add_screen_options'));
     }
 
     /**
