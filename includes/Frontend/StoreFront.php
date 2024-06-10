@@ -26,7 +26,8 @@ class StoreFront
         // $this->api = new OrderDetectAPI();
         $this->settings = get_option('orderdetect_settings');
         add_filter('woocommerce_locate_template', array($this, 'set_locate_template'), PHP_INT_MAX, 3);
-        add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
+        add_action('wp_footer', array($this, 'init_otp_modal_checkout'));
+        // add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
     }
 
     /**
@@ -119,5 +120,24 @@ class StoreFront
             $template = $_template;
 
         return $template;
+    }
+
+    /**
+     * Initialize OTP modal during checkout
+     *
+     * This method adds the OTP verification modal to the checkout page
+     * if OTP verification is enabled in the settings. It includes the
+     * HTML structure for the modal and its various elements.
+     *
+     * @since	1.0.0
+     * @access	public
+     * @param	none
+     * @return	void
+     */
+    public function init_otp_modal_checkout()
+    {
+        if (is_checkout() && array_key_exists('enable_otp', $this->settings)) {
+            echo Form::otp_form();
+        }
     }
 }

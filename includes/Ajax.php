@@ -39,9 +39,9 @@ class Ajax
         add_action('wp_ajax_verify_otp', array($this, 'verify_otp'));
         add_action('wp_ajax_nopriv_verify_otp', array($this, 'verify_otp'));
 
+        add_action('wp_ajax_check_phone_is_verified', array($this, 'check_phone_is_verified'));
+        add_action('wp_ajax_nopriv_check_phone_is_verified', array($this, 'check_phone_is_verified'));
 
-        add_action('wp_ajax_check_phone_verification', array($this, 'check_phone_verification'));
-        add_action('wp_ajax_nopriv_check_phone_verification', array($this, 'check_phone_verification'));
     }
 
     /**
@@ -198,10 +198,8 @@ class Ajax
             }
         }
 
-        $masked_number = substr_replace($phone_number, '******', 3, 6);
-
         $response['success'] = true;
-        $response['message'] = 'Your OTP has been to '.$masked_number;
+        $response['message'] = 'OTP has been sent to : '.$phone_number;
         wp_send_json($response, 200);
         wp_die();
     }
@@ -217,7 +215,7 @@ class Ajax
     {
         check_ajax_referer('order-detect-nonce', 'security');
 
-        $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
+        $phone_number = isset($_POST['phone_number']) ? $_POST['phone_number'] : '';
         $otp = isset($_POST['otp']) ? sanitize_text_field($_POST['otp']) : '';
 
         $response = array();
@@ -225,8 +223,9 @@ class Ajax
         $otp_verified = Helper::verify_otp($phone_number, $otp);
 
         if ($otp_verified) {
+            Helper::set_phone_number_verified($phone_number);
             $response['success'] = true;
-            $response['message'] = 'OTP verification successful.';
+            $response['message'] = 'OTP verification successful!';
         } else {
             $response['success'] = false;
             $response['message'] = 'OTP verification failed. Invalid OTP.';
@@ -236,27 +235,24 @@ class Ajax
         wp_die();
     }
 
-    public function check_phone_verification() {
+
+    public function check_phone_is_verified(){
 
         check_ajax_referer('order-detect-nonce', 'security');
 
-        $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
+        $phone_number = isset($_POST['phone_number']) ? $_POST['phone_number'] : '';
         $is_verified = Helper::is_phone_number_verified($phone_number);
-
-        if (! $is_verified ) {
-            echo '
-            <p class="form-row form-row-wide validate-required" id="billing_otp_field" data-priority="">
-                <label for="billing_otp" class="">'.__('OTP','order-detect').'&nbsp;<abbr class="required" title="required">*</abbr></label>
-                <span class="woocommerce-input-wrapper">
-                    <input type="text" class="input-text" name="billing_otp" id="billing_otp" maxlength="4" placeholder="'.__('Enter your OTP code','order-detect').'">
-                </span>
-            </p>
-            <span class="order-detect-otp-status" id="order-detect-otp-status"></span>
-            <br />
-            <span class="order-detect-otp-resend-msg" id="order-detect-otp-resend-msg"></span>
-            <button type="button" class="button alt" id="od_get_otp">'.__('Get OTP','order-detect').'</button>';
+        if ($is_verified) {
+            $response['success'] = true;
+            $response['message'] = 'This phone number has already been verified.';
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'This phone number is not verified.';
         }
-        wp_die();
 
+        error_log('verification status '.$is_verified);
+
+        wp_send_json($response, 200);
     }
+
 }

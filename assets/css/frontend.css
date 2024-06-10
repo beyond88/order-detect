@@ -15,8 +15,8 @@
 }
 
 .otp-verification-inner {
-  background: #fff;
-  border-radius: 10px;
+  background: #F2F2F2;
+  border-radius: 4px;
   width: 90%;
   max-width: 400px;
   margin: auto;
@@ -26,19 +26,20 @@
 }
 
 .otp-verification-header {
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #868686;
   padding-bottom: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .otp-verification-header h2 {
   margin: 0;
   font-size: 1.5em;
-  color: #333;
+  color: #000;
   font-weight: 500;
+  font-weight: 400;
 }
 
 .modal__close {
@@ -59,33 +60,56 @@
 }
 
 .otp-form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   width: 100%;
+  text-align: center;
 }
 
 .otp-form-group input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1em;
-  box-sizing: border-box;
+  padding: 10px !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  border: 1px solid #868686 !important;
+  font-size: 17px;
+}
+
+.otp-form-group-25{
+margin-bottom: 25px;;
+}
+
+.otp-form-group:last-child{
+  margin-bottom: 0px;
 }
 
 .otp-verification-btn {
   width: 100%;
+  max-width: 160px;
   padding: 10px;
-  background: #007bff;
-  color: #fff;
-  border: none;
+  background: #0096C8;
+  border-color: #0096C8 !important;
+  color: #fff !important;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, transform 0.3s ease !important;
 }
 
 .otp-verification-btn:hover {
-  background: #0056b3;
+  background: #29b3e1;
+  color: #fff;
+}
+
+#otp-resend-btn{
+  color: #fff !important;
+  background-color: #F67A3C;
+  border-color: #F67A3C !important;
+}
+
+#otp-resend-btn:hover{
+  background-color: #f48f5c;
+  border-color: #f48f5c !important;
 }
 
 .otp-verification-footer {
@@ -132,10 +156,6 @@
   transform: rotate(-45deg);
 }
 
-#otp-verification-second-step {
-  display: none;
-}
-
 .license-expired-notice {
   color: #f00;
 }
@@ -170,16 +190,13 @@
   color: #40d469;
 }
 
-#order-detect-otp-status{
-  display: none;
-}
-
 .otp-status-error {
   background-color: #f8d7da;
   border-color: #f5c2c7;
   color: #842029;
   padding: 8px;
   border-radius: 6px;
+  display: none;
 }
 
 .otp-status-success {
@@ -188,6 +205,7 @@
   color: #0f5132;
   padding: 8px;
   border-radius: 6px;
+  display: none;
 }
 
 .order-detect-show {
@@ -196,4 +214,23 @@
 
 .order-detect-hide {
   display: none !important;
+}
+
+.otp-sedning-msg{
+  background-color: #0096C8;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 4px;
+}
+
+.otp-resend-section{
+
+}
+
+.otp-resend-msg{
+  color: #000;
+  font-size: 18px;
+  text-align: center;
 }

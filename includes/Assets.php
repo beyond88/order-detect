@@ -92,7 +92,6 @@ class Assets
             'ajax_url'  => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('order-detect-nonce'),
             'loader' => '<div class="order-detect-loader"></div>',
-            'get_otp' => __('Get OTP', 'order-detect'),
             'resend_otp' => __('Resend OTP', 'order-detect'),
             'place_order' => __('Place Order', 'order-detect'),
             'verify' => __('Verify', 'order-detect'),

@@ -57,7 +57,7 @@ class Installer
             phone_number varchar(15) NOT NULL,
             code varchar(6) NOT NULL,
             expires_at datetime NOT NULL,
-            is_verified BOOLEAN DEFAULT FALSE,
+            is_verified int(1) DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
             UNIQUE KEY phone_number (phone_number)

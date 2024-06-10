@@ -146,7 +146,7 @@ class Helper
 
     public static function set_phone_number_verified($phone_number) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'od_otp_log'; // Assuming $table_name is the correct name of your table
+        $table_name = $wpdb->prefix . 'od_otp_log';
         $wpdb->update(
             $table_name,
             array('is_verified' => true),
@@ -167,6 +167,7 @@ class Helper
     
         // Execute the query
         $count = $wpdb->get_var($sql);
+        error_log($sql);
     
         // Return true if count is greater than 0, indicating the phone number is verified
         return $count > 0;

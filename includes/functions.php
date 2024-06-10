@@ -1,7 +1,7 @@
 <?php
 
 // Display OTP and button under billing phone
-add_action( 'woocommerce_after_checkout_billing_form', 'display_custom_field_and_button' );
+// add_action( 'woocommerce_after_checkout_billing_form', 'display_custom_field_and_button' );
 function display_custom_field_and_button( $checkout ) {
     // woocommerce_form_field( 'billing_otp', array(
     //     'type'        => 'text',
@@ -24,4 +24,4 @@ function orderguard_validate_phone_number() {
         }
     }
 }
-add_action('woocommerce_checkout_process', 'orderguard_validate_phone_number');
+// add_action('woocommerce_checkout_process', 'orderguard_validate_phone_number');
