@@ -204,5 +204,9 @@ jQuery(document).ready(function($) {
 
         }
     }
+
+    $(document).on('click', '.modal__close', function() {
+        document.getElementById('otp-verification-popup').style.display = 'none';
+    });
     
 });

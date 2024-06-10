@@ -11,7 +11,8 @@ class Form
         <div class="otp-verification-container" id="otp-verification-popup">
             <div class="otp-verification-inner" id="otp-verification-second-step">
                 <div class="otp-verification-header">
-                    <h2><?php echo __('Phone Number Verification', 'order-detect'); ?></h2>
+                    <h2><?php echo __('Mobile Verification', 'order-detect'); ?></h2>
+                    <label class="modal__close" for="modal-1"></label>
                 </div>
                 <div class="otp-verification-body">
                     <p class="otp-sedning-msg" id="otp-sedning-msg"></p>
