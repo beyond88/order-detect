@@ -85,8 +85,8 @@ final class OrderDetect
         define('ORDERDETECT_MINIMUM_WC_VERSION', '3.1');
         // Licensing
         define('ORDERDETECT_STORE_URL', 'https://admin.orderdetect.com/');
-        define('ORDERDETECT_SL_ITEM_ID', 17);
-        define('ORDERDETECT_SL_ITEM_SLUG', 'order-detect-three-months');
+        define('ORDERDETECT_SL_ITEM_ID', 23);
+        define('ORDERDETECT_SL_ITEM_SLUG', 'order-detect-one-year');
         define('ORDERDETECT_SL_ITEM_NAME', 'Order Detect');
     }
 

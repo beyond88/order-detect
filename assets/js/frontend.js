@@ -68,6 +68,7 @@ jQuery(document).ready(function($) {
                 clearInterval(countdownInterval);
                 $element.html('');
                 $element.append(`<button type="button" class="otp-verification-btn" id="otp-resend-btn">${order_detect.resend_otp}</button>`);
+                console.log('time is now > 0');
             }
         }, 1000);
     }
@@ -105,7 +106,7 @@ jQuery(document).ready(function($) {
             if (isVerified) {
                 $('form.checkout').submit();
             } else {
-                sendOTP(billingPhone);
+                sendOTP('#otp-verify-btn',billingPhone);
                 document.getElementById('otp-verification-popup').style.display = 'flex';
             }
         } else {
@@ -165,14 +166,14 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         $("#otp-code").val('');
         let billingPhone = $("#billing_phone").val();
-        sendOTP(billingPhone);
+        sendOTP('#otp-resend-btn', billingPhone);
     });
 
-    function sendOTP(billingPhone) {
+    function sendOTP(elementId, billingPhone) {
         billingPhone = normalizeBangladeshiPhoneNumber(billingPhone);
         if (billingPhone != '' && isValidBangladeshiPhoneNumber(billingPhone)) {
 
-            let that = $('#otp-verify-btn');
+            let that = $(elementId);
             that.html(order_detect.loader);
             that.prop("disabled", true);
 
@@ -186,12 +187,10 @@ jQuery(document).ready(function($) {
                     phone_number: billingPhone
                 },
                 success: function(response, textStatus, jqXHR) {
-                    startCountdown(60, '#otp-resend-section'); 
                     $("#otp-sedning-msg").text(response.message);
                 },
                 error: function(jqXHR) {
                     $("#otp-sedning-msg").text('Failed to send OTP: ' + jqXHR.statusText);
-                    startCountdown(60, '#otp-resend-section');
                     that.html(order_detect.verify);
                     that.prop("disabled", false);
                 },
@@ -199,6 +198,7 @@ jQuery(document).ready(function($) {
                     $("#otp-sedning-msg").text(response.message);
                     that.html(order_detect.verify);
                     that.prop("disabled", false);
+                    startCountdown(60, '#otp-resend-section'); 
                 }
             });
 

@@ -177,6 +177,7 @@ class Ajax
         if (isset($enable) && isset($endpoint) && isset($api_key)) {
             $domain = $_SERVER['HTTP_HOST'];
             $message = sprintf( __( 'Your %s verification code is: %s', 'woocommerce' ), $domain, $otp );
+
             $params = [
                 'api_key' => $api_key,
                 'msg' => $message,
@@ -249,8 +250,6 @@ class Ajax
             $response['success'] = false;
             $response['message'] = 'This phone number is not verified.';
         }
-
-        error_log('verification status '.$is_verified);
 
         wp_send_json($response, 200);
     }

@@ -167,7 +167,6 @@ class Helper
     
         // Execute the query
         $count = $wpdb->get_var($sql);
-        error_log($sql);
     
         // Return true if count is greater than 0, indicating the phone number is verified
         return $count > 0;
