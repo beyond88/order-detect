@@ -104,7 +104,7 @@ class License
             if (strtotime($current_date) > strtotime($license_expires)) {
                 return sprintf(
                     '<button type="button" name="license-submit" id="license-submit" class="btn-settings order-detect-settings-button">%s</button>',
-                    __('Activate', 'order-detect')
+                    __('Activate New License', 'order-detect')
                 );
             }
 

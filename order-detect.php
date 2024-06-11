@@ -16,8 +16,6 @@
  * Tested up to:      6.5.2
  * @package Order Detect
  *
- * WC requires at least: 3.1
- * WC tested up to:   8.8.2
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html 
  */
@@ -86,9 +84,9 @@ final class OrderDetect
         define('ORDERDETECT_MINIMUM_WP_VERSION', '4.4');
         define('ORDERDETECT_MINIMUM_WC_VERSION', '3.1');
         // Licensing
-        define('ORDERDETECT_STORE_URL', 'https://thebitcraft.com');
-        define('ORDERDETECT_SL_ITEM_ID', 2357);
-        define('ORDERDETECT_SL_ITEM_SLUG', 'order-detect');
+        define('ORDERDETECT_STORE_URL', 'https://admin.orderdetect.com/');
+        define('ORDERDETECT_SL_ITEM_ID', 17);
+        define('ORDERDETECT_SL_ITEM_SLUG', 'order-detect-three-months');
         define('ORDERDETECT_SL_ITEM_NAME', 'Order Detect');
     }
 

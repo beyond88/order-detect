@@ -53,9 +53,20 @@ $license_expires = array_key_exists('expires', $setting_options) ? $setting_opti
                                             </th>
                                             <td class="order-detect-control">
                                                 <div class="order-detect-control-wrapper">
-                                                    <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($license_key); ?>" placeholder="<?php echo __('Enter your license key', 'order-detect'); ?>" <?php if (!empty($license_key)) { ?> readonly <?php } ?>>
+                                                    <?php 
+                                                        if (empty($license_expires)) {
+                                                    ?>
+                                                        <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="" placeholder="<?php echo __('Enter your license key', 'order-detect'); ?>">
+                                                    <?php } else {?>
+                                                        <?php 
+                                                            $current_date = current_time('mysql');
+                                                            if (strtotime($current_date) > strtotime($license_expires)) { ?>
+                                                                <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="" placeholder="<?php echo __('Enter your new license key', 'order-detect'); ?>">
+                                                            <?php } else { ?>
+                                                                <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($license_key); ?>">
+                                                            <?php } ?>
+                                                    <?php  } ?>
                                                     <p class="order-detect-field-help"></p>
-
                                                 </div>
                                             </td>
                                         </tr>
