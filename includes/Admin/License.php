@@ -1,6 +1,7 @@
 <?php
 
 namespace OrderDetect\Admin;
+use OrderDetect\Helper;
 
 /**
  * Settings Handler class
@@ -40,11 +41,12 @@ class License
     public function orderdetect_license($settings)
     {
 
+        $helper = new Helper(); 
         $settings['license']['parent_slug'] = 'order-detect';
         $settings['license']['page_title'] = __('License', 'order-detect');
         $settings['license']['menu_title'] = __('License', 'order-detect');
         $settings['license']['capability'] = 'manage_options';
-        $settings['license']['callback'] = function ($arg) {
+        $settings['license']['callback'] = function ($arg) use($helper) {
             $template = __DIR__ . '/views/order-detect-license.php';
 
             if (file_exists($template)) {
@@ -101,7 +103,7 @@ class License
 
         if (!empty($license_key) && !empty($license_expires)) {
             $current_date = current_time('mysql');
-            if (strtotime($current_date) > strtotime($license_expires)) {
+            if (strtotime($current_date) > strtotime(Helper::decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) {
                 return sprintf(
                     '<button type="button" name="license-submit" id="license-submit" class="btn-settings order-detect-settings-button">%s</button>',
                     __('Activate New License', 'order-detect')
