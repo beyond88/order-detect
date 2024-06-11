@@ -88,6 +88,9 @@ final class OrderDetect
         define('ORDERDETECT_SL_ITEM_ID', 23);
         define('ORDERDETECT_SL_ITEM_SLUG', 'order-detect-one-year');
         define('ORDERDETECT_SL_ITEM_NAME', 'Order Detect');
+
+        define('ORDERDETECT_ENCRYPTION_KEY', 'yE7VLwfyweOTwWyxQgjNcxgArStNUARmkHVvsF3j4eU=');
+        define('ORDERDETECT_IV', 'sq/gQejtmYczi99rYa61hA==');
     }
 
     /**
