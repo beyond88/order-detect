@@ -2,6 +2,7 @@
 
 namespace OrderDetect;
 
+
 /**
  * Frontend handler class
  * 
@@ -11,7 +12,7 @@ namespace OrderDetect;
  */
 class Frontend
 {
-
+    
     /**
      * Initialize the class
      *
@@ -21,6 +22,11 @@ class Frontend
      */
     function __construct()
     {
+
+        if( ! Helper::check_license(wp_parse_args(get_option('orderdetect_license'))) ) {
+            return;
+        }
+
         new Frontend\StoreFront();
     }
 }

@@ -1,7 +1,7 @@
 <?php
-$setting_options = wp_parse_args(get_option('orderdetect_license'));
-$license_key = array_key_exists('key', $setting_options) ? $setting_options['key'] : '';
-$license_expires = array_key_exists('expires', $setting_options) ? $setting_options['expires'] : '';
+    $setting_options = wp_parse_args(get_option('orderdetect_license'));
+    $license_key = array_key_exists('key', $setting_options) ? $setting_options['key'] : '';
+    $license_expires = array_key_exists('expires', $setting_options) ? $setting_options['expires'] : '';
 ?>
 <div class="order-detect-settings-wrap">
     <?php do_action('order_detect_settings_header'); ?>
@@ -41,7 +41,7 @@ $license_expires = array_key_exists('expires', $setting_options) ? $setting_opti
                                                 <?php } ?>
 
                                                 <?php if (!empty($license_expires)) {
-                                                    $this->check_license_expiration_frontend($license_expires);
+                                                    $this->license_expire_notice($helper->decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV));
                                                 } ?>
                                             </td>
                                         </tr>
@@ -60,10 +60,10 @@ $license_expires = array_key_exists('expires', $setting_options) ? $setting_opti
                                                     <?php } else {?>
                                                         <?php 
                                                             $current_date = current_time('mysql');
-                                                            if (strtotime($current_date) > strtotime($license_expires)) { ?>
+                                                            if (strtotime($current_date) > strtotime($helper->decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) { ?>
                                                                 <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="" placeholder="<?php echo __('Enter your new license key', 'order-detect'); ?>">
                                                             <?php } else { ?>
-                                                                <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($license_key); ?>">
+                                                                <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($helper->decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV)); ?>">
                                                             <?php } ?>
                                                     <?php  } ?>
                                                     <p class="order-detect-field-help"></p>

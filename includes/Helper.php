@@ -28,7 +28,7 @@ class Helper
         $expires = array_key_exists('expires', $settings) ? $settings['expires'] : '';
         if (!empty($key) && !empty($expires)) {
             $current_date = current_time('mysql');
-            if (strtotime($current_date) > strtotime($expires)) {
+            if (strtotime($current_date) > strtotime(Helper::decrypt_data($expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) {
                 return false;
             }
         }
@@ -226,6 +226,30 @@ class Helper
 
             wp_mail($to, $subject, $message);
         }
+    }
+
+    public static function encrypt_data($target_data, $key = ORDERDETECT_ENCRYPTION_KEY, $iv = ORDERDETECT_IV) {
+        $cipher_method = 'aes-256-cbc';
+        $encrypted = openssl_encrypt($target_data, $cipher_method, base64_decode($key), 0, base64_decode($iv));
+        return base64_encode($encrypted);
+    }
+    
+    public static function decrypt_data($encrypted_data, $key = ORDERDETECT_ENCRYPTION_KEY, $iv = ORDERDETECT_IV) {
+
+        $cipher_method = 'aes-256-cbc';
+        $decrypted = openssl_decrypt(base64_decode($encrypted_data), $cipher_method, base64_decode($key), 0, base64_decode($iv));
+        return $decrypted;
+
+        // $cipher_method = 'aes-256-cbc';
+        // return $decrypted = \openssl_decrypt(\base64_decode($encrypted_data), $cipher_method, \base64_decode($key), 0, \base64_decode($iv));
+        
+        
+        // $lastHashPos = strrpos($decrypted, "#");
+        // if ($lastHashPos !== false) {
+        //     $decrypted = substr($decrypted, 0, $lastHashPos);
+        //     return $decrypted;
+        // }
+        // return $decrypted;
     }
 
 }

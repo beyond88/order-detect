@@ -27,53 +27,9 @@ class StoreFront
         $this->settings = get_option('orderdetect_settings');
         add_filter('woocommerce_locate_template', array($this, 'set_locate_template'), PHP_INT_MAX, 3);
         add_action('wp_footer', array($this, 'init_otp_modal_checkout'));
-        // add_action('woocommerce_checkout_process', array($this, 'check_otp_status_before_submit'), PHP_INT_MAX);
     }
 
-    /**
-     * Check OTP status before form submission
-     *
-     * This method checks if OTP verification is enabled in the settings.
-     * If enabled, it adds a notice indicating OTP verification failed.
-     * 
-     * @since	1.0.0
-     * @access	public
-     * @param	none
-     * @return	void
-     */
-    public function check_otp_status_before_submit()
-    {
 
-        if (array_key_exists('enable_otp', $this->settings)) {
-
-            $billing_phone = $_POST['billing_phone'];
-
-            $is_verified = Helper::is_phone_number_verified($billing_phone);
-
-            if ( ! isset( $_POST['billing_otp'] ) && ! $is_verified ) {
-                wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
-            }
-
-            if ( isset( $_POST['billing_otp'] ) && empty( $_POST['billing_otp'] ) ) {
-                wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
-            }
-    
-            if ( isset( $_POST['billing_otp'] ) && ! empty( $_POST['billing_otp'] ) ) {
-                
-                $otp = sanitize_text_field($_POST['billing_otp']);
-                $otp_verified = Helper::verify_otp($billing_phone, $otp);
-                if ( ! $otp_verified ) {
-                    wc_add_notice(__('OTP verification failed. Please try again.', 'order-detect'), 'error');
-                }
-    
-                if ( $otp_verified ) {
-                    Helper::set_phone_number_verified($billing_phone);
-                }
-            }
-
-        }
-        
-    }
 
     /**
      * Return plugin directory

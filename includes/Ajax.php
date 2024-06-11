@@ -3,6 +3,7 @@
 namespace OrderDetect;
 
 use OrderDetect\API\OrderDetectAPI;
+use OrderDetect\Helper;
 
 /**
  * Ajax handler class
@@ -79,8 +80,8 @@ class Ajax
 
             if ($license_data->success) {
                 $settings = [];
-                $settings['key'] = $license_key;
-                $settings['expires'] = $license_data->expires;
+                $settings['key'] = Helper::encrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV);
+                $settings['expires'] = Helper::encrypt_data($license_data->expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV);
                 update_option('orderdetect_license', $settings);
                 wp_send_json(array('message' => 'License activated successfully.', 'class' => 'order-detect-license-status-success'), 200);
             } else {

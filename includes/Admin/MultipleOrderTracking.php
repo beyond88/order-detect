@@ -3,6 +3,7 @@
 namespace OrderDetect\Admin;
 
 use OrderDetect\Admin\MultipleOrderTrackingList;
+use OrderDetect\Helper;
 
 /**
  * Settings Handler class
@@ -43,6 +44,9 @@ class MultipleOrderTracking
      */
     public function orderdetect_multiple_order_tracking($settings)
     {
+        if( ! Helper::check_license(wp_parse_args(get_option('orderdetect_license'))) ) {
+            return;
+        }
         $settings['multiple-order-tracking']['parent_slug'] = 'order-detect';
         $settings['multiple-order-tracking']['page_title'] = __('Multiple Order Tracking', 'order-detect');
         $settings['multiple-order-tracking']['menu_title'] = __('Multiple Order Tracking', 'order-detect');
