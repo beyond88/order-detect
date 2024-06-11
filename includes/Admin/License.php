@@ -68,7 +68,7 @@ class License
      * @param   string $date The expiration date of the license.
      * @return  void
      */
-    public function check_license_expiration_frontend($date)
+    public function license_expire_notice($date)
     {
         if (!empty($date)) {
             $current_date = current_time('mysql');

@@ -28,7 +28,7 @@ class Helper
         $expires = array_key_exists('expires', $settings) ? $settings['expires'] : '';
         if (!empty($key) && !empty($expires)) {
             $current_date = current_time('mysql');
-            if (strtotime($current_date) > strtotime($expires)) {
+            if (strtotime($current_date) > strtotime(Helper::decrypt_data($expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) {
                 return false;
             }
         }
@@ -250,10 +250,6 @@ class Helper
         //     return $decrypted;
         // }
         // return $decrypted;
-    }
-
-    public function justcheck() {
-        return 'Hello World';
     }
 
 }
