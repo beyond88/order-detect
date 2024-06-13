@@ -21,12 +21,8 @@ class Helper
     public static function check_license($settings)
     {
         if (empty($settings)) {
-            return FALSE;
+            return false;
         }
-
-        print_r($settings);
-
-        // echo "Hossain";
 
         $key = array_key_exists('key', $settings) ? $settings['key'] : '';
         $expires = array_key_exists('expires', $settings) ? $settings['expires'] : '';
@@ -182,7 +178,7 @@ class Helper
      * @param array $postfields
      * @return bool|string
      */
-    private static function send_request($url, $method = 'GET', $postfields = [])
+    public static function send_request($url, $method = 'GET', $postfields = [])
     {
 
         $args = [

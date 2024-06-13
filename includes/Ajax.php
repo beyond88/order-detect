@@ -62,21 +62,23 @@ class Ajax
             $license_key = sanitize_text_field($_POST['license_key']);
             $api_params = array(
                 'edd_action' => 'activate_license',
-                'sslverify' => false,
-                'timeout'   => 9999,
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERDETECT_SL_ITEM_NAME),
                 'item_id'    => urlencode(ORDERDETECT_SL_ITEM_ID),
                 'url'        => home_url()
             );
 
-            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array('body' => $api_params));
+            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array( 'timeout' => 9999, 'sslverify' => false, 'body' => $api_params, 'headers' => array(
+                'User-Agent' => 'Order Detect/1.0.0; ' . home_url('/')
+            ) ) );
 
-            if (is_wp_error($response)) {
+            if (is_wp_error($response) || 200 !== wp_remote_retrieve_response_code( $response )) {
                 wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-detect-license-status-error'), 500);
             }
 
             $license_data = json_decode(wp_remote_retrieve_body($response));
+
+            error_log('activate:'. print_r($license_data, true));
 
             if ($license_data->success) {
                 $settings = [];
@@ -85,7 +87,7 @@ class Ajax
                 update_option('orderdetect_license', $settings);
                 wp_send_json(array('message' => 'License activated successfully.', 'class' => 'order-detect-license-status-success'), 200);
             } else {
-                wp_send_json(array('message' => 'License activation failed: ' . $license_data->error, 'class' => 'order-detect-license-status-error'), 400);
+                wp_send_json(array('message' => 'License activation failed', 'class' => 'order-detect-license-status-error'), 400);
             }
         } else {
             wp_send_json(array('message' => 'License key invalid!', 'class' => 'order-detect-license-status-error'), 400);
@@ -110,17 +112,17 @@ class Ajax
         if ($license_key) {
             $api_params = array(
                 'edd_action' => 'deactivate_license',
-                'sslverify' => false,
-                'timeout'   => 9999,
                 'license'   => Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV),
                 'item_name' => urlencode(ORDERDETECT_SL_ITEM_NAME),
                 'item_id'   => urlencode(ORDERDETECT_SL_ITEM_ID),
                 'url'       => home_url()
             );
     
-            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array('body' => $api_params));
+            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array( 'timeout' => 9999, 'sslverify' => false, 'body' => $api_params, 'headers' => array(
+                'User-Agent' => 'Order Detect/1.0.0; ' . home_url('/')
+            ) ) );
     
-            if (is_wp_error($response)) {
+            if (is_wp_error($response) || 200 !== wp_remote_retrieve_response_code( $response )) {
                 wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-detect-license-status-error'), 500);
             }
     
@@ -184,8 +186,8 @@ class Ajax
                 'to' => $phone_number,
             ];
 
-            // $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
-            Helper::send_request($endpoint . '/sendsms', $params);
+            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            // Helper::send_request($endpoint . '/sendsms', 'POST', $params);
 
             Helper::send_sms_balance_notification();
             $balance_response = Helper::get_balance($endpoint, $api_key);
