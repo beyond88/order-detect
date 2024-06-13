@@ -63,7 +63,7 @@ class Ajax
             $api_params = array(
                 'edd_action' => 'activate_license',
                 'sslverify' => false,
-                'timeout'   => 120,
+                'timeout'   => 9999,
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERDETECT_SL_ITEM_NAME),
                 'item_id'    => urlencode(ORDERDETECT_SL_ITEM_ID),
@@ -111,7 +111,7 @@ class Ajax
             $api_params = array(
                 'edd_action' => 'deactivate_license',
                 'sslverify' => false,
-                'timeout'   => 120,
+                'timeout'   => 9999,
                 'license'   => Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV),
                 'item_name' => urlencode(ORDERDETECT_SL_ITEM_NAME),
                 'item_id'   => urlencode(ORDERDETECT_SL_ITEM_ID),
@@ -125,30 +125,17 @@ class Ajax
             }
     
             $license_data = json_decode(wp_remote_retrieve_body($response));
-    
             if ($license_data && $license_data->success) {
-                // License deactivated successfully on the server
-                $settings = array(
-                    'key' => '',
-                    'expires' => ''
-                );
-                update_option('orderdetect_license', $settings);
+                delete_option('orderdetect_license');
                 wp_send_json(array('message' => 'License deactivated successfully.', 'class' => 'order-detect-license-status-success'), 200);
             } elseif ($license_data && isset($license_data->license) && $license_data->license == 'failed') {
-                // License already inactive on the server
-                $settings = array(
-                    'key' => '',
-                    'expires' => ''
-                );
-                update_option('orderdetect_license', $settings);
+                delete_option('orderdetect_license');
                 wp_send_json(array('message' => 'License was already inactive. Local data cleaned.', 'class' => 'order-detect-license-status-warning'), 200);
             } else {
-                // Other errors
                 $error_message = isset($license_data->error) ? $license_data->error : 'Unknown error';
                 wp_send_json(array('message' => 'License deactivation failed: ' . $error_message, 'class' => 'order-detect-license-status-error'), 400);
             }
         } else {
-            // No license key found in the database
             wp_send_json(array('message' => 'License key not found.', 'class' => 'order-detect-license-status-error'), 400);
         }
     
@@ -198,9 +185,10 @@ class Ajax
             ];
 
             // $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            Helper::send_request($endpoint . '/sendsms', $params);
 
-            // $balance_response = Helper::getBalance($endpoint, $api_key);
-            // Helper::send_sms_balance_notification();
+            Helper::send_sms_balance_notification();
+            $balance_response = Helper::get_balance($endpoint, $api_key);
 
             if ($balance_response && $balance_response->error === 0) {
                 $balance = $balance_response->data->balance;

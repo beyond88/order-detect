@@ -21,8 +21,12 @@ class Helper
     public static function check_license($settings)
     {
         if (empty($settings)) {
-            return false;
+            return FALSE;
         }
+
+        print_r($settings);
+
+        // echo "Hossain";
 
         $key = array_key_exists('key', $settings) ? $settings['key'] : '';
         $expires = array_key_exists('expires', $settings) ? $settings['expires'] : '';
@@ -178,12 +182,12 @@ class Helper
      * @param array $postfields
      * @return bool|string
      */
-    private static function sendRequest($url, $method = 'GET', $postfields = [])
+    private static function send_request($url, $method = 'GET', $postfields = [])
     {
 
         $args = [
             'method'    => $method,
-            'timeout'   => 45,
+            'timeout'   => 9999,
             'sslverify' => false,
             'body'      => $postfields
         ];
@@ -200,9 +204,9 @@ class Helper
     /**
      * @return mixed
      */
-    public static function getBalance($url, $api_key)
+    public static function get_balance($url, $api_key)
     {
-        $response = Helper::sendRequest($url . '/user/balance/?api_key=' . $api_key);
+        $response = Helper::send_request($url . '/user/balance/?api_key=' . $api_key);
 
         return json_decode($response);
     }
@@ -235,21 +239,9 @@ class Helper
     }
     
     public static function decrypt_data($encrypted_data, $key = ORDERDETECT_ENCRYPTION_KEY, $iv = ORDERDETECT_IV) {
-
         $cipher_method = 'aes-256-cbc';
         $decrypted = openssl_decrypt(base64_decode($encrypted_data), $cipher_method, base64_decode($key), 0, base64_decode($iv));
         return $decrypted;
-
-        // $cipher_method = 'aes-256-cbc';
-        // return $decrypted = \openssl_decrypt(\base64_decode($encrypted_data), $cipher_method, \base64_decode($key), 0, \base64_decode($iv));
-        
-        
-        // $lastHashPos = strrpos($decrypted, "#");
-        // if ($lastHashPos !== false) {
-        //     $decrypted = substr($decrypted, 0, $lastHashPos);
-        //     return $decrypted;
-        // }
-        // return $decrypted;
     }
 
 }
