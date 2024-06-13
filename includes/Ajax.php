@@ -63,7 +63,7 @@ class Ajax
             $api_params = array(
                 'edd_action' => 'activate_license',
                 'sslverify' => false,
-                'timeout'   => 60,
+                'timeout'   => 120,
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERDETECT_SL_ITEM_NAME),
                 'item_id'    => urlencode(ORDERDETECT_SL_ITEM_ID),
@@ -101,47 +101,59 @@ class Ajax
      *
      * @return void
      */
-    public function license_deactivate()
-    {
-        // Check for nonce security
+    public function license_deactivate() {
         check_ajax_referer('order-detect-admin-nonce', 'security');
-
+    
         $orderdetect_license = get_option('orderdetect_license');
-        $license_key = $orderdetect_license['key'];
+        $license_key = isset($orderdetect_license['key']) ? $orderdetect_license['key'] : '';
+        
         if ($license_key) {
             $api_params = array(
                 'edd_action' => 'deactivate_license',
                 'sslverify' => false,
-                'timeout'   => 60,
-                'license'    => $license_key,
-                'item_name'  => urlencode(ORDERDETECT_SL_ITEM_NAME),
-                'item_id'    => urlencode(ORDERDETECT_SL_ITEM_ID),
-                'url'        => home_url()
+                'timeout'   => 120,
+                'license'   => Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV),
+                'item_name' => urlencode(ORDERDETECT_SL_ITEM_NAME),
+                'item_id'   => urlencode(ORDERDETECT_SL_ITEM_ID),
+                'url'       => home_url()
             );
-
+    
             $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array('body' => $api_params));
-
+    
             if (is_wp_error($response)) {
                 wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-detect-license-status-error'), 500);
             }
-
+    
             $license_data = json_decode(wp_remote_retrieve_body($response));
-
-            if ($license_data->success) {
-                $settings = [];
-                $settings['key'] = '';
-                $settings['expires'] = '';
+    
+            if ($license_data && $license_data->success) {
+                // License deactivated successfully on the server
+                $settings = array(
+                    'key' => '',
+                    'expires' => ''
+                );
                 update_option('orderdetect_license', $settings);
                 wp_send_json(array('message' => 'License deactivated successfully.', 'class' => 'order-detect-license-status-success'), 200);
+            } elseif ($license_data && isset($license_data->license) && $license_data->license == 'failed') {
+                // License already inactive on the server
+                $settings = array(
+                    'key' => '',
+                    'expires' => ''
+                );
+                update_option('orderdetect_license', $settings);
+                wp_send_json(array('message' => 'License was already inactive. Local data cleaned.', 'class' => 'order-detect-license-status-warning'), 200);
             } else {
-                wp_send_json(array('message' => 'License deactivation failed: ' . $license_data->error, 'class' => 'order-detect-license-status-error'), 400);
+                // Other errors
+                $error_message = isset($license_data->error) ? $license_data->error : 'Unknown error';
+                wp_send_json(array('message' => 'License deactivation failed: ' . $error_message, 'class' => 'order-detect-license-status-error'), 400);
             }
         } else {
+            // No license key found in the database
             wp_send_json(array('message' => 'License key not found.', 'class' => 'order-detect-license-status-error'), 400);
         }
-
+    
         wp_die();
-    }
+    }        
 
     /**
      * Send OTP handler
@@ -185,10 +197,10 @@ class Ajax
                 'to' => $phone_number,
             ];
 
-            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            // $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
 
-            $balance_response = Helper::getBalance($endpoint, $api_key);
-            Helper::send_sms_balance_notification();
+            // $balance_response = Helper::getBalance($endpoint, $api_key);
+            // Helper::send_sms_balance_notification();
 
             if ($balance_response && $balance_response->error === 0) {
                 $balance = $balance_response->data->balance;

@@ -63,7 +63,7 @@
                                                             if (strtotime($current_date) > strtotime($helper->decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) { ?>
                                                                 <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="" placeholder="<?php echo __('Enter your new license key', 'order-detect'); ?>">
                                                             <?php } else { ?>
-                                                                <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($helper->decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV)); ?>">
+                                                                <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($helper->decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV)); ?>" readonly>
                                                             <?php } ?>
                                                     <?php  } ?>
                                                     <p class="order-detect-field-help"></p>
