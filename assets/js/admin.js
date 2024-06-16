@@ -103,7 +103,6 @@
 					license_key: license_key
 				},
 				success: function(response, textStatus, jqXHR) {
-					console.log('response==>', response)
 					var statusCode = jqXHR.status;
 					$message.removeClass('order-detect-license-status-success order-detect-license-status-error');
 					if (statusCode === 200) {

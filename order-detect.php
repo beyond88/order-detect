@@ -103,7 +103,6 @@ final class OrderDetect
 
         new OrderDetect\Assets();
         new OrderDetect\OrderDetecti18n();
-        new OrderDetect\API();
 
         if (defined('DOING_AJAX') && DOING_AJAX) {
             new OrderDetect\Ajax();

@@ -71,8 +71,8 @@ class Assets
     public function register_assets()
     {
 
-        if( ! Helper::check_license(wp_parse_args(get_option('orderdetect_license'))) ) {
-            return;
+        if( ! Helper::check_license( wp_parse_args( get_option('orderdetect_license') ) ) ) {
+            return '';
         }
         
         $scripts = $this->get_scripts();

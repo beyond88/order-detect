@@ -178,12 +178,12 @@ class Helper
      * @param array $postfields
      * @return bool|string
      */
-    private static function sendRequest($url, $method = 'GET', $postfields = [])
+    public static function send_request($url, $method = 'GET', $postfields = [])
     {
 
         $args = [
             'method'    => $method,
-            'timeout'   => 45,
+            'timeout'   => 9999,
             'sslverify' => false,
             'body'      => $postfields
         ];
@@ -200,9 +200,9 @@ class Helper
     /**
      * @return mixed
      */
-    public static function getBalance($url, $api_key)
+    public static function get_balance($url, $api_key)
     {
-        $response = Helper::sendRequest($url . '/user/balance/?api_key=' . $api_key);
+        $response = Helper::send_request($url . '/user/balance/?api_key=' . $api_key);
 
         return json_decode($response);
     }
@@ -228,28 +228,58 @@ class Helper
         }
     }
 
+    /**
+     * Encrypt data
+     *
+     * This method encrypts the given target data using the AES-256-CBC cipher method.
+     * The provided key and initialization vector (IV) are used for encryption.
+     *
+     * @since   1.0.0
+     * @access  public
+     * @param   string $target_data The data to be encrypted.
+     * @param   string $key The encryption key (default is ORDERDETECT_ENCRYPTION_KEY).
+     * @param   string $iv The initialization vector (default is ORDERDETECT_IV).
+     * @return  string The encrypted data, encoded in base64.
+     */
     public static function encrypt_data($target_data, $key = ORDERDETECT_ENCRYPTION_KEY, $iv = ORDERDETECT_IV) {
         $cipher_method = 'aes-256-cbc';
         $encrypted = openssl_encrypt($target_data, $cipher_method, base64_decode($key), 0, base64_decode($iv));
         return base64_encode($encrypted);
     }
-    
-    public static function decrypt_data($encrypted_data, $key = ORDERDETECT_ENCRYPTION_KEY, $iv = ORDERDETECT_IV) {
 
+    /**
+     * Decrypt data
+     *
+     * This method decrypts the given encrypted data using the AES-256-CBC cipher method.
+     * The provided key and initialization vector (IV) are used for decryption.
+     *
+     * @since   1.0.0
+     * @access  public
+     * @param   string $encrypted_data The data to be decrypted, encoded in base64.
+     * @param   string $key The decryption key (default is ORDERDETECT_ENCRYPTION_KEY).
+     * @param   string $iv The initialization vector (default is ORDERDETECT_IV).
+     * @return  string The decrypted data.
+     */
+    public static function decrypt_data($encrypted_data, $key = ORDERDETECT_ENCRYPTION_KEY, $iv = ORDERDETECT_IV) {
         $cipher_method = 'aes-256-cbc';
         $decrypted = openssl_decrypt(base64_decode($encrypted_data), $cipher_method, base64_decode($key), 0, base64_decode($iv));
         return $decrypted;
-
-        // $cipher_method = 'aes-256-cbc';
-        // return $decrypted = \openssl_decrypt(\base64_decode($encrypted_data), $cipher_method, \base64_decode($key), 0, \base64_decode($iv));
-        
-        
-        // $lastHashPos = strrpos($decrypted, "#");
-        // if ($lastHashPos !== false) {
-        //     $decrypted = substr($decrypted, 0, $lastHashPos);
-        //     return $decrypted;
-        // }
-        // return $decrypted;
     }
 
+    /**
+     * Mask a string
+     *
+     * This method masks the given input string by replacing all characters with asterisks (*).
+     *
+     * @since   1.0.0
+     * @access  public
+     * @param   string $input The input string to be masked.
+     * @return  string The masked string with all characters replaced by asterisks.
+     */
+    public static function mask_string($input) {
+        $length = strlen($input);
+        return str_repeat('*', $length);
+    }
+
+    
 }

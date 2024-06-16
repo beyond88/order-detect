@@ -122,7 +122,7 @@ class Main
 				!empty($_POST['orderdetect_settings']['sms_api_key'])
 			) {
 
-				$balance_response = Helper::getBalance(esc_url($_POST['orderdetect_settings']['sms_api_endpoint']), sanitize_text_field($_POST['orderdetect_settings']['sms_api_key']));
+				$balance_response = Helper::get_balance(esc_url($_POST['orderdetect_settings']['sms_api_endpoint']), sanitize_text_field($_POST['orderdetect_settings']['sms_api_key']));
 				if ($balance_response && $balance_response->error === 0) {
 					$balance = $balance_response->data->balance;
 					update_option('orderdetect_sms_balance', $balance);

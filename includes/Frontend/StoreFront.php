@@ -1,5 +1,4 @@
 <?php
-
 namespace OrderDetect\Frontend;
 
 use GuzzleHttp\Exception\RequestException;
@@ -23,7 +22,6 @@ class StoreFront
      */
     public function __construct()
     {
-        // $this->api = new OrderDetectAPI();
         $this->settings = get_option('orderdetect_settings');
         add_filter('woocommerce_locate_template', array($this, 'set_locate_template'), PHP_INT_MAX, 3);
         add_action('wp_footer', array($this, 'init_otp_modal_checkout'));

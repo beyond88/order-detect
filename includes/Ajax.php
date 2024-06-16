@@ -62,21 +62,23 @@ class Ajax
             $license_key = sanitize_text_field($_POST['license_key']);
             $api_params = array(
                 'edd_action' => 'activate_license',
-                'sslverify' => false,
-                'timeout'   => 60,
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERDETECT_SL_ITEM_NAME),
                 'item_id'    => urlencode(ORDERDETECT_SL_ITEM_ID),
                 'url'        => home_url()
             );
 
-            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array('body' => $api_params));
+            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array( 'timeout' => 9999, 'sslverify' => false, 'body' => $api_params, 'headers' => array(
+                'User-Agent' => 'Order Detect/1.0.0; ' . home_url('/')
+            ) ) );
 
-            if (is_wp_error($response)) {
+            if (is_wp_error($response) || 200 !== wp_remote_retrieve_response_code( $response )) {
                 wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-detect-license-status-error'), 500);
             }
 
             $license_data = json_decode(wp_remote_retrieve_body($response));
+
+            error_log('activate:'. print_r($license_data, true));
 
             if ($license_data->success) {
                 $settings = [];
@@ -85,7 +87,7 @@ class Ajax
                 update_option('orderdetect_license', $settings);
                 wp_send_json(array('message' => 'License activated successfully.', 'class' => 'order-detect-license-status-success'), 200);
             } else {
-                wp_send_json(array('message' => 'License activation failed: ' . $license_data->error, 'class' => 'order-detect-license-status-error'), 400);
+                wp_send_json(array('message' => 'License activation failed', 'class' => 'order-detect-license-status-error'), 400);
             }
         } else {
             wp_send_json(array('message' => 'License key invalid!', 'class' => 'order-detect-license-status-error'), 400);
@@ -101,47 +103,46 @@ class Ajax
      *
      * @return void
      */
-    public function license_deactivate()
-    {
-        // Check for nonce security
+    public function license_deactivate() {
         check_ajax_referer('order-detect-admin-nonce', 'security');
-
+    
         $orderdetect_license = get_option('orderdetect_license');
-        $license_key = $orderdetect_license['key'];
+        $license_key = isset($orderdetect_license['key']) ? $orderdetect_license['key'] : '';
+        
         if ($license_key) {
             $api_params = array(
                 'edd_action' => 'deactivate_license',
-                'sslverify' => false,
-                'timeout'   => 60,
-                'license'    => $license_key,
-                'item_name'  => urlencode(ORDERDETECT_SL_ITEM_NAME),
-                'item_id'    => urlencode(ORDERDETECT_SL_ITEM_ID),
-                'url'        => home_url()
+                'license'   => Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV),
+                'item_name' => urlencode(ORDERDETECT_SL_ITEM_NAME),
+                'item_id'   => urlencode(ORDERDETECT_SL_ITEM_ID),
+                'url'       => home_url()
             );
-
-            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array('body' => $api_params));
-
-            if (is_wp_error($response)) {
+    
+            $response = wp_remote_post(esc_url(ORDERDETECT_STORE_URL), array( 'timeout' => 9999, 'sslverify' => false, 'body' => $api_params, 'headers' => array(
+                'User-Agent' => 'Order Detect/1.0.0; ' . home_url('/')
+            ) ) );
+    
+            if (is_wp_error($response) || 200 !== wp_remote_retrieve_response_code( $response )) {
                 wp_send_json(array('message' => $response->get_error_message(), 'class' => 'order-detect-license-status-error'), 500);
             }
-
+    
             $license_data = json_decode(wp_remote_retrieve_body($response));
-
-            if ($license_data->success) {
-                $settings = [];
-                $settings['key'] = '';
-                $settings['expires'] = '';
-                update_option('orderdetect_license', $settings);
+            if ($license_data && $license_data->success) {
+                delete_option('orderdetect_license');
                 wp_send_json(array('message' => 'License deactivated successfully.', 'class' => 'order-detect-license-status-success'), 200);
+            } elseif ($license_data && isset($license_data->license) && $license_data->license == 'failed') {
+                delete_option('orderdetect_license');
+                wp_send_json(array('message' => 'License was already inactive. Local data cleaned.', 'class' => 'order-detect-license-status-warning'), 200);
             } else {
-                wp_send_json(array('message' => 'License deactivation failed: ' . $license_data->error, 'class' => 'order-detect-license-status-error'), 400);
+                $error_message = isset($license_data->error) ? $license_data->error : 'Unknown error';
+                wp_send_json(array('message' => 'License deactivation failed: ' . $error_message, 'class' => 'order-detect-license-status-error'), 400);
             }
         } else {
             wp_send_json(array('message' => 'License key not found.', 'class' => 'order-detect-license-status-error'), 400);
         }
-
+    
         wp_die();
-    }
+    }        
 
     /**
      * Send OTP handler
@@ -186,9 +187,10 @@ class Ajax
             ];
 
             $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            // Helper::send_request($endpoint . '/sendsms', 'POST', $params);
 
-            $balance_response = Helper::getBalance($endpoint, $api_key);
             Helper::send_sms_balance_notification();
+            $balance_response = Helper::get_balance($endpoint, $api_key);
 
             if ($balance_response && $balance_response->error === 0) {
                 $balance = $balance_response->data->balance;
