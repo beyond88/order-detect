@@ -151,21 +151,32 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * @param string $search The search query
      * @return int The total number of items
      */
-    private function get_total_items($search = '')
-    {
-        $args = [
-            'status' => 'any',
-            'limit' => -1,
-        ];
+    public function get_total_items($search = '') {
+        global $wpdb;
+
+        $query = "
+            SELECT COUNT(*)
+            FROM {$wpdb->prefix}posts AS posts
+            WHERE posts.post_type = 'shop_order'
+            AND posts.post_status IN ('wc-pending', 'wc-processing', 'wc-on-hold', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed')
+        ";
 
         if (!empty($search)) {
-            $args['meta_key'] = '_billing_phone';
-            $args['meta_value'] = $search;
-            $args['meta_compare'] = 'LIKE';
+            $query .= $wpdb->prepare("
+                AND EXISTS (
+                    SELECT 1
+                    FROM {$wpdb->prefix}postmeta AS meta
+                    WHERE meta.post_id = posts.ID
+                    AND meta.meta_key = '_billing_phone'
+                    AND meta.meta_value LIKE %s
+                )
+            ", '%' . $wpdb->esc_like($search) . '%');
         }
 
-        $orders = wc_get_orders($args);
-        return count($orders);
+        $total_items = $wpdb->get_var($query);
+
+        return $total_items;
+
     }
 
     /**
@@ -175,20 +186,47 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * @param int $current_page The current page number
      * @return array The list of orders
      */
-    private function get_orders_by_phone_number($phone_number, $per_page, $current_page)
+    public function get_orders_by_phone_number($phone_number, $per_page, $current_page)
     {
-        $args = [
-            'status' => 'any',
-            'limit' => $per_page,
-            'offset' => ($current_page - 1) * $per_page,
-        ];
 
-        if (!empty($phone_number)) {
-            $args['meta_key'] = '_billing_phone';
-            $args['meta_value'] = $phone_number;
-            $args['meta_compare'] = 'LIKE';
+        global $wpdb;
+
+        $offset = ($current_page - 1) * $per_page;
+
+        $query = "
+            SELECT posts.ID
+            FROM {$wpdb->prefix}posts AS posts
+            INNER JOIN {$wpdb->prefix}postmeta AS meta ON posts.ID = meta.post_id
+            WHERE posts.post_type = 'shop_order'
+            AND posts.post_status IN ('wc-pending', 'wc-processing', 'wc-on-hold', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed')
+            AND meta.meta_key = '_billing_phone'
+            AND meta.meta_value LIKE %s
+            LIMIT %d OFFSET %d
+        ";
+
+        $prepared_query = $wpdb->prepare($query, '%' . $wpdb->esc_like($phone_number) . '%', $per_page, $offset);
+        $order_ids = $wpdb->get_col($prepared_query);
+
+        if (empty($order_ids)) {
+            return [];
         }
 
-        return wc_get_orders($args);
+        // Fetch the orders in bulk to reduce the number of queries
+        $placeholders = implode(', ', array_fill(0, count($order_ids), '%d'));
+        $orders_query = "
+            SELECT *
+            FROM {$wpdb->prefix}posts
+            WHERE ID IN ($placeholders)
+        ";
+        $prepared_orders_query = $wpdb->prepare($orders_query, ...$order_ids);
+        $orders_data = $wpdb->get_results($prepared_orders_query);
+
+        $orders = [];
+        foreach ($orders_data as $order_data) {
+            $orders[] = new \WC_Order($order_data);
+        }
+
+        return $orders;
+
     }
 }
