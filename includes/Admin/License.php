@@ -72,7 +72,9 @@ class License
     {
         if (!empty($date)) {
             $current_date = current_time('mysql');
-            if (strtotime($current_date) > strtotime($date)) {
+            if( $date === "lifetime" ) {
+                echo '<h2>' . sprintf(__('<span style="color:#3c434a">License expire date:</span> %s', 'order-detect'), $date) . '</h2>';
+            } else if (strtotime($current_date) > strtotime($date)) {
                 echo '<div class="license-expiration-message" style="color: red; text-align: left;font-size:20px;">' . sprintf(__('Your license has been expired.', 'order-detect')) . '</div>';
             } else {
                 $valid_date_str = substr($date, 0, 19);
@@ -103,6 +105,14 @@ class License
 
         if (!empty($license_key) && !empty($license_expires)) {
             $current_date = current_time('mysql');
+
+            if( Helper::decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV) === "lifetime" ) {
+                return sprintf(
+                    '<button type="button" name="license-deactivate" id="license-deactivate" class="btn-settings order-detect-settings-button">%s</button>',
+                    __('Deactivate', 'order-detect')
+                );
+            }
+            
             if (strtotime($current_date) > strtotime(Helper::decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) {
                 return sprintf(
                     '<button type="button" name="license-submit" id="license-submit" class="btn-settings order-detect-settings-button">%s</button>',

@@ -64,7 +64,6 @@ class Ajax
                 'edd_action' => 'activate_license',
                 'license'    => $license_key,
                 'item_name'  => urlencode(ORDERDETECT_SL_ITEM_NAME),
-                'item_id'    => urlencode(ORDERDETECT_SL_ITEM_ID),
                 'url'        => home_url()
             );
 
@@ -78,7 +77,7 @@ class Ajax
 
             $license_data = json_decode(wp_remote_retrieve_body($response));
 
-            error_log('activate:'. print_r($license_data, true));
+            // error_log('activate:'. print_r($license_data, true));
 
             if ($license_data->success) {
                 $settings = [];
@@ -87,7 +86,7 @@ class Ajax
                 update_option('orderdetect_license', $settings);
                 wp_send_json(array('message' => 'License activated successfully.', 'class' => 'order-detect-license-status-success'), 200);
             } else {
-                wp_send_json(array('message' => 'License activation failed', 'class' => 'order-detect-license-status-error'), 400);
+                wp_send_json(array('message' => 'License activation failed: '.$license_data->error, 'class' => 'order-detect-license-status-error'), 400);
             }
         } else {
             wp_send_json(array('message' => 'License key invalid!', 'class' => 'order-detect-license-status-error'), 400);
@@ -114,7 +113,6 @@ class Ajax
                 'edd_action' => 'deactivate_license',
                 'license'   => Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV),
                 'item_name' => urlencode(ORDERDETECT_SL_ITEM_NAME),
-                'item_id'   => urlencode(ORDERDETECT_SL_ITEM_ID),
                 'url'       => home_url()
             );
     
@@ -186,20 +184,19 @@ class Ajax
                 'to' => $phone_number,
             ];
 
-            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
-            // Helper::send_request($endpoint . '/sendsms', 'POST', $params);
+            //$sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
 
-            Helper::send_sms_balance_notification();
-            $balance_response = Helper::get_balance($endpoint, $api_key);
+            // Helper::send_sms_balance_notification();
+            // $balance_response = Helper::get_balance($endpoint, $api_key);
 
-            if ($balance_response && $balance_response->error === 0) {
-                $balance = $balance_response->data->balance;
-                update_option('orderdetect_sms_balance', $balance);
-            } elseif ($balance_response && $balance_response->error === 405) {
-                error_log('Please configure SMS API first.');
-            } else {
-                error_log('Unknown Error, failed to fetch balance');
-            }
+            // if ($balance_response && $balance_response->error === 0) {
+            //     $balance = $balance_response->data->balance;
+            //     update_option('orderdetect_sms_balance', $balance);
+            // } elseif ($balance_response && $balance_response->error === 405) {
+            //     error_log('Please configure SMS API first.');
+            // } else {
+            //     error_log('Unknown Error, failed to fetch balance');
+            // }
         }
 
         $response['success'] = true;

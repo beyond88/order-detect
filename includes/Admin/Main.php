@@ -45,7 +45,6 @@ class Main
 		'sms_api_key' => '',
 	);
 
-
 	private $api;
 
 	/**

@@ -15,21 +15,25 @@ class Form
                     <label class="modal__close" for="modal-1"></label>
                 </div>
                 <div class="otp-verification-body">
-                    <p class="otp-sedning-msg" id="otp-sedning-msg"></p>
-                    <p class="otp-status-success" id="otp-status-notice"></p>
-                    <p class="otp-status-error" id="otp-verify-failed"></p>
-                    <form class="otp-verification-form">
-                        <div class="otp-form-group otp-form-group-25">
-                            <input type="text" name="otp-code" class="otp-code" id="otp-code" maxlength="4" placeholder="<?php echo __('Enter OTP Code', 'order-detect'); ?>">
-                        </div>
-                        <div class="otp-form-group">
-                            <button type="button" class="otp-verification-btn" id="otp-verify-btn">
-                                <?php echo __('Verify', 'order-detect'); ?>
-                            </button>
-                        </div>
-                        <div class="otp-form-group" id="otp-resend-section">
-                        </div>
-                    </form>
+                    <div class="otp-processing-area">
+                        <div class="order-detect-loader"></div>
+                    </div>
+                    <div class="otp-form-area">
+                        <p class="otp-sedning-msg" id="otp-sedning-msg"></p>
+                        <p class="otp-status-success" id="otp-status-notice"></p>
+                        <p class="otp-status-error" id="otp-verify-failed"></p>
+                        <form class="otp-verification-form">
+                            <div class="otp-form-group otp-form-group-25">
+                                <input type="text" name="otp-code" class="otp-code" id="otp-code" maxlength="4" placeholder="<?php echo __('Enter OTP Code', 'order-detect'); ?>">
+                            </div>
+                            <div class="otp-form-group">
+                                <button type="button" class="otp-verification-btn" id="otp-verify-btn">
+                                    <?php echo __('Verify', 'order-detect'); ?>
+                                </button>
+                            </div>
+                            <div class="otp-form-group" id="otp-resend-section"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

@@ -28,6 +28,9 @@ class Helper
         $expires = array_key_exists('expires', $settings) ? $settings['expires'] : '';
         if (!empty($key) && !empty($expires)) {
             $current_date = current_time('mysql');
+            if( Helper::decrypt_data($expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV) === "lifetime" ){
+                return true;
+            }
             if (strtotime($current_date) > strtotime(Helper::decrypt_data($expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) {
                 return false;
             }

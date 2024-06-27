@@ -98,16 +98,18 @@ jQuery(document).ready(function($) {
         e.preventDefault();
 
         if (validateCheckoutFields()) {
+            document.getElementById('otp-verification-popup').style.display = 'flex';
             let billingPhone = $("#billing_phone").val();
             billingPhone = normalizeBangladeshiPhoneNumber(billingPhone);
             const isVerified = await checkPhoneIsVerified(billingPhone);
-            console.log('verify status=>',isVerified);
+            // console.log('verify status=>',isVerified);
             
             if (isVerified) {
                 $('form.checkout').submit();
             } else {
                 sendOTP('#otp-verify-btn',billingPhone);
-                document.getElementById('otp-verification-popup').style.display = 'flex';
+                $('.otp-processing-area').hide();
+                $('.otp-form-area').show();
             }
         } else {
             $('form.checkout').submit();
@@ -207,6 +209,8 @@ jQuery(document).ready(function($) {
 
     $(document).on('click', '.modal__close', function() {
         document.getElementById('otp-verification-popup').style.display = 'none';
+        $('.otp-processing-area').show();
+        $('.otp-form-area').hide();
     });
     
 });

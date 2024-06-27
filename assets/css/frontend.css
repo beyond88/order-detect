@@ -225,12 +225,12 @@ margin-bottom: 25px;;
   border-radius: 4px;
 }
 
-.otp-resend-section{
-
-}
-
 .otp-resend-msg{
   color: #000;
   font-size: 18px;
   text-align: center;
+}
+
+.otp-form-area{
+  display: none;
 }

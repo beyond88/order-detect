@@ -53,14 +53,14 @@
                                             </th>
                                             <td class="order-detect-control">
                                                 <div class="order-detect-control-wrapper">
-                                                    <?php 
-                                                        if (empty($license_expires)) {
-                                                    ?>
+                                                    <?php if (empty($license_expires)) { ?>
                                                         <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="" placeholder="<?php echo __('Enter your license key', 'order-detect'); ?>">
-                                                    <?php } else {?>
+                                                    <?php } else { ?>
                                                         <?php 
                                                             $current_date = current_time('mysql');
-                                                            if (strtotime($current_date) > strtotime($helper->decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) { ?>
+                                                            if( $helper->decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV) == "lifetime" ) { ?>
+                                                                <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($helper->mask_string($helper->decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))); ?>" readonly>
+                                                            <?php } else if (strtotime($current_date) > strtotime($helper->decrypt_data($license_expires, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))) { ?>
                                                                 <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="" placeholder="<?php echo __('Enter your new license key', 'order-detect'); ?>">
                                                             <?php } else { ?>
                                                                 <input class="order-detect-settings-field" id="orderdetect_license_key" type="text" name="orderdetect_license_key" value="<?php echo esc_attr($helper->mask_string($helper->decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV))); ?>" readonly>
