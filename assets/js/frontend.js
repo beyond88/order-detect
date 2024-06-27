@@ -1,11 +1,7 @@
 jQuery(document).ready(function($) {
+    var countdownInterval; // Global variable to hold the countdown interval
+    var countdownDuration = 60; // Countdown duration in seconds
 
-    /*==========================
-    * 
-    * This function will check 
-    * WC legacy checkout template fields
-    * 
-     ===========================*/
     function isValidBangladeshiPhoneNumber(phoneNumber) {
         const regex = /^(?:\+?88)?01[1-9]\d{8}$/;
         return regex.test(phoneNumber);
@@ -20,6 +16,7 @@ jQuery(document).ready(function($) {
             return null;
         }
     }
+
     function validateCheckoutFields() {
         var isValid = true;
         
@@ -54,28 +51,27 @@ jQuery(document).ready(function($) {
     }
 
     function startCountdown(duration, elementId) {
+        clearInterval(countdownInterval); // Clear any existing interval
         var timer = duration, minutes, seconds;
         var $element = $(elementId);
-        var countdownInterval = setInterval(function() {
+        countdownInterval = setInterval(function() {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
 
             seconds = seconds < 10 ? "0" + seconds : seconds;
 
-            $element.html('<p class="otp-resend-msg" id="otp-resend-msg">Didn\'t receive code? Resend in '+ minutes + ':'+ seconds +'</p>');
+            $element.html('<p class="otp-resend-msg" id="otp-resend-msg">Didn\'t receive code? Resend in ' + minutes + ':' + seconds + '</p>');
 
             if (--timer < 0) {
                 clearInterval(countdownInterval);
                 $element.html('');
-                $element.append(`<button type="button" class="otp-verification-btn" id="otp-resend-btn">${order_detect.resend_otp}</button>`);
-                console.log('time is now > 0');
+                $element.append('<button type="button" class="otp-verification-btn" id="otp-resend-btn">' + order_detect.resend_otp + '</button>');
             }
         }, 1000);
     }
 
     async function checkPhoneIsVerified(billingPhone) {
         try {
-            // Use await with jQuery AJAX call
             const response = await $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -102,31 +98,30 @@ jQuery(document).ready(function($) {
             let billingPhone = $("#billing_phone").val();
             billingPhone = normalizeBangladeshiPhoneNumber(billingPhone);
             const isVerified = await checkPhoneIsVerified(billingPhone);
-            // console.log('verify status=>',isVerified);
             
             if (isVerified) {
                 $('form.checkout').submit();
             } else {
-                sendOTP('#otp-verify-btn',billingPhone);
+                sendOTP('#otp-verify-btn', billingPhone);
                 $('.otp-processing-area').hide();
                 $('.otp-form-area').show();
+                startCountdown(countdownDuration, '#otp-resend-section'); // Start the countdown
             }
         } else {
             $('form.checkout').submit();
         }
     });
-    
+
     $(document).on('click', '#otp-verify-btn', function() {
-       
         let that = $(this);
         let phoneNumber = $.trim($("#billing_phone").val());
         phoneNumber = normalizeBangladeshiPhoneNumber(phoneNumber);
         let otpCode = $.trim($("#otp-code").val());
 
-        if(otpCode !='' && otpCode.length == 4 && (phoneNumber !='' && isValidBangladeshiPhoneNumber(phoneNumber)) ){
+        if (otpCode != '' && otpCode.length == 4 && (phoneNumber != '' && isValidBangladeshiPhoneNumber(phoneNumber))) {
 
             that.html(order_detect.loader);
-            that.prop("disabled",true);
+            that.prop("disabled", true);
             
             $.ajax({
                 type: 'POST',
@@ -136,14 +131,14 @@ jQuery(document).ready(function($) {
                     action: 'verify_otp',
                     security: order_detect.nonce,
                     otp: otpCode,
-                    phone_number:phoneNumber
+                    phone_number: phoneNumber
                 },
                 success: function(response, textStatus, jqXHR) {
                     var statusCode = jqXHR.status;
                     that.html('');
 
                     if (statusCode === 200 && response.success) {
-                        $('#otp-verify-failed').addClass('order-detect-hide')
+                        $('#otp-verify-failed').addClass('order-detect-hide');
                         $('#otp-status-notice').addClass('order-detect-show').text(response.message);
                         that.html(order_detect.verify);
                         $('form.checkout').submit();
@@ -157,7 +152,7 @@ jQuery(document).ready(function($) {
                     $('#otp-verify-failed').addClass('order-detect-show').text(order_detect.something_wrong);
                     that.html('');
                     that.html(order_detect.try_again);
-                    that.prop("disabled",false);
+                    that.prop("disabled", false);
                 }
             });
 
@@ -200,7 +195,7 @@ jQuery(document).ready(function($) {
                     $("#otp-sedning-msg").text(response.message);
                     that.html(order_detect.verify);
                     that.prop("disabled", false);
-                    startCountdown(60, '#otp-resend-section'); 
+                    startCountdown(countdownDuration, '#otp-resend-section'); 
                 }
             });
 
@@ -211,6 +206,8 @@ jQuery(document).ready(function($) {
         document.getElementById('otp-verification-popup').style.display = 'none';
         $('.otp-processing-area').show();
         $('.otp-form-area').hide();
+        $("#otp-resend-msg").remove();
+        clearInterval(countdownInterval);
+        countdownDuration = 60;
     });
-    
 });
