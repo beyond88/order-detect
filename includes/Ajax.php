@@ -184,19 +184,19 @@ class Ajax
                 'to' => $phone_number,
             ];
 
-            //$sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
 
-            // Helper::send_sms_balance_notification();
-            // $balance_response = Helper::get_balance($endpoint, $api_key);
+            Helper::send_sms_balance_notification();
+            $balance_response = Helper::get_balance($endpoint, $api_key);
 
-            // if ($balance_response && $balance_response->error === 0) {
-            //     $balance = $balance_response->data->balance;
-            //     update_option('orderdetect_sms_balance', $balance);
-            // } elseif ($balance_response && $balance_response->error === 405) {
-            //     error_log('Please configure SMS API first.');
-            // } else {
-            //     error_log('Unknown Error, failed to fetch balance');
-            // }
+            if ($balance_response && $balance_response->error === 0) {
+                $balance = $balance_response->data->balance;
+                update_option('orderdetect_sms_balance', $balance);
+            } elseif ($balance_response && $balance_response->error === 405) {
+                error_log('Please configure SMS API first.');
+            } else {
+                error_log('Unknown Error, failed to fetch balance');
+            }
         }
 
         $response['success'] = true;

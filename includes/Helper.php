@@ -102,7 +102,7 @@ class Helper
         date_default_timezone_set('Asia/Dhaka'); // Set timezone to Dhaka
 
         $otp = Helper::generate_unique_otp_for_phone($phone_number);
-        $expires_at = date('Y-m-d H:i:s', strtotime('+5 minutes')); // Set expiration time to 5 minutes from now
+        $expires_at = date('Y-m-d H:i:s', strtotime('+15 minutes')); // Set expiration time to 5 minutes from now
 
         $wpdb->replace(
             $table_name,

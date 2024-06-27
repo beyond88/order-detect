@@ -206,7 +206,7 @@ jQuery(document).ready(function($) {
         document.getElementById('otp-verification-popup').style.display = 'none';
         $('.otp-processing-area').show();
         $('.otp-form-area').hide();
-        $("#otp-resend-msg").remove();
+        $("#otp-resend-msg, #otp-resend-btn").remove();
         clearInterval(countdownInterval);
         countdownDuration = 60;
     });
