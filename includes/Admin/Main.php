@@ -60,10 +60,32 @@ class Main
 		add_action('plugins_loaded', array($this, 'set_default_options'));
 		add_action('admin_init', array($this, 'menu_register_settings'));
 		add_action('admin_init', array($this, 'check_and_save_sms_balance'));
-
+		
 		OrderDetectSettings::init();
-
 		$this->api = new OrderDetectAPI();
+
+		add_filter( 'edd_sl_api_request_verify_ssl', '__return_false' );
+		add_action( 'admin_init', array( $this, 'plugin_update') );
+
+	}
+
+	public function plugin_update() {
+
+		$orderdetect_license = get_option('orderdetect_license');
+		$license_key = isset($orderdetect_license['key']) ? $orderdetect_license['key'] : '';
+		if( ! empty( $license_key ) ) {
+			$updater = new PluginUpdate( ORDERDETECT_STORE_URL, ORDERDETECT_FILE, array(
+				'version'      => ORDERDETECT_VERSION,
+				'license'      => Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV),
+				'item_name'    => ORDERDETECT_SL_ITEM_NAME,
+				'item_id' 	   => 23,
+				'author'       => 'Imran Ahmad',
+				)
+			);
+
+			// print_r($updater);
+			echo Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV);
+		}
 	}
 
 	/**
