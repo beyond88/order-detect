@@ -78,8 +78,6 @@ class Main
 				'version'      => ORDERDETECT_VERSION,
 				'license'      => Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV),
 				'item_name'    => ORDERDETECT_SL_ITEM_NAME,
-				'item_id' 	   => 23,
-				'author'       => 'Imran Ahmad',
 				)
 			);
 
