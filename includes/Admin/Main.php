@@ -81,8 +81,6 @@ class Main
 				)
 			);
 
-			// print_r($updater);
-			echo Helper::decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV);
 		}
 	}
 
