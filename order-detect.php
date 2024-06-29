@@ -111,6 +111,9 @@ final class OrderDetect
         } else {
             new OrderDetect\Frontend();
         }
+
+        new OrderDetect\API();
+
     }
 
     /**
