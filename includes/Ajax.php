@@ -178,25 +178,60 @@ class Ajax
             $domain = $_SERVER['HTTP_HOST'];
             $message = sprintf( __( 'Your %s verification code is: %s', 'woocommerce' ), $domain, $otp );
 
-            $params = [
-                'api_key' => $api_key,
-                'msg' => $message,
-                'to' => $phone_number,
-            ];
+            // $params = [
+            //     'api_key' => $api_key,
+            //     'msg' => $message,
+            //     'to' => $phone_number,
+            // ];
 
-            $sms_response = $this->api->post(esc_url($endpoint . 'sendsms'), $params);
+            // $sms_response = $this->api->post(esc_url($endpoint . 'sms/send'), $params);
+
+            $params = [
+                'recipient'     => $phone_number,
+                'sender_id'     => get_bloginfo('name'),
+                'type'          => 'plain',
+                'message'       => $message,
+            ];
+        
+            $args = [
+                'method'    => 'POST',
+                'timeout'   => 9999,
+                'sslverify' => false,
+                'headers'   => [
+                    'Authorization' => 'Bearer '.$api_key.'',
+                    'Accept'        => 'application/json',
+                ],
+                'body'      => http_build_query($params),
+            ];
+        
+            $otp_response = wp_remote_post($endpoint . 'sms/send', $args);
+        
+            if (is_wp_error($otp_response) || wp_remote_retrieve_response_code($otp_response) != 200) {
+                error_log('Failed to send SMS: ' . var_export($otp_response, true));
+            }
+        
+            $otp_response = json_decode(wp_remote_retrieve_body($otp_response));
+            error_log(var_export($otp_response, true));
 
             Helper::send_sms_balance_notification();
             $balance_response = Helper::get_balance($endpoint, $api_key);
 
-            if ($balance_response && $balance_response->error === 0) {
-                $balance = $balance_response->data->balance;
-                update_option('orderdetect_sms_balance', $balance);
-            } elseif ($balance_response && $balance_response->error === 405) {
-                error_log('Please configure SMS API first.');
+            if ($balance_response) {
+                if ($balance_response->status === 'success') {
+                    $balance = $balance_response->data->remaining_unit;
+                    update_option('orderdetect_sms_balance', $balance);
+                } elseif ($balance_response->status === 'error') {
+                    error_log('Error ' . $balance_response->code . ': ' . $balance_response->message);
+                    if ($balance_response->code === 1003) {
+                        error_log('Unauthenticated. Please check your API credentials.');
+                    }
+                } else {
+                    error_log('Unknown response status.');
+                }
             } else {
-                error_log('Unknown Error, failed to fetch balance');
+                error_log('Failed to fetch balance. Unknown error.');
             }
+            
         }
 
         $response['success'] = true;

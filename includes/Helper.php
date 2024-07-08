@@ -4,8 +4,7 @@ namespace OrderDetect;
 /**
  * Helper class
  */
-class Helper
-{
+class Helper {
     /**
      * Check the validity of the license
      *
@@ -17,8 +16,7 @@ class Helper
      * @param   array $settings The settings array containing the license key.
      * @return  bool True if the license is valid, false otherwise.
      */
-    public static function check_license($settings)
-    {
+    public static function check_license($settings) {
         if (empty($settings)) {
             return false;
         }
@@ -47,8 +45,7 @@ class Helper
      * @param   string $phoneNumber The phone number to validate.
      * @return  bool True if the phone number is valid, false otherwise.
      */
-    public static function is_valid_Bangladeshi_phone_number($phoneNumber)
-    {
+    public static function is_valid_Bangladeshi_phone_number($phoneNumber) {
         $regex = '/^(?:\+?88)?01[1-9]\d{8}$/';
         return preg_match($regex, $phoneNumber);
     }
@@ -65,8 +62,7 @@ class Helper
      * @param   int    $length The length of the OTP, default is 4.
      * @return  string The generated OTP.
      */
-    public static function generate_unique_otp_for_phone($phone_number, $length = 4)
-    {
+    public static function generate_unique_otp_for_phone($phone_number, $length = 4) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'od_otp_log';
 
@@ -94,8 +90,7 @@ class Helper
      * @param   string $phone_number The phone number for which the OTP is generated.
      * @return  string The generated OTP.
      */
-    public static function generate_otp($phone_number)
-    {
+    public static function generate_otp($phone_number) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'od_otp_log';
         date_default_timezone_set('Asia/Dhaka'); // Set timezone to Dhaka
@@ -132,8 +127,7 @@ class Helper
      * @param   string $otp The OTP to verify.
      * @return  bool True if the OTP is valid, false otherwise.
      */
-    public static function verify_otp($phone_number, $otp)
-    {
+    public static function verify_otp($phone_number, $otp) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'od_otp_log';
 
@@ -180,13 +174,15 @@ class Helper
      * @param array $postfields
      * @return bool|string
      */
-    public static function send_request($url, $method = 'GET', $postfields = [])
-    {
+    public static function send_request($url, $api_key, $method = 'GET', $postfields = []) {
 
         $args = [
-            'method'    => $method,
+            'method'    => 'GET',
             'timeout'   => 9999,
             'sslverify' => false,
+            'headers'   => [
+                'Authorization' => 'Bearer '.$api_key.''
+            ],
             'body'      => $postfields
         ];
 
@@ -202,9 +198,8 @@ class Helper
     /**
      * @return mixed
      */
-    public static function get_balance($url, $api_key)
-    {
-        $response = Helper::send_request($url . '/user/balance/?api_key=' . $api_key);
+    public static function get_balance($url, $api_key) {
+        $response = Helper::send_request($url . 'balance', $api_key);
 
         return json_decode($response);
     }

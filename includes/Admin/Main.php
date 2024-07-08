@@ -140,14 +140,21 @@ class Main
 			) {
 
 				$balance_response = Helper::get_balance(esc_url($_POST['orderdetect_settings']['sms_api_endpoint']), sanitize_text_field($_POST['orderdetect_settings']['sms_api_key']));
-				if ($balance_response && $balance_response->error === 0) {
-					$balance = $balance_response->data->balance;
-					update_option('orderdetect_sms_balance', $balance);
-					Helper::send_sms_balance_notification();
-				} elseif ($balance_response && $balance_response->error === 405) {
-					error_log('Please configure SMS API first.');
+				
+				if ($balance_response) {
+					if ($balance_response->status === 'success') {
+						$balance = $balance_response->data->remaining_unit;
+						update_option('orderdetect_sms_balance', $balance);
+					} elseif ($balance_response->status === 'error') {
+						error_log('Error ' . $balance_response->code . ': ' . $balance_response->message);
+						if ($balance_response->code === 1003) {
+							error_log('Unauthenticated. Please check your API credentials.');
+						}
+					} else {
+						error_log('Unknown response status.');
+					}
 				} else {
-					error_log('Unknown Error, failed to fetch balance');
+					error_log('Failed to fetch balance. Unknown error.');
 				}
 			}
 		}
