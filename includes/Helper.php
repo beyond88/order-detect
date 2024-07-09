@@ -278,5 +278,28 @@ class Helper {
         return str_repeat('*', $length);
     }
 
+    public static function validate_and_format_phone_number( $phone ) {
+        // Remove non-numeric characters
+        $phone = preg_replace('/\D/', '', $phone);
     
+        // Check if the phone number is 11 or 13 digits long
+        if (strlen($phone) == 11) {
+            // If it starts with 0, replace it with 880
+            if ($phone[0] == '0') {
+                $phone = '880' . substr($phone, 1);
+            }
+        } elseif (strlen($phone) == 13) {
+            // If it starts with 880, it is already correct
+            if (substr($phone, 0, 3) != '880') {
+                // If it's not starting with 880, default it to 'Invalid'
+                $phone = '';
+            }
+        } else {
+            // If it's not 11 or 13 digits long, default it to 'Invalid'
+            $phone = '';
+        }
+    
+        return $phone;
+    }
+
 }

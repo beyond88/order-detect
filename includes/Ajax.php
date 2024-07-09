@@ -158,7 +158,7 @@ class Ajax
 
         if (!Helper::is_valid_Bangladeshi_phone_number($phone_number)) {
             $response['success'] = false;
-            $response['message'] = 'Invalid phone number format. Please enter a valid Bangladeshi phone number.';
+            $response['message'] = __('Invalid phone number format. Please enter a valid Bangladeshi phone number.', 'order-detect');
             wp_send_json($response, 400);
         }
 
@@ -166,7 +166,7 @@ class Ajax
 
         if (!$otp) {
             $response['success'] = false;
-            $response['message'] = 'Failed to generate OTP. Please try again later.';
+            $response['message'] = __('Failed to generate OTP. Please try again later.', 'order-detect');
             wp_send_json($response, 500);
         }
 
@@ -176,42 +176,39 @@ class Ajax
 
         if (isset($enable) && isset($endpoint) && isset($api_key)) {
             $domain = $_SERVER['HTTP_HOST'];
-            $message = sprintf( __( 'Your %s verification code is: %s', 'woocommerce' ), $domain, $otp );
-
-            // $params = [
-            //     'api_key' => $api_key,
-            //     'msg' => $message,
-            //     'to' => $phone_number,
-            // ];
-
-            // $sms_response = $this->api->post(esc_url($endpoint . 'sms/send'), $params);
-
-            $params = [
-                'recipient'     => $phone_number,
-                'sender_id'     => get_bloginfo('name'),
-                'type'          => 'plain',
-                'message'       => $message,
+            $message = sprintf( __( 'Your %s OTP is: %s', 'order-detect' ), $domain, $otp );
+            
+            // Set up the cURL request
+            $url = $endpoint . 'sms/send';
+            $data = [
+                'recipient' =>  Helper::validate_and_format_phone_number($phone_number),
+                'sender_id' => 8809601001337,
+                'type' => 'plain',
+                'message' => $message,
             ];
-        
-            $args = [
-                'method'    => 'POST',
-                'timeout'   => 9999,
-                'sslverify' => false,
-                'headers'   => [
-                    'Authorization' => 'Bearer '.$api_key.'',
-                    'Accept'        => 'application/json',
-                ],
-                'body'      => http_build_query($params),
+            
+            $headers = [
+                'Accept: application/json',
+                'Authorization: Bearer ' . $api_key,
+                'Content-Type: application/json',
             ];
-        
-            $otp_response = wp_remote_post($endpoint . 'sms/send', $args);
-        
-            if (is_wp_error($otp_response) || wp_remote_retrieve_response_code($otp_response) != 200) {
-                error_log('Failed to send SMS: ' . var_export($otp_response, true));
+            
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+            
+            // For debug only, disable SSL verification (not recommended for production)
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            
+            $response = curl_exec($curl);
+            
+            if (curl_errno($curl)) {
+                error_log('SMS send error: ' . curl_error($curl));
             }
-        
-            $otp_response = json_decode(wp_remote_retrieve_body($otp_response));
-            error_log(var_export($otp_response, true));
+            curl_close($curl);
 
             Helper::send_sms_balance_notification();
             $balance_response = Helper::get_balance($endpoint, $api_key);
@@ -221,7 +218,6 @@ class Ajax
                     $balance = $balance_response->data->remaining_unit;
                     update_option('orderdetect_sms_balance', $balance);
                 } elseif ($balance_response->status === 'error') {
-                    error_log('Error ' . $balance_response->code . ': ' . $balance_response->message);
                     if ($balance_response->code === 1003) {
                         error_log('Unauthenticated. Please check your API credentials.');
                     }
@@ -235,7 +231,7 @@ class Ajax
         }
 
         $response['success'] = true;
-        $response['message'] = 'OTP has been sent to : '.$phone_number;
+        $response['message'] = sprintf(__('OTP has been sent to: %s', 'order-detect'), $phone_number);
         wp_send_json($response, 200);
         wp_die();
     }
