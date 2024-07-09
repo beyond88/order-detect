@@ -204,7 +204,7 @@ class Ajax
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             
-            $response = curl_exec($curl);
+            curl_exec($curl);
             
             if (curl_errno($curl)) {
                 error_log('SMS send error: ' . curl_error($curl));
