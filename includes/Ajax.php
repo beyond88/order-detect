@@ -10,7 +10,10 @@ use OrderDetect\Helper;
 class Ajax
 {
 
-    private $api;
+    /**
+     * Stores plugin settings
+     * 
+     */
     private $settings;
 
     /**
@@ -265,7 +268,13 @@ class Ajax
         wp_die();
     }
 
-
+    /**
+     * Check if phone number is verified
+     *
+     * Handles the AJAX request to check if the provided phone number is verified.
+     *
+     * @return void
+     */
     public function check_phone_is_verified(){
 
         check_ajax_referer('order-detect-nonce', 'security');
