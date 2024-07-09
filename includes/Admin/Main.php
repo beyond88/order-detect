@@ -2,7 +2,6 @@
 
 namespace OrderDetect\Admin;
 
-use OrderDetect\API\OrderDetectAPI;
 use OrderDetect\Helper;
 
 /**
@@ -62,7 +61,6 @@ class Main
 		add_action('admin_init', array($this, 'check_and_save_sms_balance'));
 		
 		OrderDetectSettings::init();
-		$this->api = new OrderDetectAPI();
 
 		add_filter( 'edd_sl_api_request_verify_ssl', '__return_false' );
 		add_action( 'admin_init', array( $this, 'plugin_update') );

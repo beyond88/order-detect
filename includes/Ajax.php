@@ -2,7 +2,6 @@
 
 namespace OrderDetect;
 
-use OrderDetect\API\OrderDetectAPI;
 use OrderDetect\Helper;
 
 /**
@@ -21,7 +20,6 @@ class Ajax
      */
     function __construct()
     {
-        $this->api = new OrderDetectAPI();
         $this->settings = get_option('orderdetect_settings');
 
         // License activate

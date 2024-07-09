@@ -15,8 +15,5 @@
       "email": "muhin.cse.diu@gmail.com"
     }
   ],
-  "minimum-stability": "dev",
-  "require": {
-    "guzzlehttp/guzzle": "8.0.x-dev"
-  }
+  "minimum-stability": "dev"
 }

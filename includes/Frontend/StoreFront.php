@@ -1,10 +1,6 @@
 <?php
 namespace OrderDetect\Frontend;
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Stream;
-use GuzzleHttp\Psr7\Response;
-use OrderDetect\API\OrderDetectAPI;
 use OrderDetect\Helper;
 
 /**
