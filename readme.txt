@@ -20,7 +20,4 @@ Secure your store with phone verification, multi-order tracking, and parcel trus
 == Changelog ==
 
 = 1.0.0 =
-Initial version released
-
-= 1.0.1 =
-Refactor OTP resend time countdown 
+Initial version released 
