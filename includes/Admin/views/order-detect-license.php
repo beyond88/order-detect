@@ -2,7 +2,7 @@
     $setting_options = wp_parse_args(get_option('orderdetect_license'));
     $license_key = array_key_exists('key', $setting_options) ? $setting_options['key'] : '';
     $license_expires = array_key_exists('expires', $setting_options) ? $setting_options['expires'] : '';
-    echo $helper->decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV)
+    $helper->decrypt_data($license_key, ORDERDETECT_ENCRYPTION_KEY, ORDERDETECT_IV)
 ?>
 <div class="order-detect-settings-wrap">
     <?php do_action('order_detect_settings_header'); ?>
