@@ -105,7 +105,7 @@ jQuery(document).ready(function($) {
                 sendOTP('#otp-verify-btn', billingPhone);
                 $('.otp-processing-area').hide();
                 $('.otp-form-area').show();
-                startCountdown(countdownDuration, '#otp-resend-section'); // Start the countdown
+                //startCountdown(countdownDuration, '#otp-resend-section'); // Start the countdown
             }
         } else {
             $('form.checkout').submit();
