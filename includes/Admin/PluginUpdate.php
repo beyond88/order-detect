@@ -347,7 +347,7 @@ class PluginUpdate {
 			'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
 			'version'    => isset( $data['version'] ) ? $data['version'] : false,
 			'slug'       => $data['slug'],
-			'author'     => $data['author'],
+			'author'     => isset( $data['author'] ) ? $data['author'] : '',
 			'url'        => home_url(),
 			'beta'       => ! empty( $data['beta'] ),
 		);
