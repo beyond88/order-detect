@@ -21,6 +21,7 @@ class Admin
         $main = new Admin\Main();
         new Admin\Menu($main);
         new Admin\MultipleOrderTracking($main);
+        new Admin\SMSLog($main);
         new Admin\License($main);
         new Admin\PluginMeta();
     }
