@@ -10,8 +10,7 @@ namespace OrderDetect;
  * @param    none
  * @return   object
  */
-class Frontend
-{
+class Frontend {
     
     /**
      * Initialize the class
@@ -20,8 +19,7 @@ class Frontend
      * @param    none
      * @return   object
      */
-    function __construct()
-    {
+    function __construct() {
 
         if( ! Helper::check_license(wp_parse_args(get_option('orderdetect_license'))) ) {
             return;

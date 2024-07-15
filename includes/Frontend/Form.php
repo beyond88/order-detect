@@ -2,11 +2,9 @@
 
 namespace OrderDetect\Frontend;
 
-class Form
-{
+class Form {
 
-    public static function otp_form()
-    {
+    public static function otp_form() {
 ?>
         <div class="otp-verification-container" id="otp-verification-popup">
             <div class="otp-verification-inner" id="otp-verification-second-step">

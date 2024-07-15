@@ -31,10 +31,8 @@ class PluginMeta {
      * @return  array
      */
     public function plugin_action_links( $links ) {
-
         $links[] = '<a href="' . admin_url( 'admin.php?page=order-detect#general_settings' ) . '">' . __( 'Settings', 'order-detect' ) . '</a>';
         return $links;
-
     }
 
     /**

@@ -6,8 +6,7 @@ use OrderDetect\Helper;
 /**
  * Settings Handler class
  */
-class License
-{
+class License {
 
     /**
      * Plugin main file
@@ -23,8 +22,7 @@ class License
      *
      * @param string $main The main plugin file.
      */
-    public function __construct($main)
-    {
+    public function __construct($main) {
         $this->main = $main;
         add_filter('orderdetect_admin_menu', array($this, 'orderdetect_license'), PHP_INT_MAX);
     }
@@ -38,8 +36,7 @@ class License
      * @access  public
      * @return  array $settings The settings array for the license page.
      */
-    public function orderdetect_license($settings)
-    {
+    public function orderdetect_license($settings) {
 
         $helper = new Helper(); 
         $settings['license']['parent_slug'] = 'order-detect';
@@ -68,8 +65,7 @@ class License
      * @param   string $date The expiration date of the license.
      * @return  void
      */
-    public function license_expire_notice($date)
-    {
+    public function license_expire_notice($date) {
         if (!empty($date)) {
             $current_date = current_time('mysql');
             if( $date === "lifetime" ) {
@@ -96,8 +92,7 @@ class License
      * @access  public
      * @return  string The HTML for the license button.
      */
-    public function license_button()
-    {
+    public function license_button() {
 
         $setting_options = wp_parse_args(get_option('orderdetect_license'));
         $license_key = array_key_exists('key', $setting_options) ? $setting_options['key'] : '';

@@ -292,4 +292,45 @@ class Ajax
         wp_send_json($response, 200);
     }
 
+    public function get_customer_orders() {
+        $order_id = intval($_POST['order_id']);
+        $order = wc_get_order($order_id);
+        $customer_email = $order->get_billing_email();
+    
+        $args = array(
+            'post_type' => 'shop_order',
+            'post_status' => 'wc-completed', // Change this as needed
+            'meta_query' => array(
+                array(
+                    'key' => '_billing_email',
+                    'value' => $customer_email,
+                    'compare' => '=',
+                ),
+            ),
+            'posts_per_page' => -1,
+            'post__not_in' => array($order_id), // Exclude the current order
+        );
+    
+        $orders = get_posts($args);
+        $orders_data = array();
+    
+        foreach ($orders as $customer_order) {
+            $order_id = $customer_order->ID;
+            $order_date = $customer_order->post_date;
+            $order_status = wc_get_order_status_name($customer_order->post_status);
+            $order_total = get_post_meta($order_id, '_order_total', true);
+    
+            $orders_data[] = array(
+                'id' => $order_id,
+                'date' => $order_date,
+                'status' => $order_status,
+                'total' => wc_price($order_total),
+                'edit_link' => admin_url('post.php?post=' . $order_id . '&action=edit')
+            );
+        }
+    
+        wp_send_json_success(array('orders' => $orders_data));
+    }
+    
+
 }

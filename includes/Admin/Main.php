@@ -64,7 +64,6 @@ class Main
 
 		add_filter( 'edd_sl_api_request_verify_ssl', '__return_false' );
 		add_action( 'admin_init', array( $this, 'plugin_update') );
-
 	}
 
 	public function plugin_update() {
@@ -157,4 +156,5 @@ class Main
 			}
 		}
 	}
+	
 }

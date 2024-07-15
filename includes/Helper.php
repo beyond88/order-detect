@@ -278,10 +278,24 @@ class Helper {
         return str_repeat('*', $length);
     }
 
+    /**
+     * Validate and format a phone number
+     *
+     * This method validates and formats a given phone number to ensure it meets the specific criteria.
+     * It removes any non-digit characters and checks the length and prefix of the phone number.
+     * If the phone number has 11 digits and starts with '0', it replaces the '0' with '880'.
+     * If the phone number has 13 digits and starts with '880', it keeps the phone number as is.
+     * Otherwise, it returns an empty string.
+     *
+     * @since   1.0.0
+     * @access  public
+     * @param   string $phone The phone number to be validated and formatted.
+     * @return  string The validated and formatted phone number or an empty string if invalid.
+     */
     public static function validate_and_format_phone_number( $phone ) {
 
         $phone = preg_replace('/\D/', '', $phone);
-    
+
         if (strlen($phone) == 11) {
             if ($phone[0] == '0') {
                 $phone = '880' . substr($phone, 1);
@@ -293,7 +307,7 @@ class Helper {
         } else {
             $phone = '';
         }
-    
+
         return $phone;
     }
 

@@ -17,8 +17,7 @@ class OrderDetectSettings
      * @param   none
      * @return  void 
      */
-    public function __construct()
-    {
+    public function __construct() {
     }
 
     /**
@@ -29,8 +28,7 @@ class OrderDetectSettings
      * @param   none
      * @return  void 
      */
-    public static function init()
-    {
+    public static function init() {
         add_action('order_detect_settings_header', array(__CLASS__, 'header_template'), 10);
         add_action('orderdetect_settings_footer', array(__CLASS__, 'footer_template'), 10);
     }
@@ -44,9 +42,8 @@ class OrderDetectSettings
      * @param   none
      * @return  void
      */
-    public static function header_template()
-    {
-?>
+    public static function header_template() {
+    ?>
         <div class="order-detect-settings-header">
             <div class="order-detect-header-full">
                 <img src="<?php echo ORDERDETECT_ASSETS ?>/img/order-detect-logo.png" alt="Order Detect">
@@ -65,8 +62,7 @@ class OrderDetectSettings
      * @param   none
      * @return  void
      */
-    public static function footer_template()
-    {
+    public static function footer_template() {
     ?>
         <div class="order-detect-settings-documentation">
             <div class="order-detect-settings-row">
@@ -167,7 +163,7 @@ class OrderDetectSettings
                 </div>
             </div>
         </div>
-<?php
+    <?php
     }
 
     /**
@@ -178,8 +174,7 @@ class OrderDetectSettings
      * @param   none
      * @return  array 
      */
-    public static function setting_fields()
-    {
+    public static function setting_fields() {
 
         $setting_fields = array(
             'tabs' => apply_filters(

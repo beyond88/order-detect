@@ -7,8 +7,7 @@ use OrderDetect\Helper;
 /**
  * The Menu handler class
  */
-class Menu
-{
+class Menu {
 
     /**
      * Plugin main file
@@ -25,8 +24,7 @@ class Menu
      * @param   object
      * @return  void
      */
-    function __construct($main)
-    {
+    function __construct($main) {
         $this->main = $main;
         add_action('admin_menu', array($this, 'admin_menu'));
     }
@@ -39,8 +37,7 @@ class Menu
      * @param   none   
      * @return  void
      */
-    public function admin_menu()
-    {
+    public function admin_menu() {
         $parent_slug = 'order-detect';
         $capability = 'manage_options';
         $icon_url = ORDERDETECT_ASSETS.'/img/order-detect-icon.png';
@@ -64,8 +61,7 @@ class Menu
      * @param   none   
      * @return  void
      */
-    public function enqueue_assets()
-    {
+    public function enqueue_assets() {
         wp_enqueue_style('orderdetect-admin-boostrap');
         wp_enqueue_style('orderdetect-admin-style');
         wp_enqueue_script('orderdetect-admin-script');

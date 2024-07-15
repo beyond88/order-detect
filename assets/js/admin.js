@@ -179,4 +179,40 @@
 
 	});
 
+	// jQuery(document).ready(function($) {
+	// 	$(document).on('click', '#the-list .order-preview', function() {
+	// 		// let orderID = $(this).data('order-id');
+	
+	// 		// $.ajax({
+	// 		// 	url: order_detect.ajax_url,
+	// 		// 	type: 'POST',
+	// 		// 	data: {
+	// 		// 		action: 'get_customer_orders',
+	// 		// 		order_id: orderID
+	// 		// 	},
+	// 		// 	success: function(response) {
+	// 		// 		if (response.success) {
+	// 		// 			let ordersTable = '<h3>Other Orders by this Customer</h3>';
+	// 		// 			ordersTable += '<table class="wp-list-table widefat fixed striped">';
+	// 		// 			ordersTable += '<thead><tr><th>Order ID</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>';
+	// 		// 			ordersTable += '<tbody>';
+	
+	// 		// 			response.data.orders.forEach(function(order) {
+	// 		// 				ordersTable += '<tr>';
+	// 		// 				ordersTable += '<td><a href="' + order.edit_link + '">#' + order.id + '</a></td>';
+	// 		// 				ordersTable += '<td>' + order.date + '</td>';
+	// 		// 				ordersTable += '<td>' + order.status + '</td>';
+	// 		// 				ordersTable += '<td>' + order.total + '</td>';
+	// 		// 				ordersTable += '</tr>';
+	// 		// 			});
+	
+	// 		// 			ordersTable += '</tbody></table>';
+	
+	// 		// 			$('#wc-backbone-modal-dialog').append(ordersTable);
+	// 		// 		}
+	// 		// 	}
+	// 		// });
+	// 	});
+	// });	
+
 })(jQuery);

@@ -8,8 +8,7 @@ use OrderDetect\Helper;
 /**
  * Settings Handler class
  */
-class MultipleOrderTracking
-{
+class MultipleOrderTracking {
 
     /**
      * Plugin main file
@@ -25,8 +24,7 @@ class MultipleOrderTracking
      *
      * @param string $main The main plugin file.
      */
-    public function __construct($main)
-    {
+    public function __construct($main) {
         $this->main = $main;
         add_filter('orderdetect_admin_menu', array($this, 'orderdetect_multiple_order_tracking'), PHP_INT_MAX);
         add_filter('set-screen-option', array($this, 'set_screen_option'), 10, 3);
@@ -42,8 +40,7 @@ class MultipleOrderTracking
      * @access  public
      * @return  array $settings The settings array for the multiple-order-tracking page.
      */
-    public function orderdetect_multiple_order_tracking($settings)
-    {
+    public function orderdetect_multiple_order_tracking($settings) {
         if( ! Helper::check_license(wp_parse_args(get_option('orderdetect_license'))) ) {
             return;
         }
@@ -76,8 +73,7 @@ class MultipleOrderTracking
      * @param $value The number of rows to use.
      * @return bool|int
      */
-    public function set_screen_option($status, $option, $value)
-    {
+    public function set_screen_option($status, $option, $value) {
         if (in_array($option, array('multi_order_tracking_per_page'), true)) {
             return $value;
         }
@@ -88,8 +84,7 @@ class MultipleOrderTracking
     /**
      * Load outbox page assets
      */
-    public function add_screen_options()
-    {
+    public function add_screen_options() {
         /**
          * Add per page option.
          */

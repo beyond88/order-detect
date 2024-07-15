@@ -5,8 +5,7 @@ namespace OrderDetect;
 /**
  * The admin class
  */
-class Admin
-{
+class Admin {
 
     /**
      * Initialize the class
@@ -16,8 +15,7 @@ class Admin
      * @param   none
      * @return  void
      */
-    function __construct()
-    {
+    function __construct() {
         $main = new Admin\Main();
         new Admin\Menu($main);
         new Admin\MultipleOrderTracking($main);

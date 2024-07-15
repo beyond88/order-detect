@@ -15,8 +15,7 @@ if (!class_exists('WP_List_Table')) {
  * This class extends the WP_List_Table class and provides a custom list table
  * to display multiple orders associated with a customer's phone number.
  */
-class MultipleOrderTrackingList extends \WP_List_Table
-{
+class MultipleOrderTrackingList extends \WP_List_Table {
 
     /**
      * The customer's phone number.
@@ -28,8 +27,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * Constructor
      * @param string $phone_number The customer's phone number
      */
-    public function __construct($phone_number)
-    {
+    public function __construct($phone_number) {
         parent::__construct([
             'singular' => 'order',
             'plural' => 'orders',
@@ -42,8 +40,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * Get the list of columns for the table
      * @return array The list of columns
      */
-    public function get_columns()
-    {
+    public function get_columns() {
         $columns = [
             'order_id' => __('Order ID', 'order-detect'),
             'date' => __('Date', 'order-detect'),
@@ -62,8 +59,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * @param string $column_name The column name
      * @return string The column content
      */
-    protected function column_default($item, $column_name)
-    {
+    protected function column_default($item, $column_name) {
         switch ($column_name) {
             case 'order_id':
                 $order_id = $item->get_id();
@@ -90,8 +86,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * Get the list of sortable columns
      * @return array The list of sortable columns
      */
-    public function get_sortable_columns()
-    {
+    public function get_sortable_columns() {
         $sortable_columns = [
             'order_id' => ['order_id', true],
             'date' => ['date', true],
@@ -110,8 +105,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * @param int $default The default number of items per page
      * @return int The number of items per page
      */
-    public function get_items_per_page($option, $default = 20)
-    {
+    public function get_items_per_page($option, $default = 20) {
         $user_per_page = (int) get_user_meta(get_current_user_id(), $option, true);
         if (empty($user_per_page) || $user_per_page < 1) {
             $user_per_page = $default;
@@ -123,8 +117,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * Prepare the items for the list table
      * @return void
      */
-    public function prepare_items()
-    {
+    public function prepare_items() {
         $search = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';
 
         $per_page = $this->get_items_per_page('multi_order_tracking_per_page', 20);
@@ -186,8 +179,7 @@ class MultipleOrderTrackingList extends \WP_List_Table
      * @param int $current_page The current page number
      * @return array The list of orders
      */
-    public function get_orders_by_phone_number($phone_number, $per_page, $current_page)
-    {
+    public function get_orders_by_phone_number($phone_number, $per_page, $current_page) {
 
         global $wpdb;
 

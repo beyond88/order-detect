@@ -5,8 +5,7 @@ namespace OrderDetect;
 /**
  * Assets handlers class
  */
-class Assets
-{
+class Assets {
 
     /**
      * Class constructor
@@ -16,8 +15,7 @@ class Assets
      * @param   none
      * @return  void
      */
-    function __construct()
-    {
+    function __construct() {
         add_action('wp_enqueue_scripts', array($this, 'register_assets'));
         add_action('admin_enqueue_scripts', array($this, 'register_admin_assets'));
     }
@@ -30,8 +28,7 @@ class Assets
      * @param   none
      * @return  array
      */
-    public function get_scripts()
-    {
+    public function get_scripts() {
         return array(
             'order-detect-script' => array(
                 'src'     => ORDERDETECT_ASSETS . '/js/frontend.js',
@@ -49,8 +46,7 @@ class Assets
      * @param   none
      * @return  array
      */
-    public function get_styles()
-    {
+    public function get_styles() {
         return array(
             'order-detect-style' => array(
                 'src'     => ORDERDETECT_ASSETS . '/css/frontend.css',
@@ -68,8 +64,7 @@ class Assets
      * @param   none
      * @return  array
      */
-    public function register_assets()
-    {
+    public function register_assets() {
 
         if( ! Helper::check_license( wp_parse_args( get_option('orderdetect_license') ) ) ) {
             return '';
@@ -112,8 +107,7 @@ class Assets
      * @param   none
      * @return  array
      */
-    public function get_admin_scripts()
-    {
+    public function get_admin_scripts() {
         return array(
             'order-detect-admin-script' => array(
                 'src'     => ORDERDETECT_ASSETS . '/js/admin.js',
@@ -131,8 +125,7 @@ class Assets
      * @param   none
      * @return  array
      */
-    public function get_admin_styles()
-    {
+    public function get_admin_styles() {
         return array(
             'orderdetect-admin-style' => array(
                 'src'     => ORDERDETECT_ASSETS . '/css/admin.css',
@@ -149,8 +142,7 @@ class Assets
      * @param   none
      * @return  array
      */
-    public function register_admin_assets($hook)
-    {
+    public function register_admin_assets($hook) {
 
         $tab = isset($_GET['tab']) ? $_GET['tab'] : '';
         $section = isset($_GET['section']) ? $_GET['section'] : '';

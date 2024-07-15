@@ -5,8 +5,7 @@ namespace OrderDetect;
 /**
  * Installer class
  */
-class Installer
-{
+class Installer {
 
     /**
      * Run the installer
@@ -16,8 +15,7 @@ class Installer
      * @param   none
      * @return  void
      */
-    public function run()
-    {
+    public function run() {
         $this->add_version();
         $this->create_tables();
     }
@@ -30,8 +28,7 @@ class Installer
      * @param   none
      * @return  void
      */
-    public function add_version()
-    {
+    public function add_version() {
         $installed = get_option('orderdetect_installed');
 
         if (!$installed) {
@@ -46,8 +43,7 @@ class Installer
      *
      * @return void
      */
-    public function create_tables()
-    {
+    public function create_tables() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'od_otp_log';
         $charset_collate = $wpdb->get_charset_collate();

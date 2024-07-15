@@ -29,8 +29,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * The main plugin class
  */
-final class OrderDetect
-{
+final class OrderDetect {
 
     /**
      * Plugin version
@@ -42,8 +41,7 @@ final class OrderDetect
     /**
      * Class constructor
      */
-    private function __construct()
-    {
+    private function __construct() {
         $this->define_constants();
 
         register_activation_hook(__FILE__, [$this, 'activate']);
@@ -55,8 +53,7 @@ final class OrderDetect
      *
      * @return \OrderDetect
      */
-    public static function init()
-    {
+    public static function init() {
         static $instance = false;
 
         if (!$instance) {
@@ -71,8 +68,7 @@ final class OrderDetect
      *
      * @return void
      */
-    public function define_constants()
-    {
+    public function define_constants() {
         define('ORDERDETECT_VERSION', self::version);
         define('ORDERDETECT_FILE', __FILE__);
         define('ORDERDETECT_PATH', __DIR__);
@@ -96,8 +92,7 @@ final class OrderDetect
      *
      * @return void
      */
-    public function init_plugin()
-    {
+    public function init_plugin() {
 
         new OrderDetect\Assets();
         new OrderDetect\OrderDetecti18n();
@@ -121,8 +116,7 @@ final class OrderDetect
      *
      * @return void
      */
-    public function activate()
-    {
+    public function activate() {
         $installer = new OrderDetect\Installer();
         $installer->run();
     }
@@ -131,10 +125,10 @@ final class OrderDetect
 /**
  * Initializes the main plugin
  */
-function order_detect()
-{
+function order_detect() {
     return OrderDetect::init();
 }
 
 // kick-off the plugin
 order_detect();
+

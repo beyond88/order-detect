@@ -7,8 +7,7 @@ namespace OrderDetect;
  * 
  * @since    1.0.0
  */
-class OrderDetecti18n
-{
+class OrderDetecti18n {
 
 	/**
 	 * Call language method 
@@ -18,8 +17,7 @@ class OrderDetecti18n
 	 * @param	none
 	 * @return	void
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 	}
 
@@ -31,8 +29,7 @@ class OrderDetecti18n
 	 * @param	none
 	 * @return	void
 	 */
-	public function load_plugin_textdomain()
-	{
+	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
 			'order-detect',

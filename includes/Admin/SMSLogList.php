@@ -15,8 +15,7 @@ if (!class_exists('WP_List_Table')) {
  * This class extends the WP_List_Table class and provides a custom list table
  * to display multiple orders associated with a customer's phone number.
  */
-class SMSLogList extends \WP_List_Table
-{
+class SMSLogList extends \WP_List_Table {
 
     /**
      * The customer's phone number.
@@ -28,8 +27,7 @@ class SMSLogList extends \WP_List_Table
      * Constructor
      * @param string $phone_number The customer's phone number
      */
-    public function __construct($phone_number)
-    {
+    public function __construct($phone_number) {
         parent::__construct([
             'singular' => 'sms_log',
             'plural' => 'sms_logs',
@@ -42,8 +40,7 @@ class SMSLogList extends \WP_List_Table
      * Get the list of columns for the table
      * @return array The list of columns
      */
-    public function get_columns()
-    {
+    public function get_columns() {
         $columns = [
             'cb' => '<input type="checkbox" />',
             'id' => __('ID', 'order-detect'),
@@ -62,8 +59,7 @@ class SMSLogList extends \WP_List_Table
      * @param string $column_name The column name
      * @return string The column content
      */
-    protected function column_default($item, $column_name)
-    {
+    protected function column_default($item, $column_name) {
         switch ($column_name) {
             case 'id':
                 return $item->id;
@@ -87,8 +83,7 @@ class SMSLogList extends \WP_List_Table
      * @param object $item The row data
      * @return string The column content
      */
-    protected function column_cb($item)
-    {
+    protected function column_cb($item){
         return sprintf('<input type="checkbox" name="sms_log[]" value="%s" />', $item->id);
     }
 
@@ -96,8 +91,7 @@ class SMSLogList extends \WP_List_Table
      * Get the list of sortable columns
      * @return array The list of sortable columns
      */
-    public function get_sortable_columns()
-    {
+    public function get_sortable_columns() {
         $sortable_columns = [
             'id' => ['id', true],
             'phone_number' => ['phone_number', true],
@@ -113,8 +107,7 @@ class SMSLogList extends \WP_List_Table
      * Get the list of bulk actions
      * @return array The list of bulk actions
      */
-    public function get_bulk_actions()
-    {
+    public function get_bulk_actions() {
         $actions = [
             'delete' => __('Delete', 'order-detect')
         ];
@@ -124,8 +117,7 @@ class SMSLogList extends \WP_List_Table
     /**
      * Process bulk actions
      */
-    public function process_bulk_action()
-    {
+    public function process_bulk_action() {
         if ('delete' === $this->current_action()) {
             $ids = isset($_REQUEST['sms_log']) ? $_REQUEST['sms_log'] : [];
             if (is_array($ids)) {
@@ -141,8 +133,7 @@ class SMSLogList extends \WP_List_Table
      * Delete items from the database
      * @param array $ids The IDs of the items to delete
      */
-    public function delete_items($ids)
-    {
+    public function delete_items($ids) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'od_otp_log';
         $ids_format = implode(',', array_fill(0, count($ids), '%d'));
@@ -156,8 +147,7 @@ class SMSLogList extends \WP_List_Table
      * @param int $default The default number of items per page
      * @return int The number of items per page
      */
-    public function get_items_per_page($option, $default = 20)
-    {
+    public function get_items_per_page($option, $default = 20) {
         $user_per_page = (int) get_user_meta(get_current_user_id(), $option, true);
         if (empty($user_per_page) || $user_per_page < 1) {
             $user_per_page = $default;
@@ -169,8 +159,7 @@ class SMSLogList extends \WP_List_Table
      * Prepare the items for the list table
      * @return void
      */
-    public function prepare_items()
-    {
+    public function prepare_items() {
         $this->process_bulk_action();
 
         $search = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';
@@ -199,8 +188,7 @@ class SMSLogList extends \WP_List_Table
      * @param string $search The search query
      * @return int The total number of items
      */
-    public function get_total_items($search = '')
-    {
+    public function get_total_items($search = '') {
         global $wpdb;
         $table_name = $wpdb->prefix . 'od_otp_log';
 
@@ -220,8 +208,7 @@ class SMSLogList extends \WP_List_Table
      * @param int $current_page The current page number
      * @return array The list of SMS logs
      */
-    public function get_sms_log_by_phone_number($phone_number, $per_page, $current_page)
-    {
+    public function get_sms_log_by_phone_number($phone_number, $per_page, $current_page) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'od_otp_log';
 
